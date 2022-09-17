@@ -4,7 +4,7 @@ import styles from '../styles/Home.module.css'
 import { useQuery, useMutation } from '../convex/_generated/react'
 import { useEffect, useState } from 'react'
 
-function Player({ player }) {
+function Player({ player }: { player: any }) {
   return <div className={styles.player}>{JSON.stringify(player)}</div>
 }
 
@@ -13,11 +13,11 @@ function Community() {
   const dealt = useQuery('getDealt')
   return (
     <div>
-      <p className={styles.description}>
+      <div className={styles.description}>
         {dealt?.community!.map((c: string) => (
           <div key={c}>{c}</div>
         ))}
-      </p>
+      </div>
       <button className={styles.button} onClick={() => deal()}>
         Deal!
       </button>
@@ -25,22 +25,16 @@ function Community() {
   )
 }
 
-function Hole({ player }) {
+function Hole({ player }: { player: { n: number } }) {
   const dealt = useQuery('getDealt')
-  const cards = dealt?.cards.slice(player.n, player.n + 2) ?? []
-  return (
-    <div>
-      {cards.map((c) => (
-        <div key={c}>{c}</div>
-      ))}
-    </div>
-  )
+  const cards = dealt?.cards.slice(player.n, player.n + 2)
+  return <div>{cards && cards.map((c) => <div key={c}>{c}</div>)}</div>
 }
 
 const Home: NextPage = () => {
   const join = useMutation('join')
   const ping = useMutation('ping')
-  const [player, setPlayer] = useState()
+  const [player, setPlayer] = useState<Awaited<ReturnType<typeof join>>>()
 
   useEffect(() => {
     if (!player) join().then(setPlayer)
