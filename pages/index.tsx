@@ -4,6 +4,10 @@ import styles from '../styles/Home.module.css'
 import { useQuery, useMutation } from '../convex/_generated/react'
 import { useEffect, useState } from 'react'
 
+function Player({ player }) {
+  return <div className={styles.player}>{JSON.stringify(player)}</div>
+}
+
 function Community() {
   const deal = useMutation('deal')
   const dealt = useQuery('getDealt')
@@ -24,7 +28,13 @@ function Community() {
 function Hole({ player }) {
   const dealt = useQuery('getDealt')
   const cards = dealt?.cards.slice(player.n, player.n + 2)
-  return <div>{JSON.stringify(cards)}</div>
+  return (
+    <div>
+      {cards.map((c) => (
+        <div key={c}>{c}</div>
+      ))}
+    </div>
+  )
 }
 
 const Home: NextPage = () => {
@@ -49,7 +59,6 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        {JSON.stringify(player)}
         {player ? (
           player.n === 0 ? (
             <Community />
@@ -57,6 +66,7 @@ const Home: NextPage = () => {
             <Hole player={player} />
           )
         ) : null}
+        <Player player={player} />
       </main>
     </div>
   )
