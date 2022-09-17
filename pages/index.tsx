@@ -27,7 +27,7 @@ function Community() {
 
 function Hole({ player }) {
   const dealt = useQuery('getDealt')
-  const cards = dealt?.cards.slice(player.n, player.n + 2)
+  const cards = dealt?.cards.slice(player.n, player.n + 2) ?? []
   return (
     <div>
       {cards.map((c) => (
