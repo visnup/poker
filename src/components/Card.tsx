@@ -14,7 +14,7 @@ export function Card({
         <div>{n}</div>
         <div>{suit}</div>
       </div>
-      <div className="corner invert">
+      <div className="corner">
         <div>{n}</div>
         <div>{suit}</div>
       </div>
@@ -31,16 +31,15 @@ export function Card({
             height: 350px;
             position: relative;
             margin: 10px;
+            user-select: none;
           }
 
           .corner {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            text-align: center;
             position: absolute;
             padding: 10px;
           }
-          .corner.invert {
+          .corner + .corner {
             right: 0;
             bottom: 0;
             transform: rotate(180deg);
