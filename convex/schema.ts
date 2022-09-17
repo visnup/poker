@@ -6,5 +6,8 @@ export default defineSchema({
     community: s.array(s.string()),
     shuffled: s.array(s.string()),
   }),
-  players: defineTable({ n: s.number(), t: s.number() }),
+  players: defineTable({
+    n: s.number(),
+    t: s.number(),
+  }),
 })

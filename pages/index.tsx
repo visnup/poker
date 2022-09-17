@@ -13,13 +13,13 @@ function Community() {
   const dealt = useQuery('getDealt')
   return (
     <div>
-      <div className={styles.description}>
-        {dealt?.community!.map((c: string) => (
+      <div>
+        {dealt?.community.map((c) => (
           <div key={c}>{c}</div>
         ))}
       </div>
       <button className={styles.button} onClick={() => deal()}>
-        Deal!
+        Deal
       </button>
     </div>
   )
@@ -27,8 +27,14 @@ function Community() {
 
 function Hole({ player }: { player: { n: number } }) {
   const dealt = useQuery('getDealt')
-  const cards = dealt?.cards.slice(player.n, player.n + 2)
-  return <div>{cards && cards.map((c) => <div key={c}>{c}</div>)}</div>
+  const cards = dealt?.cards.slice(player.n, player.n + 2) ?? []
+  return (
+    <div>
+      {cards.map((c) => (
+        <div key={c}>{c}</div>
+      ))}
+    </div>
+  )
 }
 
 const Home: NextPage = () => {
