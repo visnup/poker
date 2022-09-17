@@ -2,7 +2,10 @@ export function Card({
   card,
   ...props
 }: { card: string } & JSX.IntrinsicElements["div"]) {
-  const [n, suit] = [...card];
+  const [n, suit] = [
+    card.slice(0, card.length - 1),
+    card.slice(card.length - 1),
+  ];
   const color = suit === "♣" || suit === "♠" ? "black" : "red";
 
   return (
