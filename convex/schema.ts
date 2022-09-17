@@ -9,5 +9,5 @@ export default defineSchema({
   players: defineTable({
     n: s.number(),
     t: s.number(),
-  }),
+  }).index("byN", ["n"]),
 });
