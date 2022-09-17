@@ -11,6 +11,7 @@ export default mutation(async ({ db }) => {
   for (const { _id } of stale) await db.delete(_id)
 
   const players = await db.table('players').collect()
+  players.sort((a, b) => a.n - b.n)
   for (let n = 0; n < 10; n++)
     if (!players[n] || n < players[n].n) {
       const player = { n, t: now }
