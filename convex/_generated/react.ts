@@ -11,6 +11,8 @@
 
 import type deal from "../deal";
 import type getDealt from "../getDealt";
+import type join from "../join";
+import type ping from "../ping";
 import type { OptimisticLocalStore as GenericOptimisticLocalStore } from "convex/browser";
 import type { ClientMutation, ClientQuery } from "convex/server";
 
@@ -29,6 +31,8 @@ export type ConvexAPI = {
   };
   mutations: {
     deal: ClientMutation<typeof deal>;
+    join: ClientMutation<typeof join>;
+    ping: ClientMutation<typeof ping>;
   };
 };
 
