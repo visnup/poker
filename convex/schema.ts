@@ -1,4 +1,4 @@
-import { defineSchema, defineTable, s } from 'convex/schema'
+import { defineSchema, defineTable, s } from "convex/schema";
 
 export default defineSchema({
   deals: defineTable({
@@ -10,4 +10,4 @@ export default defineSchema({
     n: s.number(),
     t: s.number(),
   }),
-})
+});

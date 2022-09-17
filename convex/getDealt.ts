@@ -1,5 +1,5 @@
-import { query } from './_generated/server'
+import { query } from "./_generated/server";
 
 export default query(async ({ db }) => {
-  return db.table('deals').order('desc').first()
-})
+  return db.table("deals").order("desc").first();
+});
