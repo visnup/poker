@@ -1,15 +1,16 @@
 import { useQuery, useMutation } from "../../convex/_generated/react";
 import { Card } from "./Card";
 
-export function Community() {
+export function Board() {
   const deal = useMutation("deal");
   const dealt = useQuery("getDealt");
 
-  if (!dealt) return null;
-  const { community } = dealt;
-  const flop = community.slice(0, 3);
-  const turn = community[3];
-  const river = community[4];
+  if (!dealt) return <button onClick={() => deal()}>Deal</button>;
+
+  const { board } = dealt;
+  const flop = board.slice(0, 3);
+  const turn = board[3];
+  const river = board[4];
 
   return (
     <div>

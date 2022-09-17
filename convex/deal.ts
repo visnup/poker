@@ -7,7 +7,7 @@ const deck = suits.flatMap((s) => denominations.map((d) => d + s));
 
 export default mutation(async ({ db }) => {
   const shuffled = shuffle(deck.slice());
-  const community = shuffled.slice(0, 5);
+  const board = shuffled.slice(0, 5);
   const cards = shuffled.slice(5);
-  db.insert("deals", { shuffled, community, cards });
+  db.insert("deals", { shuffled, board, cards });
 });

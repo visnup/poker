@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useMutation } from "../../convex/_generated/react";
 import { useEffect, useRef, useState } from "react";
-import { Community } from "../components/Community";
+import { Board } from "../components/Board";
 import { Hole } from "../components/Hole";
 
 function Player({ player }: { player: any }) {
@@ -41,18 +41,11 @@ export default function Index() {
     return () => clearInterval(interval);
   }, [ping, player]);
 
+  if (!player) return null;
+
   return (
     <main>
-      <Head>
-        <title>Poker</title>
-      </Head>
-      {player ? (
-        player.n === 0 ? (
-          <Community />
-        ) : (
-          <Hole player={player} />
-        )
-      ) : null}
+      {player.n === 0 ? <Board /> : <Hole player={player} />}
       <Player player={player} />
       <style jsx>
         {`
