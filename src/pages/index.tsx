@@ -54,6 +54,16 @@ export default function Index() {
         )
       ) : null}
       <Player player={player} />
+      <style jsx>
+        {`
+          main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+          }
+        `}
+      </style>
     </main>
   );
 }
