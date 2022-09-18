@@ -7,9 +7,7 @@ export function Hole({ player }: { player: { n: number } }) {
   const dealt = useQuery("getDealt");
   const [distance, direction] = useDrag();
   const [rotation, setRotation] = useState(() => Math.random() * 10 - 5);
-  useEffect(() => {
-    setRotation(Math.random() * 10 - 5);
-  }, [dealt]);
+  useEffect(() => setRotation(Math.random() * 10 - 5), [dealt]);
 
   const cards = dealt?.cards.slice(player.n, player.n + 2) ?? [];
 

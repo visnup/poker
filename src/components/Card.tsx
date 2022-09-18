@@ -53,7 +53,7 @@ export function Card({
 
           .card {
             position: relative;
-            transition: all 500ms;
+            transition: all 800ms;
             transform-style: preserve-3d;
             width: 100%;
             height: 100%;
