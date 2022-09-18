@@ -13,23 +13,23 @@ export function useDrag() {
     start.current = undefined;
     setDistance(0);
   }
-  function pointermove(event: PointerEvent) {
+  function pointermove({ clientX, clientY }: PointerEvent) {
     if (start.current) {
-      event.preventDefault();
-      const { clientX, clientY } = event;
       const [x, y] = start.current;
       setDistance(Math.hypot(clientX - x, clientY - y));
     }
   }
 
   useEffect(() => {
-    document.addEventListener("pointerdown", pointerdown);
-    document.addEventListener("pointerup", pointerup);
-    document.addEventListener("pointermove", pointermove);
+    document.body.addEventListener("pointerdown", pointerdown);
+    document.body.addEventListener("pointerup", pointerup);
+    document.body.addEventListener("pointermove", pointermove);
+    document.body.style.touchAction = "none";
     return () => {
-      document.removeEventListener("pointerdown", pointerdown);
-      document.removeEventListener("pointerup", pointerup);
-      document.removeEventListener("pointermove", pointermove);
+      document.body.removeEventListener("pointerdown", pointerdown);
+      document.body.removeEventListener("pointerup", pointerup);
+      document.body.removeEventListener("pointermove", pointermove);
+      document.body.style.touchAction = "auto";
     };
   }, []);
 
