@@ -20,7 +20,7 @@ export function Board() {
             <Card
               key={c}
               card={c}
-              style={{ transform: `translateX(-${i * 130}px)` }}
+              style={{ transform: `translateX(-${i * 60}%)` }}
             />
           ))}
         </div>
@@ -36,7 +36,7 @@ export function Board() {
           }
           .flop {
             display: flex;
-            margin-right: -200px;
+            margin-right: -300px;
           }
         `}
       </style>
