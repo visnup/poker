@@ -1,6 +1,61 @@
-import { useEffect, useState } from "react";
+import { ReactNode, useRef, useState } from "react";
 import { useQuery, useMutation } from "../../convex/_generated/react";
 import { Card } from "./Card";
+
+function DealerButton({
+  onMove,
+  children,
+}: {
+  onMove: () => void;
+  children: ReactNode;
+}) {
+  const ref = useRef<HTMLButtonElement>(null);
+  const [start, setStart] = useState<number[] | undefined>();
+  const [location, setLocation] = useState({ top: 30, left: 30 });
+
+  function onPointerDown({ clientX, clientY }: React.PointerEvent) {
+    setStart([clientX, clientY]);
+  }
+  function onPointerUp({ clientX, clientY }: React.PointerEvent) {
+    if (start) {
+      const distance = Math.hypot(clientX - start[0], clientY - start[1]);
+      if (distance > 200) onMove();
+    }
+    setStart(undefined);
+  }
+  function onPointerMove(event: React.PointerEvent) {
+    if (start)
+      setLocation({
+        top: event.clientY - ref.current!.offsetHeight / 2,
+        left: event.clientX - ref.current!.offsetWidth / 2,
+      });
+  }
+
+  return (
+    <button
+      style={location}
+      ref={ref}
+      onPointerDown={onPointerDown}
+      onPointerUp={onPointerUp}
+      onPointerMove={onPointerMove}
+    >
+      {children}
+      <style jsx>{`
+        button {
+          position: absolute;
+          font-size: xx-large;
+          background-color: white;
+          color: black;
+          border-radius: 100%;
+          border: none;
+          box-shadow: 0 0 10px hsla(0, 0%, 0%, 0.2);
+          width: 4em;
+          height: 4em;
+        }
+      `}</style>
+    </button>
+  );
+}
 
 export function Board() {
   const deal = useMutation("deal");
@@ -39,16 +94,16 @@ export function Board() {
         <Card key={turn} card={turn} revealed={revealed > 1} />
         <Card key={river} card={river} revealed={revealed > 2} />
       </div>
-      <button
-        onClick={async () => {
+      <DealerButton
+        onMove={async () => {
           setRevealed(-1);
           await new Promise((resolve) => setTimeout(resolve, 1000));
           deal();
           setRevealed(0);
         }}
       >
-        Deal
-      </button>
+        Dealer
+      </DealerButton>
       <style jsx>
         {`
           .board {
