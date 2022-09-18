@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "../../convex/_generated/react";
 import { Card } from "./Card";
 import { useDrag } from "./useDrag";
@@ -6,7 +6,10 @@ import { useDrag } from "./useDrag";
 export function Hole({ player }: { player: { n: number } }) {
   const dealt = useQuery("getDealt");
   const [distance, direction] = useDrag();
-  const [rotation] = useState(() => Math.random() * 10 - 5);
+  const [rotation, setRotation] = useState(() => Math.random() * 10 - 5);
+  useEffect(() => {
+    setRotation(Math.random() * 10 - 5);
+  }, [dealt]);
 
   const cards = dealt?.cards.slice(player.n, player.n + 2) ?? [];
 
@@ -33,7 +36,7 @@ export function Hole({ player }: { player: { n: number } }) {
         {`
           .cards {
             position: relative;
-            min-width: 25vw;
+            min-width: 325px;
             min-height: 100vh;
           }
           .layer {

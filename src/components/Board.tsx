@@ -24,8 +24,8 @@ export function Board() {
             />
           ))}
         </div>
-        <Card card={turn} />
-        <Card card={river} />
+        <Card key={turn} card={turn} />
+        <Card key={river} card={river} />
       </div>
       <button onClick={() => deal()}>Deal</button>
       <style jsx>
