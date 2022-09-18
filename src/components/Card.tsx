@@ -23,8 +23,8 @@ export function Card({
     from: {
       rotate: 0,
       ...(anchor === "left"
-        ? { translateX: "-120vw" }
-        : { translateY: "-120vh" }),
+        ? { translateX: "-200vw" }
+        : { translateY: "-200vh" }),
     },
     to: {
       rotate: r,
