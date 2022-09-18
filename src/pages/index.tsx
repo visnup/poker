@@ -1,4 +1,3 @@
-import Head from "next/head";
 import { useMutation } from "../../convex/_generated/react";
 import { useEffect, useRef, useState } from "react";
 import { Board } from "../components/Board";
