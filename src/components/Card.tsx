@@ -74,7 +74,7 @@ export function Card({
           .face {
             color: ${color};
             background: white;
-            font-size: x-large;
+            font-size: xx-large;
             transform: rotateY(180deg);
           }
 
