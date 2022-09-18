@@ -49,8 +49,10 @@ function DealerButton({
           border-radius: 100%;
           border: none;
           box-shadow: 0 0 10px hsla(0, 0%, 0%, 0.2);
+          padding: 0;
           width: 4em;
           height: 4em;
+          touch-action: none;
         }
       `}</style>
     </button>
