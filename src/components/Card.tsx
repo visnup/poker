@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import cx from "classnames";
 import { useSpring, animated, config } from "react-spring";
 
-// middle: https://codepen.io/jughosta/pen/NqgZOZ
-
 interface CardProps {
   card?: string;
   revealed?: boolean;
