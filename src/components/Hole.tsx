@@ -35,12 +35,12 @@ export function Hole({ player }: { player: { n: number } }) {
           .cards {
             position: relative;
             min-width: 325px;
-            min-height: 80vh;
+            min-height: 100vh;
           }
           .layer {
             position: absolute;
             width: 100%;
-            top: 30px;
+            top: 20vh;
           }
           .placement {
             position: absolute;

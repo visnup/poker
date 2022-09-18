@@ -13,8 +13,10 @@ export function useDrag() {
     start.current = undefined;
     setDistance(0);
   }
-  function pointermove({ clientX, clientY }: PointerEvent) {
+  function pointermove(event: PointerEvent) {
     if (start.current) {
+      event.preventDefault();
+      const { clientX, clientY } = event;
       const [x, y] = start.current;
       setDistance(Math.hypot(clientX - x, clientY - y));
     }
