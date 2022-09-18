@@ -5,13 +5,11 @@ import { useState } from "react";
 interface CardProps {
   card: string;
   revealed?: boolean;
-  flat?: boolean;
   rotation?: number;
 }
 export function Card({
   card,
   revealed,
-  flat,
   rotation,
   ...props
 }: CardProps & JSX.IntrinsicElements["div"]) {
@@ -66,7 +64,7 @@ export function Card({
             height: 100%;
             backface-visibility: hidden;
             border-radius: 20px;
-            box-shadow: ${flat ? "none" : "0 0 10px hsla(0, 0%, 0%, 0.2)"};
+            box-shadow: 0 0 10px hsla(0, 0%, 0%, 0.2);
           }
           .back {
             background-color: steelblue;
