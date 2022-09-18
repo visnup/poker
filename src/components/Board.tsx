@@ -44,11 +44,11 @@ function DealerButton({
         button {
           position: absolute;
           font-size: xx-large;
-          background-color: white;
+          background: linear-gradient(-25deg, hsl(0, 0%, 90%), white);
           color: black;
           border-radius: 100%;
-          border: none;
-          box-shadow: 0 0 10px hsla(0, 0%, 0%, 0.2);
+          border: solid 1px hsl(0, 0%, 95%);
+          box-shadow: 0 2px 10px hsla(0, 0%, 0%, 0.2);
           padding: 0;
           width: 4em;
           height: 4em;
