@@ -22,8 +22,16 @@ export function Card({
 
   const deal = useSpring({
     reverse: card === undefined,
-    from: { translateX: "-120vw", rotate: 0 },
-    to: { translateX: "0vw", rotate: r },
+    from: {
+      rotate: 0,
+      ...(anchor === "left"
+        ? { translateX: "-120vw" }
+        : { translateY: "-120vh" }),
+    },
+    to: {
+      rotate: r,
+      ...(anchor === "left" ? { translateX: "0vw" } : { translateY: "0vh" }),
+    },
     config: { tension: 100 },
   });
 
