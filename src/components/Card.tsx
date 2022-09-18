@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import cx from "classnames";
+import { useSpring, animated, config } from "react-spring";
 
 // middle: https://codepen.io/jughosta/pen/NqgZOZ
 
 interface CardProps {
-  card: string;
+  card?: string;
   revealed?: boolean;
   anchor?: "left" | "top";
   rotation?: number;
@@ -16,15 +17,24 @@ export function Card({
   rotation,
   ...props
 }: CardProps & JSX.IntrinsicElements["div"]) {
-  const [r] = useState(() => rotation ?? Math.random() * 10 - 5);
+  const [r, setR] = useState(() => rotation ?? Math.random() * 10 - 5);
+  useEffect(() => setR(rotation ?? Math.random() * 10 - 5), [rotation, card]);
+
+  const deal = useSpring({
+    reverse: card === undefined,
+    from: { translateX: "-120vw", rotate: 0 },
+    to: { translateX: "0vw", rotate: r },
+    config: { tension: 100 },
+  });
+
   const [n, suit] = [
-    card.slice(0, card.length - 1),
-    card.slice(card.length - 1),
+    card?.slice(0, card.length - 1),
+    card?.slice(card.length - 1),
   ];
   const color = suit === "♣" || suit === "♠" ? "black" : "red";
 
   return (
-    <div style={{ transform: `rotate(${r}deg)` }}>
+    <animated.div style={deal}>
       <div className={cx("area", { revealed })} {...props}>
         <div className="card">
           <div className="back"></div>
@@ -54,7 +64,7 @@ export function Card({
 
           .card {
             position: relative;
-            transition: all 800ms;
+            transition: transform 400ms;
             transform-style: preserve-3d;
             width: 100%;
             height: 100%;
@@ -91,6 +101,6 @@ export function Card({
           }
         `}
       </style>
-    </div>
+    </animated.div>
   );
 }

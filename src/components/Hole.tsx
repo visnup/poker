@@ -16,7 +16,7 @@ export function Hole({ player }: { player: { n: number } }) {
       <div className="layer">
         {cards.map((c, i) => (
           <div className="placement" key={c}>
-            <Card card={c} rotation={i ? rotation : -rotation} />
+            <Card card={c} anchor="top" rotation={i ? rotation : -rotation} />
           </div>
         ))}
       </div>
@@ -26,7 +26,12 @@ export function Hole({ player }: { player: { n: number } }) {
       >
         {cards.map((c, i) => (
           <div className="placement" key={c}>
-            <Card card={c} rotation={i ? rotation : -rotation} revealed />
+            <Card
+              card={c}
+              anchor="top"
+              rotation={i ? rotation : -rotation}
+              revealed
+            />
           </div>
         ))}
       </div>

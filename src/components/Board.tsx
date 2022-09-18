@@ -75,45 +75,39 @@ export function Board() {
   const deal = useMutation("deal");
   const dealt = useQuery("getDealt");
 
+  // 0 = dealt, 1 = flop, 2 = turn, 3 = river
   const [revealed, setRevealed] = useState(0);
-  const offscreen =
-    revealed === -1
-      ? { style: { transform: "translateX(-200vw)" } }
-      : { style: { transform: "translateX(0)" } };
 
   if (!dealt) return <button onClick={() => deal()}>Deal</button>;
 
-  const { board } = dealt;
+  const { board } = revealed === -1 ? { board: [] } : dealt;
   const flop = board.slice(0, 3);
   const turn = board[3];
   const river = board[4];
 
   return (
     <div>
-      <div
-        className="board"
-        onClick={() => setRevealed(revealed + 1)}
-        {...offscreen}
-      >
+      <div className="board" onClick={() => setRevealed(revealed + 1)}>
         <div className="flop">
-          {flop.map((c, i) => (
-            <Card
-              key={c}
-              card={c}
-              style={{ transform: `translateX(-${i * 60}%)` }}
-              revealed={revealed > 0}
-            />
-          ))}
+          <Card card={flop[0]} revealed={revealed > 0} />
+          <Card
+            card={flop[1]}
+            revealed={revealed > 0}
+            style={{ marginLeft: "-60%" }}
+          />
+          <Card
+            card={flop[2]}
+            revealed={revealed > 0}
+            style={{ marginLeft: "-120%" }}
+          />
         </div>
-        <Card key={turn} card={turn} revealed={revealed > 1} />
-        <Card key={river} card={river} revealed={revealed > 2} />
+        <Card card={turn} revealed={revealed > 1} />
+        <Card card={river} revealed={revealed > 2} />
       </div>
       <DealerButton
-        onMove={async () => {
+        onMove={() => {
           setRevealed(-1);
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-          deal();
-          setRevealed(0);
+          deal().then(() => setRevealed(0));
         }}
       >
         Dealer
