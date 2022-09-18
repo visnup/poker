@@ -1,15 +1,18 @@
 import { useState } from "react";
+import cx from "classnames";
 
 // middle: https://codepen.io/jughosta/pen/NqgZOZ
 
 interface CardProps {
   card: string;
   revealed?: boolean;
+  anchor?: "left" | "top";
   rotation?: number;
 }
 export function Card({
   card,
   revealed,
+  anchor = "left",
   rotation,
   ...props
 }: CardProps & JSX.IntrinsicElements["div"]) {
@@ -22,7 +25,7 @@ export function Card({
 
   return (
     <div style={{ transform: `rotate(${r}deg)` }}>
-      <div className={`area ${revealed ? "revealed" : ""}`} {...props}>
+      <div className={cx("area", { revealed })} {...props}>
         <div className="card">
           <div className="back"></div>
           <div className="face">
