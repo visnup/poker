@@ -22,7 +22,7 @@ export function Hole({ player }: { player: { n: number } }) {
       </div>
       <div
         className="layer"
-        style={{ clipPath: `circle(${(distance / 300) * 100}% at 40px 30px)` }}
+        style={{ clipPath: `circle(${distance}% at 40px 30px)` }}
       >
         {cards.map((c, i) => (
           <div className="placement" key={c}>
