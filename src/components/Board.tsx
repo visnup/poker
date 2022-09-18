@@ -13,10 +13,22 @@ function DealerButton({
   const [start, setStart] = useState<number[] | undefined>();
   const [location, setLocation] = useState({ top: 30, left: 30 });
 
-  function onPointerDown({ clientX, clientY }: React.PointerEvent) {
+  function onPointerDown({
+    target,
+    pointerId,
+    clientX,
+    clientY,
+  }: React.PointerEvent) {
+    (target as Element).setPointerCapture(pointerId);
     setStart([clientX, clientY]);
   }
-  function onPointerUp({ clientX, clientY }: React.PointerEvent) {
+  function onPointerUp({
+    target,
+    pointerId,
+    clientX,
+    clientY,
+  }: React.PointerEvent) {
+    (target as Element).releasePointerCapture(pointerId);
     if (start) {
       const distance = Math.hypot(clientX - start[0], clientY - start[1]);
       if (distance > 200) onMove();
