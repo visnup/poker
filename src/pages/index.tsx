@@ -26,9 +26,9 @@ export default function Index() {
   const [player, setPlayer] = useState<Awaited<ReturnType<typeof join>>>();
   const joining = useRef(false);
 
-  // Sync player with localStorage
+  // Sync player with sessionStorage
   useEffect(() => {
-    if (player) localStorage.setItem("player", JSON.stringify(player));
+    if (player) sessionStorage.setItem("player", JSON.stringify(player));
   }, [player]);
 
   // Setup player
