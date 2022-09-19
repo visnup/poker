@@ -6,18 +6,28 @@ import { Card } from "./Card";
 
 export function Hole({ seat }: { seat: number }) {
   const dealt = useQuery("getDealt");
+
   const [rotation, setRotation] = useState(() => Math.random() * 10 - 5);
   useEffect(() => setRotation(Math.random() * 10 - 5), [dealt]);
+
+  const circle = (w: number) => `circle(${w}px at 10px 20px)`;
   const [styles, api] = useSpring(() => ({
-    clipPath: "circle(0% at 10px 20px)",
+    clipPath: circle(0),
     config: config.stiff,
   }));
+  useEffect(() => api.set({ clipPath: circle(0) }), [api, dealt]);
   const bind = useGesture({
     onDragStart: () => setRotation(2),
-    onDragEnd: () => setRotation(Math.random()),
+    onDragEnd: ({ movement }) => {
+      if (Math.hypot(...movement) > 300) {
+        api.start({ clipPath: circle(500) });
+      } else {
+        setRotation(Math.random());
+      }
+    },
     onDrag: ({ down, movement }) => {
       const width = down ? Math.hypot(...movement) : 0;
-      api.start({ clipPath: `circle(${width}px at 10px 20px)` });
+      api.start({ clipPath: circle(width) });
     },
   });
 
