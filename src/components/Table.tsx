@@ -34,13 +34,18 @@ function DealerButton({
             text-transform: uppercase;
             text-shadow: 0 -1px 0 hsla(0, 0%, 50%, 0.5);
             background: linear-gradient(-25deg, hsl(0, 0%, 85%), white);
-            color: black;
             border-radius: 100%;
             border: solid 1px hsl(0, 0%, 90%);
             box-shadow: 2px 4px 10px hsla(0, 0%, 0%, 0.2);
             padding: 0;
             width: 5.5em;
             height: 5.5em;
+          }
+          @media (prefers-color-scheme: dark) {
+            button {
+              background: linear-gradient(-25deg, #111, hsl(0, 0%, 15%));
+              border: solid 1px hsl(0, 0%, 10%);
+            }
           }
         `}</style>
       </button>

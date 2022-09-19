@@ -52,9 +52,8 @@ function Column({
 }
 function Face({ rank, suit }: { rank?: string; suit?: string }) {
   if (!rank || !suit) return null;
-  const color = suit === "♣" || suit === "♠" ? "black" : "red";
   return (
-    <div className="face" data-rank={rank}>
+    <div className={cx("face", { red: "♦♥".includes(suit) })} data-rank={rank}>
       {(() => {
         switch (rank) {
           case "2":
@@ -128,7 +127,6 @@ function Face({ rank, suit }: { rank?: string; suit?: string }) {
       })()}
       <style jsx>{`
         .face {
-          color: ${color};
           background: white;
           font-size: 32px;
           box-sizing: border-box;
@@ -138,6 +136,17 @@ function Face({ rank, suit }: { rank?: string; suit?: string }) {
           display: flex;
           justify-content: space-between;
           align-items: stretch;
+        }
+        .face.red {
+          color: red;
+        }
+        @media (prefers-color-scheme: dark) {
+          .face {
+            background: #333;
+          }
+          .face.red {
+            color: firebrick;
+          }
         }
 
         .face:before,
@@ -251,6 +260,25 @@ export function Card({
                   hsla(0, 0%, 100%, 0.3) 5px
                 )
                 lightsteelblue;
+          }
+          @media (prefers-color-scheme: dark) {
+            .back {
+              background: repeating-linear-gradient(
+                  45deg,
+                  transparent,
+                  transparent 4px,
+                  hsla(0, 0%, 0%, 0.2) 4px,
+                  hsla(0, 0%, 0%, 0.2) 5px
+                ),
+                repeating-linear-gradient(
+                    -45deg,
+                    transparent,
+                    transparent 4px,
+                    hsla(0, 0%, 0%, 0.2) 4px,
+                    hsla(0, 0%, 0%, 0.2) 5px
+                  )
+                  darkslategray;
+            }
           }
           .face {
             transform: rotateY(180deg);
