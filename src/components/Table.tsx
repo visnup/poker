@@ -30,12 +30,14 @@ function DealerButton({
             position: absolute;
             touch-action: none;
             font-size: x-large;
+            font-weight: bold;
             text-transform: uppercase;
-            background: linear-gradient(-25deg, hsl(0, 0%, 90%), white);
+            text-shadow: 0 -1px 0 hsla(0, 0%, 50%, 0.5);
+            background: linear-gradient(-25deg, hsl(0, 0%, 85%), white);
             color: black;
             border-radius: 100%;
-            border: solid 1px hsl(0, 0%, 95%);
-            box-shadow: 0 2px 10px hsla(0, 0%, 0%, 0.2);
+            border: solid 1px hsl(0, 0%, 90%);
+            box-shadow: 2px 4px 10px hsla(0, 0%, 0%, 0.2);
             padding: 0;
             width: 5.5em;
             height: 5.5em;
