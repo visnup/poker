@@ -6,6 +6,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@use-gesture/react": "^10.2.20",
     "classnames": "^2.3.2",
     "convex": "^0.1.10",
     "d3-array": "^3.2.0",

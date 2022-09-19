@@ -1,5 +1,7 @@
-import { ReactNode, useRef, useState } from "react";
-import { useQuery, useMutation } from "../../convex/_generated/react";
+import { useGesture } from "@use-gesture/react";
+import { ReactNode, useState } from "react";
+import { animated, useSpring } from "react-spring";
+import { useMutation, useQuery } from "../../convex/_generated/react";
 import { Card } from "./Card";
 
 function DealerButton({
@@ -9,65 +11,37 @@ function DealerButton({
   onMove: () => void;
   children: ReactNode;
 }) {
-  const ref = useRef<HTMLButtonElement>(null);
-  const [start, setStart] = useState<number[] | undefined>();
-  const [location, setLocation] = useState({ top: 30, left: 30 });
-
-  function onPointerDown({
-    target,
-    pointerId,
-    clientX,
-    clientY,
-  }: React.PointerEvent) {
-    (target as Element).setPointerCapture(pointerId);
-    setStart([clientX, clientY]);
-  }
-  function onPointerUp({
-    target,
-    pointerId,
-    clientX,
-    clientY,
-  }: React.PointerEvent) {
-    (target as Element).releasePointerCapture(pointerId);
-    if (start) {
-      const distance = Math.hypot(clientX - start[0], clientY - start[1]);
-      if (distance > 200) onMove();
-    }
-    setStart(undefined);
-  }
-  function onPointerMove(event: React.PointerEvent) {
-    if (start)
-      setLocation({
-        top: event.clientY - ref.current!.offsetHeight / 2,
-        left: event.clientX - ref.current!.offsetWidth / 2,
-      });
-  }
+  const [styles, api] = useSpring(() => ({ x: 0, y: 0 }));
+  const bind = useGesture({
+    onDrag: ({ offset: [x, y] }) => {
+      api.start({ x, y, immediate: true });
+    },
+    onDragEnd: ({ movement }) => {
+      if (Math.hypot(...movement) > 200) onMove();
+    },
+  });
 
   return (
-    <button
-      style={location}
-      ref={ref}
-      onPointerDown={onPointerDown}
-      onPointerUp={onPointerUp}
-      onPointerMove={onPointerMove}
-    >
-      {children}
-      <style jsx>{`
-        button {
-          position: absolute;
-          font-size: xx-large;
-          background: linear-gradient(-25deg, hsl(0, 0%, 90%), white);
-          color: black;
-          border-radius: 100%;
-          border: solid 1px hsl(0, 0%, 95%);
-          box-shadow: 0 2px 10px hsla(0, 0%, 0%, 0.2);
-          padding: 0;
-          width: 4em;
-          height: 4em;
-          touch-action: none;
-        }
-      `}</style>
-    </button>
+    <animated.div {...bind()} style={styles}>
+      <button>
+        {children}
+        <style jsx>{`
+          button {
+            position: absolute;
+            touch-action: none;
+            font-size: xx-large;
+            background: linear-gradient(-25deg, hsl(0, 0%, 90%), white);
+            color: black;
+            border-radius: 100%;
+            border: solid 1px hsl(0, 0%, 95%);
+            box-shadow: 0 2px 10px hsla(0, 0%, 0%, 0.2);
+            padding: 0;
+            width: 4em;
+            height: 4em;
+          }
+        `}</style>
+      </button>
+    </animated.div>
   );
 }
 
