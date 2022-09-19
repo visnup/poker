@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Card } from "../components/Card";
+import { Card } from "../../components/Card";
 
 const suits = [..."♣♦♥♠"];
-const denominations = [..."23456789", "10", ..."JQKA"];
-const deck = suits.flatMap((s) => denominations.map((d) => d + s));
+const ranks = [..."23456789", "10", ..."JQKA"];
+const deck = suits.flatMap((s) => ranks.map((d) => d + s));
 
 export default function Test() {
   const [revealed, setRevealed] = useState(false);

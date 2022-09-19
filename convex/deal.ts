@@ -2,8 +2,8 @@ import { mutation } from "./_generated/server.js";
 import { shuffle } from "d3-array";
 
 const suits = [..."♣♦♥♠"];
-const denominations = [..."23456789", "10", ..."JQKA"];
-const deck = suits.flatMap((s) => denominations.map((d) => d + s));
+const ranks = [..."23456789", "10", ..."JQKA"];
+const deck = suits.flatMap((s) => ranks.map((d) => d + s));
 
 export default mutation(async ({ db }) => {
   const shuffled = shuffle(deck.slice());

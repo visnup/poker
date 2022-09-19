@@ -33,7 +33,7 @@ export function Card({
     config: { tension: 100 },
   });
 
-  const [n, suit] = [
+  const [rank, suit] = [
     card?.slice(0, card.length - 1),
     card?.slice(card.length - 1),
   ];
@@ -46,11 +46,11 @@ export function Card({
           <div className="back"></div>
           <div className="face">
             <div className="corner">
-              <div>{n}</div>
+              <div>{rank}</div>
               <div>{suit}</div>
             </div>
             <div className="corner">
-              <div>{n}</div>
+              <div>{rank}</div>
               <div>{suit}</div>
             </div>
           </div>
