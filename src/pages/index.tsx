@@ -35,7 +35,7 @@ export default function Index() {
   useEffect(() => {
     if (!player && !joining.current) {
       joining.current = true;
-      const stored = JSON.parse(localStorage.getItem("player") || "null");
+      const stored = JSON.parse(sessionStorage.getItem("player") || "null");
       if (stored) setPlayer(stored);
       else join().then(setPlayer);
     }
