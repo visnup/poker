@@ -10,28 +10,29 @@ export function Hole({ seat }: { seat: number }) {
   const [rotation, setRotation] = useState(() => Math.random() * 10 - 5);
   useEffect(() => setRotation(Math.random() * 10 - 5), [dealt]);
 
-  const circle = (w: number) => `circle(${w}px at 10px 20px)`;
+  const clipPath = (w: number) => ({ clipPath: `circle(${w}px at 10px 20px)` });
   const [styles, api] = useSpring(() => ({
-    clipPath: circle(0),
+    ...clipPath(0),
     config: config.stiff,
   }));
-  useEffect(() => api.set({ clipPath: circle(0) }), [api, dealt]);
+  useEffect(() => api.set(clipPath(0)), [api, dealt]);
   const bind = useGesture({
     onDragStart: () => setRotation(2),
     onDragEnd: ({ movement }) => {
       if (Math.hypot(...movement) > 300) {
-        api.start({ clipPath: circle(500) });
+        api.start(clipPath(500));
       } else {
         setRotation(Math.random());
       }
     },
     onDrag: ({ down, movement }) => {
       const width = down ? Math.hypot(...movement) : 0;
-      api.start({ clipPath: circle(width) });
+      api.start(clipPath(width));
     },
   });
 
-  const cards = dealt?.cards.slice(seat, seat + 2) ?? [];
+  const index = (seat - 1) * 2;
+  const cards = dealt?.cards.slice(index, index + 2) ?? [];
 
   return (
     <div className="cards" {...bind()}>
