@@ -236,7 +236,21 @@ export function Card({
             overflow: hidden;
           }
           .back {
-            background-color: steelblue;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 4px,
+                hsla(0, 0%, 100%, 0.3) 4px,
+                hsla(0, 0%, 100%, 0.3) 5px
+              ),
+              repeating-linear-gradient(
+                  -45deg,
+                  transparent,
+                  transparent 4px,
+                  hsla(0, 0%, 100%, 0.3) 4px,
+                  hsla(0, 0%, 100%, 0.3) 5px
+                )
+                lightsteelblue;
           }
           .face {
             transform: rotateY(180deg);
