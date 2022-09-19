@@ -7,7 +7,7 @@ export default defineSchema({
     shuffled: s.array(s.string()),
   }),
   players: defineTable({
-    n: s.number(),
-    t: s.number(),
-  }).index("byN", ["n"]),
+    seat: s.number(),
+    lastSeen: s.number(),
+  }).index("bySeat", ["seat"]),
 });

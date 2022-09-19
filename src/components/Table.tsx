@@ -71,47 +71,32 @@ function DealerButton({
   );
 }
 
-export function Board() {
-  const deal = useMutation("deal");
-  const dealt = useQuery("getDealt");
-
-  // 0 = dealt, 1 = flop, 2 = turn, 3 = river
-  const [revealed, setRevealed] = useState(0);
-
-  if (!dealt) return <button onClick={() => deal()}>Deal</button>;
-
-  const { board } = revealed === -1 ? { board: [] } : dealt;
+function Board({
+  board,
+  revealed = 0,
+  ...props
+}: { board: string[]; revealed?: number } & JSX.IntrinsicElements["div"]) {
   const flop = board.slice(0, 3);
   const turn = board[3];
   const river = board[4];
 
   return (
-    <div>
-      <div className="board" onClick={() => setRevealed(revealed + 1)}>
-        <div className="flop">
-          <Card card={flop[0]} revealed={revealed > 0} />
-          <Card
-            card={flop[1]}
-            revealed={revealed > 0}
-            style={{ marginLeft: "-60%" }}
-          />
-          <Card
-            card={flop[2]}
-            revealed={revealed > 0}
-            style={{ marginLeft: "-120%" }}
-          />
-        </div>
-        <Card card={turn} revealed={revealed > 1} />
-        <Card card={river} revealed={revealed > 2} />
+    <div className="board" {...props}>
+      <div className="flop">
+        <Card card={flop[0]} revealed={revealed > 0} />
+        <Card
+          card={flop[1]}
+          revealed={revealed > 0}
+          style={{ marginLeft: "-60%" }}
+        />
+        <Card
+          card={flop[2]}
+          revealed={revealed > 0}
+          style={{ marginLeft: "-120%" }}
+        />
       </div>
-      <DealerButton
-        onMove={() => {
-          setRevealed(-1);
-          deal().then(() => setRevealed(0));
-        }}
-      >
-        Dealer
-      </DealerButton>
+      <Card card={turn} revealed={revealed > 1} />
+      <Card card={river} revealed={revealed > 2} />
       <style jsx>
         {`
           .board {
@@ -125,6 +110,36 @@ export function Board() {
           }
         `}
       </style>
+    </div>
+  );
+}
+
+export function Table() {
+  const deal = useMutation("deal");
+  const dealt = useQuery("getDealt");
+
+  // -1 = undealt, 0 = dealt, 1 = flop, 2 = turn, 3 = river
+  const [revealed, setRevealed] = useState(0);
+
+  return (
+    <div>
+      {revealed === -1 ? (
+        <Board board={[]} />
+      ) : dealt ? (
+        <Board
+          board={dealt.board}
+          revealed={revealed}
+          onClick={() => setRevealed(revealed + 1)}
+        />
+      ) : null}
+      <DealerButton
+        onMove={() => {
+          setRevealed(-1);
+          deal().then(() => setRevealed(0));
+        }}
+      >
+        Dealer
+      </DealerButton>
     </div>
   );
 }

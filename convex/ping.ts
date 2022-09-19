@@ -1,6 +1,6 @@
-import { Id } from "./_generated/dataModel.js";
+import { GenericId } from "convex/values";
 import { mutation } from "./_generated/server.js";
 
-export default mutation(async ({ db }, id: Id<"players">) => {
-  await db.patch(id, { t: Date.now() });
+export default mutation(async ({ db }, id: string) => {
+  await db.patch(new GenericId("players", id), { lastSeen: Date.now() });
 });

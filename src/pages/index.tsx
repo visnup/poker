@@ -1,13 +1,13 @@
 import { useMutation } from "../../convex/_generated/react";
 import { useEffect, useRef, useState } from "react";
-import { Board } from "../components/Board";
+import { Table } from "../components/Table";
 import { Hole } from "../components/Hole";
 
-function Player({ player }: { player: any }) {
+function Player({ player }: { player: { seat: number; id: string } }) {
   if (player)
     return (
       <div>
-        {player.n}:{player._id.id}
+        {player.seat}:{player.id}
         <style jsx>{`
           div {
             font-size: small;
@@ -26,16 +26,25 @@ export default function Index() {
   const [player, setPlayer] = useState<Awaited<ReturnType<typeof join>>>();
   const joining = useRef(false);
 
+  // Sync player with localStorage
+  useEffect(() => {
+    if (player) localStorage.setItem("player", JSON.stringify(player));
+  }, [player]);
+
+  // Setup player
   useEffect(() => {
     if (!player && !joining.current) {
       joining.current = true;
-      join().then(setPlayer);
+      const stored = JSON.parse(localStorage.getItem("player") || "null");
+      if (stored) setPlayer(stored);
+      else join().then(setPlayer);
     }
   }, [join, player]);
 
+  // Ping
   useEffect(() => {
     const interval = setInterval(() => {
-      if (player) ping(player._id);
+      if (player) ping(player.id);
     }, 5e3);
     return () => clearInterval(interval);
   }, [ping, player]);
@@ -44,7 +53,7 @@ export default function Index() {
 
   return (
     <main>
-      {player.n === 0 ? <Board /> : <Hole player={player} />}
+      {player.seat === 0 ? <Table /> : <Hole seat={player.seat} />}
       <Player player={player} />
       <style jsx>
         {`

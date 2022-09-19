@@ -3,13 +3,13 @@ import { useQuery } from "../../convex/_generated/react";
 import { Card } from "./Card";
 import { useDrag } from "./useDrag";
 
-export function Hole({ player }: { player: { n: number } }) {
+export function Hole({ seat }: { seat: number }) {
   const dealt = useQuery("getDealt");
   const [distance, direction] = useDrag();
   const [rotation, setRotation] = useState(() => Math.random() * 10 - 5);
   useEffect(() => setRotation(Math.random() * 10 - 5), [dealt]);
 
-  const cards = dealt?.cards.slice(player.n, player.n + 2) ?? [];
+  const cards = dealt?.cards.slice(seat, seat + 2) ?? [];
 
   return (
     <div className="cards">
