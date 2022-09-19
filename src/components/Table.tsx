@@ -64,12 +64,12 @@ function Board({
         <Card
           card={flop[1]}
           revealed={revealed > 0}
-          style={{ marginLeft: "-60%" }}
+          style={{ marginLeft: "-45%" }}
         />
         <Card
           card={flop[2]}
           revealed={revealed > 0}
-          style={{ marginLeft: "-120%" }}
+          style={{ marginLeft: "-90%" }}
         />
       </div>
       <Card card={turn} revealed={revealed > 1} />
@@ -83,7 +83,7 @@ function Board({
           }
           .flop {
             display: flex;
-            margin-right: -300px;
+            margin-right: -230px;
           }
         `}
       </style>
