@@ -18,8 +18,8 @@ function DealerButton({
   });
 
   return (
-    <animated.div {...bind()} style={styles}>
-      <button>
+    <animated.div style={styles}>
+      <button {...bind()}>
         {children}
         <style jsx>{`
           button {
@@ -50,13 +50,13 @@ function DealerButton({
 }
 
 function Board({
-  board,
+  cards,
   revealed = 0,
   ...props
-}: { board: string[]; revealed?: number } & JSX.IntrinsicElements["div"]) {
-  const flop = board.slice(0, 3);
-  const turn = board[3];
-  const river = board[4];
+}: { cards: string[]; revealed?: number } & JSX.IntrinsicElements["div"]) {
+  const flop = cards.slice(0, 3);
+  const turn = cards[3];
+  const river = cards[4];
 
   return (
     <div className="board" {...props}>
@@ -94,26 +94,30 @@ function Board({
 
 export function Table() {
   const deal = useMutation("deal");
+  const clear = useMutation("clear");
   const dealt = useQuery("getDealt");
 
-  // -1 = undealt, 0 = dealt, 1 = flop, 2 = turn, 3 = river
+  // -1 = cleared, 0 = dealt, 1 = flop, 2 = turn, 3 = river
   const [revealed, setRevealed] = useState(0);
 
   return (
     <div>
-      {revealed === -1 ? (
-        <Board board={[]} />
-      ) : dealt ? (
-        <Board
-          board={dealt.board}
-          revealed={revealed}
-          onClick={() => setRevealed(revealed + 1)}
-        />
+      {dealt ? (
+        revealed === -1 || dealt.cleared ? (
+          <Board cards={[]} />
+        ) : (
+          <Board
+            cards={dealt.board}
+            revealed={revealed}
+            onClick={() => setRevealed(revealed + 1)}
+          />
+        )
       ) : null}
       <DealerButton
         onMove={async () => {
           setRevealed(-1);
-          await new Promise((resolve) => setTimeout(resolve, 400));
+          await clear();
+          await new Promise((resolve) => setTimeout(resolve, 500));
           await deal();
           setRevealed(0);
         }}

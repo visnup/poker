@@ -9,5 +9,5 @@ export default mutation(async ({ db }) => {
   const shuffled = shuffle(deck.slice());
   const board = shuffled.slice(0, 5);
   const cards = shuffled.slice(5);
-  db.insert("deals", { shuffled, board, cards });
+  db.insert("deals", { shuffled, board, cards, cleared: false });
 });

@@ -26,22 +26,31 @@ export function Hole({ seat }: { seat: number }) {
     }
   });
 
+  const [folded, setFolded] = useState(false);
+  useEffect(() => setFolded(false), [dealt]);
+
   const index = (seat - 1) * 2;
-  const cards = dealt?.cards.slice(index, index + 2) ?? [];
+  const cards =
+    folded || dealt?.cleared
+      ? [undefined, undefined]
+      : dealt?.cards.slice(index, index + 2) ?? [];
 
   return (
     <div className="cards" {...bind()}>
+      {/* <button onClick={() => setFolded(!folded)}>fold</button> */}
+      {/* backs */}
       <div className="layer">
         {cards.map((c, i) => (
-          <div className="placement" key={c}>
+          <div className="placement" key={i}>
             <Card card={c} anchor="top" rotation={i ? rotation : -rotation} />
           </div>
         ))}
       </div>
+      {/* hidden faces */}
       <div className="layer">
         <animated.div style={styles}>
           {cards.map((c, i) => (
-            <div className="placement" key={c}>
+            <div className="placement" key={i}>
               <Card
                 card={c}
                 anchor="top"

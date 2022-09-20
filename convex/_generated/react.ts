@@ -9,6 +9,7 @@
  * @module
  */
 
+import type clear from "../clear";
 import type deal from "../deal";
 import type getDealt from "../getDealt";
 import type join from "../join";
@@ -30,6 +31,7 @@ export type ConvexAPI = {
     getDealt: ClientQuery<typeof getDealt>;
   };
   mutations: {
+    clear: ClientMutation<typeof clear>;
     deal: ClientMutation<typeof deal>;
     join: ClientMutation<typeof join>;
     ping: ClientMutation<typeof ping>;
