@@ -1,6 +1,6 @@
-import { useGesture } from "@use-gesture/react";
+import { useDrag } from "@use-gesture/react";
 import { useEffect, useState } from "react";
-import { animated, useSpring, config } from "react-spring";
+import { animated, config, useSpring } from "react-spring";
 import { useQuery } from "../../convex/_generated/react";
 import { Card } from "./Card";
 
@@ -16,19 +16,14 @@ export function Hole({ seat }: { seat: number }) {
     config: config.stiff,
   }));
   useEffect(() => api.set(clipPath(0)), [api, dealt]);
-  const bind = useGesture({
-    onDragStart: () => setRotation(2),
-    onDragEnd: ({ movement }) => {
-      if (Math.hypot(...movement) > 300) {
-        api.start(clipPath(500));
-      } else {
-        setRotation(Math.random());
-      }
-    },
-    onDrag: ({ down, movement }) => {
-      const width = down ? Math.hypot(...movement) : 0;
-      api.start(clipPath(width));
-    },
+  const bind = useDrag(({ down, first, last, movement }) => {
+    const width = down ? Math.hypot(...movement) : 0;
+    api.start(clipPath(width));
+    if (first) setRotation(2);
+    if (last) {
+      if (Math.hypot(...movement) > 300) api.start(clipPath(500));
+      else setRotation(Math.random());
+    }
   });
 
   const index = (seat - 1) * 2;

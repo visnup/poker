@@ -1,4 +1,4 @@
-import { useGesture } from "@use-gesture/react";
+import { useDrag } from "@use-gesture/react";
 import { ReactNode, useState } from "react";
 import { animated, useSpring } from "react-spring";
 import { useMutation, useQuery } from "../../convex/_generated/react";
@@ -12,13 +12,9 @@ function DealerButton({
   children: ReactNode;
 }) {
   const [styles, api] = useSpring(() => ({ x: 0, y: 0 }));
-  const bind = useGesture({
-    onDrag: ({ offset: [x, y] }) => {
-      api.start({ x, y, immediate: true });
-    },
-    onDragEnd: ({ movement }) => {
-      if (Math.hypot(...movement) > 200) onMove();
-    },
+  const bind = useDrag(({ last, movement, offset: [x, y] }) => {
+    api.start({ x, y, immediate: true });
+    if (last && Math.hypot(...movement) > 200) onMove();
   });
 
   return (

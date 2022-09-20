@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
 import cx from "classnames";
-import { useSpring, animated } from "react-spring";
 import { range } from "d3-array";
+import { useEffect, useState } from "react";
+import { animated, config, useSpring } from "react-spring";
 
 function Column({
   pips = 0,
@@ -196,7 +196,7 @@ export function Card({
       rotate: r,
       ...(anchor === "left" ? { translateX: "0vw" } : { translateY: "0vh" }),
     },
-    config: { tension: 100 },
+    config: config.gentle,
   });
 
   const [rank, suit] = [
