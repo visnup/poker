@@ -1,4 +1,5 @@
 import { useDrag } from "@use-gesture/react";
+import Head from "next/head";
 import { ReactNode, useState } from "react";
 import { animated, useSpring } from "react-spring";
 import { useMutation, useQuery } from "../../convex/_generated/react";
@@ -99,6 +100,9 @@ export function Table() {
 
   return (
     <div>
+      <Head>
+        <meta name="viewport" content="width=1140" />
+      </Head>
       {dealt ? (
         revealed === -1 || dealt.cleared ? (
           <Board cards={[]} />

@@ -2,7 +2,6 @@ import { useMutation } from "../../convex/_generated/react";
 import { useEffect, useRef, useState } from "react";
 import { Table } from "../components/Table";
 import { Hole } from "../components/Hole";
-import Head from "next/head";
 
 function Player({ player }: { player: { seat: number; id: string } }) {
   if (player)
@@ -54,9 +53,6 @@ export default function Index() {
 
   return (
     <main>
-      <Head>
-        <meta name="viewport" content="width=1140" />
-      </Head>
       {player.seat === 0 ? <Table /> : <Hole seat={player.seat} />}
       <Player player={player} />
       <style jsx>

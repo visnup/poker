@@ -1,4 +1,5 @@
 import { useDrag } from "@use-gesture/react";
+import Head from "next/head";
 import { useEffect, useState } from "react";
 import { animated, config, useSpring } from "react-spring";
 import { useQuery } from "../../convex/_generated/react";
@@ -55,6 +56,9 @@ export function Hole({ seat }: { seat: number }) {
 
   return (
     <div className="cards" {...bind()}>
+      <Head>
+        <meta name="viewport" content="width=380" />
+      </Head>
       <animated.div style={foldStyle}>
         {/* <button onClick={() => setFolded(!folded)}>fold</button> */}
         {/* backs */}
