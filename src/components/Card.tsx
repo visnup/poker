@@ -189,14 +189,14 @@ export function Card({
     from: {
       rotate: 0,
       ...(anchor === "left"
-        ? { translateX: "-200vw" }
-        : { translateY: "-200vh" }),
+        ? { translateX: "-120vw" }
+        : { translateY: "-120vh" }),
     },
     to: {
       rotate: r,
       ...(anchor === "left" ? { translateX: "0vw" } : { translateY: "0vh" }),
     },
-    config: config.gentle,
+    config: config.slow,
   });
 
   const [rank, suit] = [

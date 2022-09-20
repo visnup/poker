@@ -111,9 +111,11 @@ export function Table() {
         />
       ) : null}
       <DealerButton
-        onMove={() => {
+        onMove={async () => {
           setRevealed(-1);
-          deal().then(() => setRevealed(0));
+          await new Promise((resolve) => setTimeout(resolve, 400));
+          await deal();
+          setRevealed(0);
         }}
       >
         Dealer
