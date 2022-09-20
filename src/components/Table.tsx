@@ -18,33 +18,30 @@ function DealerButton({
   });
 
   return (
-    <animated.div style={style}>
-      <button {...bind()}>
-        {children}
-        <style jsx>{`
+    <animated.div style={{ position: "absolute", top: 30, left: 30, ...style }}>
+      <button {...bind()}>{children}</button>
+      <style jsx>{`
+        button {
+          touch-action: none;
+          font-size: x-large;
+          font-weight: bold;
+          text-transform: uppercase;
+          text-shadow: 0 -1px 0 hsla(0, 0%, 50%, 0.5);
+          background: linear-gradient(-25deg, hsl(0, 0%, 85%), white);
+          border-radius: 100%;
+          border: solid 1px hsl(0, 0%, 90%);
+          box-shadow: 2px 4px 10px hsla(0, 0%, 0%, 0.2);
+          padding: 0;
+          width: 5.5em;
+          height: 5.5em;
+        }
+        @media (prefers-color-scheme: dark) {
           button {
-            position: absolute;
-            touch-action: none;
-            font-size: x-large;
-            font-weight: bold;
-            text-transform: uppercase;
-            text-shadow: 0 -1px 0 hsla(0, 0%, 50%, 0.5);
-            background: linear-gradient(-25deg, hsl(0, 0%, 85%), white);
-            border-radius: 100%;
-            border: solid 1px hsl(0, 0%, 90%);
-            box-shadow: 2px 4px 10px hsla(0, 0%, 0%, 0.2);
-            padding: 0;
-            width: 5.5em;
-            height: 5.5em;
+            background: linear-gradient(-25deg, #111, hsl(0, 0%, 15%));
+            border: solid 1px hsl(0, 0%, 10%);
           }
-          @media (prefers-color-scheme: dark) {
-            button {
-              background: linear-gradient(-25deg, #111, hsl(0, 0%, 15%));
-              border: solid 1px hsl(0, 0%, 10%);
-            }
-          }
-        `}</style>
-      </button>
+        }
+      `}</style>
     </animated.div>
   );
 }
