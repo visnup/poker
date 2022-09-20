@@ -11,14 +11,14 @@ function DealerButton({
   onMove: () => void;
   children: ReactNode;
 }) {
-  const [styles, api] = useSpring(() => ({ x: 0, y: 0 }));
+  const [style, api] = useSpring(() => ({ x: 0, y: 0 }));
   const bind = useDrag(({ last, movement, offset: [x, y] }) => {
     api.start({ x, y, immediate: true });
     if (last && Math.hypot(...movement) > 200) onMove();
   });
 
   return (
-    <animated.div style={styles}>
+    <animated.div style={style}>
       <button {...bind()}>
         {children}
         <style jsx>{`

@@ -50,8 +50,7 @@ function Column({
     </div>
   );
 }
-function Face({ rank, suit }: { rank?: string; suit?: string }) {
-  if (!rank || !suit) return null;
+function Face({ rank = "", suit = "" }: { rank?: string; suit?: string }) {
   return (
     <div className={cx("face", { red: "♦♥".includes(suit) })} data-rank={rank}>
       {(() => {
@@ -168,6 +167,52 @@ function Face({ rank, suit }: { rank?: string; suit?: string }) {
   );
 }
 
+function Back() {
+  return (
+    <div>
+      <style jsx>{`
+        div {
+          height: 100%;
+          background: repeating-linear-gradient(
+              45deg,
+              transparent,
+              transparent 4px,
+              hsla(0, 0%, 100%, 0.3) 4px,
+              hsla(0, 0%, 100%, 0.3) 5px
+            ),
+            repeating-linear-gradient(
+                -45deg,
+                transparent,
+                transparent 4px,
+                hsla(0, 0%, 100%, 0.3) 4px,
+                hsla(0, 0%, 100%, 0.3) 5px
+              )
+              lightsteelblue;
+        }
+        @media (prefers-color-scheme: dark) {
+          div {
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 4px,
+                hsla(0, 0%, 0%, 0.2) 4px,
+                hsla(0, 0%, 0%, 0.2) 5px
+              ),
+              repeating-linear-gradient(
+                  -45deg,
+                  transparent,
+                  transparent 4px,
+                  hsla(0, 0%, 0%, 0.2) 4px,
+                  hsla(0, 0%, 0%, 0.2) 5px
+                )
+                darkslategray;
+          }
+        }
+      `}</style>
+    </div>
+  );
+}
+
 interface CardProps {
   card?: string;
   revealed?: boolean;
@@ -184,7 +229,7 @@ export function Card({
   const [r, setR] = useState(() => rotation ?? Math.random() * 10 - 5);
   useEffect(() => setR(rotation ?? Math.random() * 10 - 5), [rotation, card]);
 
-  const deal = useSpring({
+  const dealStyle = useSpring({
     reverse: card === undefined,
     from: {
       rotate: 0,
@@ -198,6 +243,10 @@ export function Card({
     },
     config: config.slow,
   });
+  const revealStyle = useSpring({
+    rotateY: revealed ? 180 : 0,
+    config: config.slow,
+  });
 
   const [rank, suit] = [
     card?.slice(0, card.length - 1),
@@ -205,14 +254,24 @@ export function Card({
   ];
 
   return (
-    <animated.div style={deal}>
-      <div className={cx("area", { revealed })} {...props}>
-        <div className="card">
-          <div className="back"></div>
-          <div className="face">
-            <Face rank={rank} suit={suit} />
+    <animated.div style={dealStyle}>
+      <div className={cx("area")} {...props}>
+        <animated.div
+          style={{
+            transformStyle: "preserve-3d",
+            height: "100%",
+            ...revealStyle,
+          }}
+        >
+          <div className="card">
+            <div className="back">
+              <Back />
+            </div>
+            <div className="face">
+              <Face rank={rank} suit={suit} />
+            </div>
           </div>
-        </div>
+        </animated.div>
       </div>
       <style jsx>
         {`
@@ -222,19 +281,14 @@ export function Card({
             perspective: 1000px;
             margin: 10px;
           }
-          .area.revealed .card {
-            transform: rotateY(180deg);
-          }
 
           .card {
             position: relative;
-            transition: transform 400ms;
-            transform-style: preserve-3d;
-            width: 100%;
             height: 100%;
           }
 
-          .card > div {
+          .back,
+          .face {
             position: absolute;
             width: 100%;
             height: 100%;
@@ -242,42 +296,6 @@ export function Card({
             border-radius: 20px;
             box-shadow: 0 0 10px hsla(0, 0%, 0%, 0.2);
             overflow: hidden;
-          }
-          .back {
-            background: repeating-linear-gradient(
-                45deg,
-                transparent,
-                transparent 4px,
-                hsla(0, 0%, 100%, 0.3) 4px,
-                hsla(0, 0%, 100%, 0.3) 5px
-              ),
-              repeating-linear-gradient(
-                  -45deg,
-                  transparent,
-                  transparent 4px,
-                  hsla(0, 0%, 100%, 0.3) 4px,
-                  hsla(0, 0%, 100%, 0.3) 5px
-                )
-                lightsteelblue;
-          }
-          @media (prefers-color-scheme: dark) {
-            .back {
-              background: repeating-linear-gradient(
-                  45deg,
-                  transparent,
-                  transparent 4px,
-                  hsla(0, 0%, 0%, 0.2) 4px,
-                  hsla(0, 0%, 0%, 0.2) 5px
-                ),
-                repeating-linear-gradient(
-                    -45deg,
-                    transparent,
-                    transparent 4px,
-                    hsla(0, 0%, 0%, 0.2) 4px,
-                    hsla(0, 0%, 0%, 0.2) 5px
-                  )
-                  darkslategray;
-            }
           }
           .face {
             transform: rotateY(180deg);
