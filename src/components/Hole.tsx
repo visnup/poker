@@ -11,20 +11,38 @@ export function Hole({ seat }: { seat: number }) {
   useEffect(() => setRotation(Math.random() * 10 - 5), [dealt]);
 
   const clipPath = (w: number) => ({ clipPath: `circle(${w}px at 10px 20px)` });
-  const [styles, api] = useSpring(() => ({
+  const [revealStyle, revealing] = useSpring(() => ({
     ...clipPath(0),
     config: config.stiff,
   }));
-  useEffect(() => api.set(clipPath(0)), [api, dealt]);
-  const bind = useDrag(({ down, first, last, movement }) => {
-    const width = down ? Math.hypot(...movement) : 0;
-    api.start(clipPath(width));
-    if (first) setRotation(2);
-    if (last) {
-      if (Math.hypot(...movement) > 300) api.start(clipPath(500));
-      else setRotation(Math.random());
-    }
-  });
+  useEffect(() => revealing.set(clipPath(0)), [revealing, dealt]);
+  const [foldStyle, folding] = useSpring(() => ({ y: 0 }));
+
+  const bind = useDrag(
+    ({ down, last, swipe: [, sy], movement: [, y] }) => {
+      if (y > 0) {
+        // pull down
+        setRotation(2);
+        revealing.start(clipPath(down ? y : 0));
+        if (folded) setFolded(false);
+      } else if (y < 0) {
+        // swipe up
+        folding.start({ y, immediate: true });
+      }
+      if (last) {
+        if (y > 0) {
+          // pulled down to reveal or reset
+          if (y > 300) revealing.start(clipPath(500));
+          else setRotation(Math.random());
+        } else if (y < 0) {
+          // swiped up to fold
+          if (sy < 0) setFolded(true);
+          folding.start({ y: 0 });
+        }
+      }
+    },
+    { axis: "y" }
+  );
 
   const [folded, setFolded] = useState(false);
   useEffect(() => setFolded(false), [dealt]);
@@ -37,30 +55,32 @@ export function Hole({ seat }: { seat: number }) {
 
   return (
     <div className="cards" {...bind()}>
-      {/* <button onClick={() => setFolded(!folded)}>fold</button> */}
-      {/* backs */}
-      <div className="layer">
-        {cards.map((c, i) => (
-          <div className="placement" key={i}>
-            <Card card={c} anchor="top" rotation={i ? rotation : -rotation} />
-          </div>
-        ))}
-      </div>
-      {/* hidden faces */}
-      <div className="layer">
-        <animated.div style={styles}>
+      <animated.div style={foldStyle}>
+        {/* <button onClick={() => setFolded(!folded)}>fold</button> */}
+        {/* backs */}
+        <div className="layer">
           {cards.map((c, i) => (
             <div className="placement" key={i}>
-              <Card
-                card={c}
-                anchor="top"
-                rotation={i ? rotation : -rotation}
-                revealed
-              />
+              <Card card={c} anchor="top" rotation={i ? rotation : -rotation} />
             </div>
           ))}
-        </animated.div>
-      </div>
+        </div>
+        {/* hidden faces */}
+        <div className="layer">
+          <animated.div style={revealStyle}>
+            {cards.map((c, i) => (
+              <div className="placement" key={i}>
+                <Card
+                  card={c}
+                  anchor="top"
+                  rotation={i ? rotation : -rotation}
+                  revealed
+                />
+              </div>
+            ))}
+          </animated.div>
+        </div>
+      </animated.div>
       <style jsx>
         {`
           .cards {
