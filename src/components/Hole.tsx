@@ -41,7 +41,7 @@ export function Hole({ seat }: { seat: number }) {
         }
       }
     },
-    { axis: "y", swipe: { duration: 100 } }
+    { axis: "y", swipe: { distance: [25, 25], duration: 125, velocity: 0.25 } }
   );
 
   const [folded, setFolded] = useState(false);
