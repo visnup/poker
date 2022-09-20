@@ -232,7 +232,6 @@ export function Card({
             transform-style: preserve-3d;
             width: 100%;
             height: 100%;
-            user-select: none;
           }
 
           .card > div {
