@@ -20,11 +20,14 @@ export function Hole({ seat }: { seat: number }) {
   const [foldStyle, folding] = useSpring(() => ({ y: 0 }));
 
   const bind = useDrag(
-    ({ down, last, swipe: [, sy], movement: [, y] }) => {
+    ({ down, last, swipe: [, sy], movement: [x, y] }) => {
+      const h = Math.hypot(x, y);
       if (y > 0) {
         // pull down
         setRotation(2);
-        revealing.start(clipPath(down ? y : 0));
+        revealing.start(
+          down ? { ...clipPath(h), immediate: true } : clipPath(0)
+        );
         if (folded) setFolded(false);
       } else if (y < 0) {
         // swipe up
@@ -33,7 +36,7 @@ export function Hole({ seat }: { seat: number }) {
       if (last) {
         if (y > 0) {
           // pulled down to reveal or reset
-          if (y > 300) revealing.start(clipPath(500));
+          if (h > 250) revealing.start(clipPath(500));
           else setRotation(Math.random());
         } else if (y < 0) {
           // swiped up to fold
@@ -42,7 +45,7 @@ export function Hole({ seat }: { seat: number }) {
         }
       }
     },
-    { axis: "y", swipe: { distance: [25, 25], duration: 125, velocity: 0.25 } }
+    { swipe: { distance: [25, 25], duration: 125, velocity: 0.25 } }
   );
 
   const [folded, setFolded] = useState(false);
