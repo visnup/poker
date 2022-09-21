@@ -241,6 +241,7 @@ export function Card({
       rotate: r,
       ...(anchor === "left" ? { translateX: "0vw" } : { translateY: "0vh" }),
     },
+    delay: Math.random() * 200,
     config: config.slow,
   });
   const revealStyle = useSpring({
