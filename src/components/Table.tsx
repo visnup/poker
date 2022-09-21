@@ -12,11 +12,31 @@ function DealerButton({
   onMove: () => void;
   children: ReactNode;
 }) {
-  const [style, api] = useSpring(() => ({ x: 0, y: 0 }));
-  const bind = useDrag(({ last, movement, offset: [x, y] }) => {
-    api.start({ x, y, immediate: true });
-    if (last && Math.hypot(...movement) > 200) onMove();
-  });
+  const [style, api] = useSpring(() => ({
+    x: 0,
+    y: 0,
+    scale: 1,
+    rotate: Math.random() * 20,
+  }));
+  const bind = useDrag(
+    ({
+      active,
+      last,
+      memo = Math.random() * 40 - 20,
+      movement,
+      offset: [x, y],
+    }) => {
+      api.start({
+        x,
+        y,
+        scale: active ? 1.1 : 1,
+        rotate: memo,
+        immediate: (key) => "xy".includes(key),
+      });
+      if (last && Math.hypot(...movement) > 200) onMove();
+      return memo;
+    }
+  );
 
   return (
     <animated.div style={{ position: "absolute", top: 30, left: 30, ...style }}>
