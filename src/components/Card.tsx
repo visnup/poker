@@ -187,7 +187,6 @@ function Back() {
         height={350 - 2 * margin}
         fill="none"
         stroke="currentColor"
-        strokeOpacity="0.5"
         rx="2"
       />
       {points.map(([x, y, w], i) => (
@@ -199,7 +198,6 @@ function Back() {
           y2={y}
           stroke="currentColor"
           strokeWidth={w}
-          strokeOpacity="0.5"
         />
       ))}
       <style jsx>{`
