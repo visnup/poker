@@ -250,6 +250,7 @@ export function Card({
   });
   const revealStyle = useSpring({
     rotateY: revealed ? 180 : 0,
+    translateX: revealed ? "100%" : "0%",
     delay: Math.random() * 200,
     config: config.slow,
   });
@@ -265,6 +266,7 @@ export function Card({
         <animated.div
           style={{
             transformStyle: "preserve-3d",
+            transformOrigin: "right center",
             height: "100%",
             ...revealStyle,
           }}
