@@ -94,6 +94,7 @@ export function Hand({ seat }: { seat: number }) {
             position: relative;
             min-width: 325px;
             min-height: 100vh;
+            min-height: -webkit-fill-available;
             touch-action: none;
           }
           .layer {
