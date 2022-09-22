@@ -3,7 +3,7 @@ import { range } from "d3-array";
 import { useEffect, useState } from "react";
 import { animated, config, useSpring } from "react-spring";
 
-function Column({
+const Column = ({
   pips = 0,
   suit,
   half,
@@ -13,159 +13,155 @@ function Column({
   suit?: string;
   half?: boolean;
   pad?: number;
-}) {
-  return (
-    <div className="column">
-      {range(0, pips).map((i) => (
-        <div key={i}>{suit}</div>
-      ))}
-      {range(0, pad).map((i) => (
-        <div key={i} className="pad">
-          {suit}
-        </div>
-      ))}
-      <style jsx>{`
-        .column {
-          display: flex;
-          flex-direction: column;
-          justify-content: ${half || pips === 1
-            ? "space-evenly"
-            : "space-between"};
-          font-size: 48px;
-          padding: 30px 0;
-          width: 30%;
-          text-align: center;
-        }
-        .pad {
-          color: transparent;
-        }
-        .column > div:last-of-type,
-        .column > div:nth-of-type(3) {
-          transform: rotate(180deg);
-        }
-        .column > div:first-of-type {
-          transform: none;
-        }
-      `}</style>
-    </div>
-  );
-}
-function Face({ rank = "", suit = "" }: { rank?: string; suit?: string }) {
-  return (
-    <div className={cx("face", { red: "♦♥".includes(suit) })} data-rank={rank}>
-      {(() => {
-        switch (rank) {
-          case "2":
-          case "3":
-            return <Column pips={+rank} suit={suit} />;
-          case "4":
-            return (
-              <>
-                <Column pips={2} suit={suit} />
-                <Column />
-                <Column pips={2} suit={suit} />
-              </>
-            );
-          case "5":
-            return (
-              <>
-                <Column pips={2} suit={suit} />
-                <Column pips={1} suit={suit} />
-                <Column pips={2} suit={suit} />
-              </>
-            );
-          case "6":
-            return (
-              <>
-                <Column pips={3} suit={suit} />
-                <Column />
-                <Column pips={3} suit={suit} />
-              </>
-            );
-          case "7":
-            return (
-              <>
-                <Column pips={3} suit={suit} />
-                <Column pips={1} suit={suit} half pad={1} />
-                <Column pips={3} suit={suit} />
-              </>
-            );
-          case "8":
-            return (
-              <>
-                <Column pips={3} suit={suit} />
-                <Column pips={2} suit={suit} half />
-                <Column pips={3} suit={suit} />
-              </>
-            );
-          case "9":
-            return (
-              <>
-                <Column pips={4} suit={suit} />
-                <Column pips={1} suit={suit} />
-                <Column pips={4} suit={suit} />
-              </>
-            );
-          case "10":
-            return (
-              <>
-                <Column pips={4} suit={suit} />
-                <Column pips={2} suit={suit} half />
-                <Column pips={4} suit={suit} />
-              </>
-            );
-          case "J":
-            return <div className="court">♞</div>;
-          case "Q":
-            return <div className="court">♛</div>;
-          case "K":
-            return <div className="court">♚</div>;
-          case "A":
-            return <Column pips={1} suit={suit} />;
-        }
-      })()}
-      <style jsx>{`
+}) => (
+  <div className="column">
+    {range(0, pips).map((i) => (
+      <div key={i}>{suit}</div>
+    ))}
+    {range(0, pad).map((i) => (
+      <div key={i} className="pad">
+        {suit}
+      </div>
+    ))}
+    <style jsx>{`
+      .column {
+        display: flex;
+        flex-direction: column;
+        justify-content: ${half || pips === 1
+          ? "space-evenly"
+          : "space-between"};
+        font-size: 48px;
+        padding: 30px 0;
+        width: 30%;
+        text-align: center;
+      }
+      .pad {
+        color: transparent;
+      }
+      .column > div:last-of-type,
+      .column > div:nth-of-type(3) {
+        transform: rotate(180deg);
+      }
+      .column > div:first-of-type {
+        transform: none;
+      }
+    `}</style>
+  </div>
+);
+const Face = ({ rank = "", suit = "" }: { rank?: string; suit?: string }) => (
+  <div className={cx("face", { red: "♦♥".includes(suit) })} data-rank={rank}>
+    {(() => {
+      switch (rank) {
+        case "2":
+        case "3":
+          return <Column pips={+rank} suit={suit} />;
+        case "4":
+          return (
+            <>
+              <Column pips={2} suit={suit} />
+              <Column />
+              <Column pips={2} suit={suit} />
+            </>
+          );
+        case "5":
+          return (
+            <>
+              <Column pips={2} suit={suit} />
+              <Column pips={1} suit={suit} />
+              <Column pips={2} suit={suit} />
+            </>
+          );
+        case "6":
+          return (
+            <>
+              <Column pips={3} suit={suit} />
+              <Column />
+              <Column pips={3} suit={suit} />
+            </>
+          );
+        case "7":
+          return (
+            <>
+              <Column pips={3} suit={suit} />
+              <Column pips={1} suit={suit} half pad={1} />
+              <Column pips={3} suit={suit} />
+            </>
+          );
+        case "8":
+          return (
+            <>
+              <Column pips={3} suit={suit} />
+              <Column pips={2} suit={suit} half />
+              <Column pips={3} suit={suit} />
+            </>
+          );
+        case "9":
+          return (
+            <>
+              <Column pips={4} suit={suit} />
+              <Column pips={1} suit={suit} />
+              <Column pips={4} suit={suit} />
+            </>
+          );
+        case "10":
+          return (
+            <>
+              <Column pips={4} suit={suit} />
+              <Column pips={2} suit={suit} half />
+              <Column pips={4} suit={suit} />
+            </>
+          );
+        case "J":
+          return <div className="court">♞</div>;
+        case "Q":
+          return <div className="court">♛</div>;
+        case "K":
+          return <div className="court">♚</div>;
+        case "A":
+          return <Column pips={1} suit={suit} />;
+      }
+    })()}
+    <style jsx>{`
+      .face {
+        background: white;
+        font-size: 32px;
+        box-sizing: border-box;
+        padding: 10px;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: stretch;
+      }
+      .face.red {
+        color: red;
+      }
+      @media (prefers-color-scheme: dark) {
         .face {
-          background: white;
-          font-size: 32px;
-          box-sizing: border-box;
-          padding: 10px;
-          width: 100%;
-          height: 100%;
-          display: flex;
-          justify-content: space-between;
-          align-items: stretch;
+          background: #333;
         }
         .face.red {
-          color: red;
+          color: firebrick;
         }
-        @media (prefers-color-scheme: dark) {
-          .face {
-            background: #333;
-          }
-          .face.red {
-            color: firebrick;
-          }
-        }
+      }
 
-        .face:before,
-        .face:after {
-          content: attr(data-rank) " ${suit}";
-          text-align: center;
-          width: 1.1em;
-        }
-        .face:after {
-          transform: rotate(180deg);
-        }
+      .face:before,
+      .face:after {
+        content: attr(data-rank) " ${suit}";
+        text-align: center;
+        width: 1.1em;
+      }
+      .face:after {
+        transform: rotate(180deg);
+      }
 
-        .court {
-          align-self: center;
-          font-size: 128px;
-        }
-      `}</style>
-    </div>
-  );
-}
+      .court {
+        align-self: center;
+        font-size: 128px;
+      }
+    `}</style>
+  </div>
+);
 
 // Sol LeWitt
 // Lines of One Inch, Four Directions, Four Colors, from Sixteen Lithographs in Color
@@ -176,45 +172,43 @@ const points = range(0, 300).map(() => [
   Math.random() * (350 - 2 * margin) + margin,
   Math.random() + 1,
 ]);
-function Back() {
-  return (
-    <svg viewBox="0 0 250 350" width="100%" height="100%">
-      <rect
-        x={margin}
-        y={margin}
-        width={250 - 2 * margin}
-        height={350 - 2 * margin}
-        fill="none"
+const Back = () => (
+  <svg viewBox="0 0 250 350" width="100%" height="100%">
+    <rect
+      x={margin}
+      y={margin}
+      width={250 - 2 * margin}
+      height={350 - 2 * margin}
+      fill="none"
+      stroke="currentColor"
+      strokeOpacity="0.5"
+      rx="2"
+    />
+    {points.map(([x, y, w], i) => (
+      <line
+        key={i}
+        x1={Math.max(x, margin)}
+        y1={y}
+        x2={Math.min(x + length, 250 - margin)}
+        y2={y}
         stroke="currentColor"
+        strokeWidth={w}
         strokeOpacity="0.5"
-        rx="2"
       />
-      {points.map(([x, y, w], i) => (
-        <line
-          key={i}
-          x1={Math.max(x, margin)}
-          y1={y}
-          x2={Math.min(x + length, 250 - margin)}
-          y2={y}
-          stroke="currentColor"
-          strokeWidth={w}
-          strokeOpacity="0.5"
-        />
-      ))}
-      <style jsx>{`
+    ))}
+    <style jsx>{`
+      svg {
+        background-color: white;
+        color: steelblue;
+      }
+      @media (prefers-color-scheme: dark) {
         svg {
-          background-color: white;
-          color: steelblue;
+          background-color: #333;
         }
-        @media (prefers-color-scheme: dark) {
-          svg {
-            background-color: #333;
-          }
-        }
-      `}</style>
-    </svg>
-  );
-}
+      }
+    `}</style>
+  </svg>
+);
 
 interface CardProps {
   card?: string;
