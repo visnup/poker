@@ -51,14 +51,11 @@ export function Game({ seat }: { seat?: number }) {
   }, [ping, player]);
 
   if (!player) return null;
+  seat ??= player.seat;
 
   return (
     <main>
-      {seat === 0 || player.seat === 0 ? (
-        <Table />
-      ) : (
-        <Hand seat={player.seat} />
-      )}
+      {seat === 0 ? <Table /> : <Hand seat={seat} />}
       <Player player={player} />
       <style jsx>
         {`
