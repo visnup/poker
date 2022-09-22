@@ -179,7 +179,6 @@ const points = range(0, 300).map(() => [
 function Back() {
   return (
     <svg viewBox="0 0 250 350" width="100%" height="100%">
-      {/* <rect x="0" y="0" width="250" height="350" fill="white" /> */}
       <rect
         x={margin}
         y={margin}
@@ -187,6 +186,7 @@ function Back() {
         height={350 - 2 * margin}
         fill="none"
         stroke="currentColor"
+        strokeOpacity="0.5"
         rx="2"
       />
       {points.map(([x, y, w], i) => (
@@ -198,6 +198,7 @@ function Back() {
           y2={y}
           stroke="currentColor"
           strokeWidth={w}
+          strokeOpacity="0.5"
         />
       ))}
       <style jsx>{`
