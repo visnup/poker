@@ -246,6 +246,7 @@ export function Card({
   });
   const revealStyle = useSpring({
     rotateY: revealed ? 180 : 0,
+    delay: Math.random() * 200,
     config: config.slow,
   });
 
