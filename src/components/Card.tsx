@@ -169,7 +169,7 @@ function Face({ rank = "", suit = "" }: { rank?: string; suit?: string }) {
 
 // Sol LeWitt
 // Lines of One Inch, Four Directions, Four Colors, from Sixteen Lithographs in Color
-const margin = 20;
+const margin = 15;
 const length = 100;
 const points = range(0, 300).map(() => [
   Math.random() * 250 - length / 2,
@@ -246,7 +246,7 @@ export function Card({
       ...(anchor === "left" ? { translateX: "0vw" } : { translateY: "0vh" }),
     },
     delay: Math.random() * 200,
-    config: config.slow,
+    config: { ...config.slow, precision: 0.0001 },
   });
   const revealStyle = useSpring({
     rotateY: revealed ? 180 : 0,
