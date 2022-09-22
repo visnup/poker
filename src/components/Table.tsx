@@ -130,7 +130,7 @@ export function Table() {
           <Board
             cards={dealt.board}
             revealed={revealed}
-            onClick={() => setRevealed(revealed + 1)}
+            onClick={() => setRevealed((revealed + 1) % 4)}
           />
         )
       ) : null}
