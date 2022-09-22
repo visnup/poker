@@ -167,49 +167,53 @@ function Face({ rank = "", suit = "" }: { rank?: string; suit?: string }) {
   );
 }
 
+// Sol LeWitt
+// Lines of One Inch, Four Directions, Four Colors, from Sixteen Lithographs in Color
+const margin = 20;
+const length = 100;
+const points = range(0, 300).map(() => [
+  Math.random() * 250 - length / 2,
+  Math.random() * (350 - 2 * margin) + margin,
+  Math.random() + 1,
+]);
 function Back() {
   return (
-    <div>
+    <svg viewBox="0 0 250 350" width="100%" height="100%">
+      {/* <rect x="0" y="0" width="250" height="350" fill="white" /> */}
+      <rect
+        x={margin}
+        y={margin}
+        width={250 - 2 * margin}
+        height={350 - 2 * margin}
+        fill="none"
+        stroke="currentColor"
+        stroke-opacity="0.5"
+        rx="2"
+      />
+      {points.map(([x, y, w], i) => (
+        <line
+          key={i}
+          x1={Math.max(x, margin)}
+          y1={y}
+          x2={Math.min(x + length, 250 - margin)}
+          y2={y}
+          stroke="currentColor"
+          stroke-width={w}
+          stroke-opacity="0.5"
+        />
+      ))}
       <style jsx>{`
-        div {
-          height: 100%;
-          background: repeating-linear-gradient(
-              45deg,
-              transparent,
-              transparent 4px,
-              hsla(0, 0%, 100%, 0.3) 4px,
-              hsla(0, 0%, 100%, 0.3) 5px
-            ),
-            repeating-linear-gradient(
-                -45deg,
-                transparent,
-                transparent 4px,
-                hsla(0, 0%, 100%, 0.3) 4px,
-                hsla(0, 0%, 100%, 0.3) 5px
-              )
-              lightsteelblue;
+        svg {
+          background-color: white;
+          color: steelblue;
         }
         @media (prefers-color-scheme: dark) {
-          div {
-            background: repeating-linear-gradient(
-                45deg,
-                transparent,
-                transparent 4px,
-                hsla(0, 0%, 0%, 0.2) 4px,
-                hsla(0, 0%, 0%, 0.2) 5px
-              ),
-              repeating-linear-gradient(
-                  -45deg,
-                  transparent,
-                  transparent 4px,
-                  hsla(0, 0%, 0%, 0.2) 4px,
-                  hsla(0, 0%, 0%, 0.2) 5px
-                )
-                darkslategray;
+          svg {
+            background-color: #333;
           }
         }
       `}</style>
-    </div>
+    </svg>
   );
 }
 
