@@ -187,7 +187,7 @@ function Back() {
         height={350 - 2 * margin}
         fill="none"
         stroke="currentColor"
-        stroke-opacity="0.5"
+        strokeOpacity="0.5"
         rx="2"
       />
       {points.map(([x, y, w], i) => (
@@ -198,8 +198,8 @@ function Back() {
           x2={Math.min(x + length, 250 - margin)}
           y2={y}
           stroke="currentColor"
-          stroke-width={w}
-          stroke-opacity="0.5"
+          strokeWidth={w}
+          strokeOpacity="0.5"
         />
       ))}
       <style jsx>{`
