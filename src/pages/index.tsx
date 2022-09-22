@@ -7,12 +7,13 @@ function Player({ player }: { player: { seat: number; id: string } }) {
   if (player)
     return (
       <div>
-        {player.seat}:{player.id}
+        {player.seat}:{player.id.slice(0, 5)}
         <style jsx>{`
           div {
             font-size: small;
             position: absolute;
             bottom: 5px;
+            opacity: 0.5;
           }
         `}</style>
       </div>
