@@ -230,20 +230,17 @@ export function Card({
     reverse: card === undefined,
     from: {
       rotate: 0,
-      ...(anchor === "left"
-        ? { translateX: "-120vw" }
-        : { translateY: "-120vh" }),
+      ...(anchor === "left" ? { x: "-120vw" } : { y: "-120vh" }),
     },
     to: {
       rotate: r,
-      ...(anchor === "left" ? { translateX: "0vw" } : { translateY: "0vh" }),
+      ...(anchor === "left" ? { x: "0vw" } : { y: "0vh" }),
     },
     delay: Math.random() * 200,
     config: { ...config.slow, precision: 0.0001 },
   });
   const revealStyle = useSpring({
     rotateY: revealed ? 180 : 0,
-    translateX: revealed ? "100%" : "0%",
     delay: Math.random() * 200,
     config: config.slow,
   });
@@ -259,7 +256,6 @@ export function Card({
         <animated.div
           style={{
             transformStyle: "preserve-3d",
-            transformOrigin: "right center",
             height: "100%",
             ...revealStyle,
           }}
