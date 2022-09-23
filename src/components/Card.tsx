@@ -6,12 +6,12 @@ import { animated, config, useSpring } from "react-spring";
 const Column = ({
   pips = 0,
   suit,
-  half,
+  justify = "space-between",
   pad = 0,
 }: {
   pips?: number;
   suit?: string;
-  half?: boolean;
+  justify?: string;
   pad?: number;
 }) => (
   <div className="column">
@@ -27,9 +27,7 @@ const Column = ({
       .column {
         display: flex;
         flex-direction: column;
-        justify-content: ${half || pips === 1
-          ? "space-evenly"
-          : "space-between"};
+        justify-content: ${pips === 1 ? "space-evenly" : justify};
         font-size: 48px;
         padding: 30px 0;
         width: 30%;
@@ -83,7 +81,7 @@ const Face = ({ rank = "", suit = "" }: { rank?: string; suit?: string }) => (
           return (
             <>
               <Column pips={3} suit={suit} />
-              <Column pips={1} suit={suit} half pad={1} />
+              <Column pips={1} suit={suit} pad={1} />
               <Column pips={3} suit={suit} />
             </>
           );
@@ -91,7 +89,7 @@ const Face = ({ rank = "", suit = "" }: { rank?: string; suit?: string }) => (
           return (
             <>
               <Column pips={3} suit={suit} />
-              <Column pips={2} suit={suit} half />
+              <Column pips={2} suit={suit} justify="space-evenly" />
               <Column pips={3} suit={suit} />
             </>
           );
@@ -107,7 +105,7 @@ const Face = ({ rank = "", suit = "" }: { rank?: string; suit?: string }) => (
           return (
             <>
               <Column pips={4} suit={suit} />
-              <Column pips={2} suit={suit} half />
+              <Column pips={2} suit={suit} justify="space-around" />
               <Column pips={4} suit={suit} />
             </>
           );
