@@ -5,8 +5,8 @@ import { animated, config, useSpring } from "react-spring";
 import { useQuery } from "../../convex/_generated/react";
 import { Card } from "./Card";
 
-export function Hand({ seat }: { seat: number }) {
-  const dealt = useQuery("getDealt");
+export function Hand({ table, seat }: { table: string; seat: number }) {
+  const dealt = useQuery("getDealt", table);
 
   const [rotation, setRotation] = useState(() => Math.random() * 10 - 5);
   useEffect(() => setRotation(Math.random() * 10 - 5), [dealt]);

@@ -17,7 +17,7 @@ const Player = ({ player }: { player: { seat: number; id: string } }) => (
   </div>
 );
 
-export function Game({ seat }: { seat?: number }) {
+export function Game({ table = "", seat }: { table?: string; seat?: number }) {
   const join = useMutation("join");
   const ping = useMutation("ping");
   const [player, setPlayer] = useState<Awaited<ReturnType<typeof join>>>();
@@ -33,10 +33,10 @@ export function Game({ seat }: { seat?: number }) {
     if (!player && !joining.current) {
       joining.current = true;
       const stored = JSON.parse(sessionStorage.getItem("player") || "null");
-      if (stored) setPlayer(stored);
-      else join().then(setPlayer);
+      if (stored && stored.table === table) setPlayer(stored);
+      else join(table).then(setPlayer);
     }
-  }, [join, player]);
+  }, [join, table, player]);
 
   // Ping
   useEffect(() => {
@@ -51,7 +51,11 @@ export function Game({ seat }: { seat?: number }) {
 
   return (
     <main>
-      {seat === 0 ? <Table /> : <Hand seat={seat} />}
+      {seat === 0 ? (
+        <Table table={table} />
+      ) : (
+        <Hand table={table} seat={seat} />
+      )}
       <Player player={player} />
       <style jsx>
         {`

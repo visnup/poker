@@ -110,10 +110,10 @@ function Board({
   );
 }
 
-export function Table() {
+export function Table({ table }: { table: string }) {
   const deal = useMutation("deal");
   const clear = useMutation("clear");
-  const dealt = useQuery("getDealt");
+  const dealt = useQuery("getDealt", table);
 
   // -1 = cleared, 0 = dealt, 1 = flop, 2 = turn, 3 = river
   const [revealed, setRevealed] = useState(0);
@@ -137,9 +137,9 @@ export function Table() {
       <DealerButton
         onMove={async () => {
           setRevealed(-1);
-          await clear();
+          await clear(table);
           await new Promise((resolve) => setTimeout(resolve, 500));
-          await deal();
+          await deal(table);
           setRevealed(0);
         }}
       >

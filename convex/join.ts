@@ -1,6 +1,6 @@
 import { mutation } from "./_generated/server.js";
 
-export default mutation(async ({ db }) => {
+export default mutation(async ({ db }, table: string) => {
   const now = Date.now();
   const recent = now - 10e3;
 
@@ -15,12 +15,12 @@ export default mutation(async ({ db }) => {
   const players = await db
     .table("players")
     .index("bySeat")
-    .range((q) => q)
+    .range((q) => q.eq("table", table))
     .collect();
   for (let n = 0; n <= 10; n++)
     if (!players[n] || n < players[n].seat) {
-      const player = { seat: n, lastSeen: now };
+      const player = { table, seat: n, lastSeen: now };
       const id = db.insert("players", player);
-      return { id: id.toString(), seat: n };
+      return { id: id.toString(), table, seat: n };
     }
 });
