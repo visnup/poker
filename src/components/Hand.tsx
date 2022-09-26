@@ -5,6 +5,7 @@ import { animated, config, useSpring } from "react-spring";
 import { useQuery } from "../../convex/_generated/react";
 import { Card } from "./Card";
 
+const slow = { ...config.slow, precision: 0.0001 };
 export function Hand({ table, seat }: { table: string; seat: number }) {
   const dealt = useQuery("getDealt", table);
 
@@ -28,7 +29,7 @@ export function Hand({ table, seat }: { table: string; seat: number }) {
       // pull down
       setRotation(2);
       revealing.start(clipPath(down ? h : 0));
-      folding.start({ y: 0, config: config.slow });
+      folding.start({ y: 0, config: slow });
     } else if (y < 0) {
       // swipe up
       folding.start({ y, immediate: true });
@@ -45,7 +46,7 @@ export function Hand({ table, seat }: { table: string; seat: number }) {
             y: -1000,
             config: { velocity: -vy, tension: 1, friction: 1, clamp: true },
           });
-        else folding.start({ y: 0, config: config.slow });
+        else folding.start({ y: 0, config: slow });
       }
     }
   });
