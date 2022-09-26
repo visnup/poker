@@ -42,7 +42,7 @@ export function Hand({ table, seat }: { table: string; seat: number }) {
         else setRotation(Math.random());
       } else if (y < 0) {
         // swiped up to fold or reset
-        if (vy > 1)
+        if (vy > 1 || h > 250)
           folding.start({
             y: -1000,
             config: { velocity: -vy, tension: 1, friction: 1, clamp: true },
