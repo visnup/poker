@@ -3,23 +3,19 @@ import { useEffect, useRef, useState } from "react";
 import { Table } from "./Table";
 import { Hand } from "./Hand";
 
-function Player({ player }: { player: { seat: number; id: string } }) {
-  if (player)
-    return (
-      <div>
-        {player.seat}:{player.id.slice(0, 5)}
-        <style jsx>{`
-          div {
-            font-size: small;
-            position: absolute;
-            bottom: 5px;
-            opacity: 0.5;
-          }
-        `}</style>
-      </div>
-    );
-  return null;
-}
+const Player = ({ player }: { player: { seat: number; id: string } }) => (
+  <div>
+    {player.seat}:{player.id.slice(0, 5)}
+    <style jsx>{`
+      div {
+        font-size: small;
+        position: absolute;
+        bottom: 5px;
+        opacity: 0.5;
+      }
+    `}</style>
+  </div>
+);
 
 export function Game({ seat }: { seat?: number }) {
   const join = useMutation("join");

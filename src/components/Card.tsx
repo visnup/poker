@@ -1,6 +1,6 @@
 import cx from "classnames";
 import { range } from "d3-array";
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import { animated, config, useSpring } from "react-spring";
 
 const Column = ({
@@ -221,8 +221,10 @@ export function Card({
   rotation,
   ...props
 }: CardProps & JSX.IntrinsicElements["div"]) {
-  const [r, setR] = useState(() => rotation ?? Math.random() * 10 - 5);
-  useEffect(() => setR(rotation ?? Math.random() * 10 - 5), [rotation, card]);
+  const r = useMemo(
+    () => (void card, rotation ?? Math.random() * 10 - 5),
+    [rotation, card]
+  );
 
   const dealStyle = useSpring({
     reverse: card === undefined,
