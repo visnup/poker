@@ -52,6 +52,7 @@ function DealerButton({
           border-radius: 100%;
           border: solid 1px hsl(0, 0%, 90%);
           box-shadow: 2px 4px 10px hsla(0, 0%, 0%, 0.2);
+          color: inherit;
           padding: 0;
           width: 5.5em;
           height: 5.5em;
