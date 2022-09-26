@@ -14,7 +14,7 @@ export function Hand({ table, seat }: { table: string; seat: number }) {
   const clipPath = (w: number) => ({ clipPath: `circle(${w}px at 10px 20px)` });
   const [revealStyle, revealing] = useSpring(() => ({
     ...clipPath(0),
-    config: config.stiff,
+    config: { ...config.stiff, clamp: true },
   }));
   useEffect(() => revealing.set(clipPath(0)), [revealing, dealt]);
   const [foldStyle, folding] = useSpring(() => ({ y: 0 }));
@@ -27,8 +27,8 @@ export function Hand({ table, seat }: { table: string; seat: number }) {
     if (y > 0) {
       // pull down
       setRotation(2);
-      revealing.start(down ? { ...clipPath(h), immediate: true } : clipPath(0));
-      // if (folded) setFolded(false);
+      revealing.start(clipPath(down ? h : 0));
+      folding.start({ y: 0, config: config.slow });
     } else if (y < 0) {
       // swipe up
       folding.start({ y, immediate: true });
