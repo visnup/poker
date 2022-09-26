@@ -25,17 +25,18 @@ export function Hand({ table, seat }: { table: string; seat: number }) {
 
   const bind = useDrag(({ down, last, velocity: [, vy], movement: [x, y] }) => {
     const h = Math.hypot(x, y);
-    if (y > 0) {
+    if (y >= 0) {
       // pull down
       setRotation(2);
       revealing.start(clipPath(down ? h : 0));
       folding.start({ y: 0, config: slow });
     } else if (y < 0) {
       // swipe up
+      revealing.start(clipPath(0));
       folding.start({ y, immediate: true });
     }
     if (last) {
-      if (y > 0) {
+      if (y >= 0) {
         // pulled down to reveal or reset
         if (h > 250) revealing.start(clipPath(500));
         else setRotation(Math.random());
