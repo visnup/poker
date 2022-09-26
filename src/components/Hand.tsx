@@ -18,44 +18,42 @@ export function Hand({ table, seat }: { table: string; seat: number }) {
   }));
   useEffect(() => revealing.set(clipPath(0)), [revealing, dealt]);
   const [foldStyle, folding] = useSpring(() => ({ y: 0 }));
+  useEffect(() => {
+    if (!dealt?.cleared) folding.set({ y: 0 });
+  }, [folding, dealt]);
 
-  const bind = useDrag(
-    ({ down, last, swipe: [, sy], movement: [x, y] }) => {
-      const h = Math.hypot(x, y);
+  const bind = useDrag(({ down, last, velocity: [, vy], movement: [x, y] }) => {
+    const h = Math.hypot(x, y);
+    if (y > 0) {
+      // pull down
+      setRotation(2);
+      revealing.start(down ? { ...clipPath(h), immediate: true } : clipPath(0));
+      // if (folded) setFolded(false);
+    } else if (y < 0) {
+      // swipe up
+      folding.start({ y, immediate: true });
+    }
+    if (last) {
       if (y > 0) {
-        // pull down
-        setRotation(2);
-        revealing.start(
-          down ? { ...clipPath(h), immediate: true } : clipPath(0)
-        );
-        if (folded) setFolded(false);
+        // pulled down to reveal or reset
+        if (h > 250) revealing.start(clipPath(500));
+        else setRotation(Math.random());
       } else if (y < 0) {
-        // swipe up
-        folding.start({ y, immediate: true });
+        // swiped up to fold or reset
+        if (vy > 1)
+          folding.start({
+            y: -1000,
+            config: { velocity: -vy, tension: 1, friction: 1, clamp: true },
+          });
+        else folding.start({ y: 0, config: config.slow });
       }
-      if (last) {
-        if (y > 0) {
-          // pulled down to reveal or reset
-          if (h > 250) revealing.start(clipPath(500));
-          else setRotation(Math.random());
-        } else if (y < 0) {
-          // swiped up to fold
-          if (sy < 0) setFolded(true);
-          folding.start({ y: 0 });
-        }
-      }
-    },
-    { swipe: { distance: [25, 25], duration: 125, velocity: 0.25 } }
-  );
-
-  const [folded, setFolded] = useState(false);
-  useEffect(() => setFolded(false), [dealt]);
+    }
+  });
 
   const index = (seat - 1) * 2;
-  const cards =
-    folded || dealt?.cleared
-      ? [undefined, undefined]
-      : dealt?.cards.slice(index, index + 2) ?? [];
+  const cards = dealt?.cleared
+    ? [undefined, undefined]
+    : dealt?.cards.slice(index, index + 2) ?? [];
 
   return (
     <div className="cards" {...bind()}>
