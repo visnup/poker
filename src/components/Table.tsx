@@ -44,7 +44,7 @@ function DealerButton({
       <style jsx>{`
         button {
           touch-action: none;
-          font-size: x-large;
+          font-size: 42px;
           font-weight: bold;
           text-transform: uppercase;
           text-shadow: 0 -1px 0 hsla(0, 0%, 50%, 0.5);
