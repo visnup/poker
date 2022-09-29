@@ -59,8 +59,9 @@ function DealerButton({
         }
         @media (prefers-color-scheme: dark) {
           button {
-            background: linear-gradient(-25deg, #111, hsl(0, 0%, 15%));
-            border: solid 1px hsl(0, 0%, 10%);
+            background: linear-gradient(-25deg, #111, #222);
+            color: #ddd;
+            border-color: hsl(0, 0%, 12%);
           }
         }
       `}</style>
