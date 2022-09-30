@@ -46,6 +46,32 @@ const Column = ({
     `}</style>
   </div>
 );
+const Court = ({ rank = "", suit = "" }: { rank?: string; suit?: string }) => (
+  <div className="court">
+    <div>
+      <span className="suit">{suit}</span>
+      <span className="rank">{rank}</span>
+    </div>
+    <div>
+      <span className="suit">{suit}</span>
+      <span className="rank">{rank}</span>
+    </div>
+    <style jsx>{`
+      .court {
+        align-self: center;
+      }
+      .court div:last-of-type {
+        transform: rotate(180deg);
+      }
+      .court .suit {
+        font-size: 64px;
+      }
+      .court .rank {
+        font-size: 144px;
+      }
+    `}</style>
+  </div>
+);
 const Face = ({ rank = "", suit = "" }: { rank?: string; suit?: string }) => (
   <div className={cx("face", { red: "♦♥".includes(suit) })} data-rank={rank}>
     {(() => {
@@ -110,11 +136,11 @@ const Face = ({ rank = "", suit = "" }: { rank?: string; suit?: string }) => (
             </>
           );
         case "J":
-          return <div className="court">♞</div>;
+          return <Court suit={suit} rank="♞" />;
         case "Q":
-          return <div className="court">♛</div>;
+          return <Court suit={suit} rank="♛" />;
         case "K":
-          return <div className="court">♚</div>;
+          return <Court suit={suit} rank="♚" />;
         case "A":
           return <Column pips={1} suit={suit} />;
       }
@@ -151,11 +177,6 @@ const Face = ({ rank = "", suit = "" }: { rank?: string; suit?: string }) => (
       }
       .face:after {
         transform: rotate(180deg);
-      }
-
-      .court {
-        align-self: center;
-        font-size: 128px;
       }
     `}</style>
   </div>
