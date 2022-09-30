@@ -246,7 +246,7 @@ export function Card({
     () => (void card, rotation ?? Math.random() * 10 - 5),
     [rotation, card]
   );
-  const upsideDown = Math.floor((Math.abs(r) * 1000) % 2);
+  const upsideDown = useMemo(() => (void card, Math.random() > 0.5), [card]);
 
   const dealStyle = useSpring({
     reverse: card === undefined,
