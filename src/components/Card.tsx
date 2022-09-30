@@ -225,6 +225,7 @@ export function Card({
     () => (void card, rotation ?? Math.random() * 10 - 5),
     [rotation, card]
   );
+  const upsideDown = Math.floor((Math.abs(r) * 1000) % 2);
 
   const dealStyle = useSpring({
     reverse: card === undefined,
@@ -253,7 +254,7 @@ export function Card({
 
   return (
     <animated.div style={dealStyle}>
-      <div className={cx("area")} {...props}>
+      <div className={cx("area", { "upside-down": upsideDown })} {...props}>
         <animated.div
           style={{
             transformStyle: "preserve-3d",
@@ -279,6 +280,9 @@ export function Card({
             height: 350px;
             perspective: 1000px;
             margin: 10px;
+          }
+          .area.upside-down {
+            transform: rotate(180deg);
           }
 
           .card {
