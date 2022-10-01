@@ -6,7 +6,7 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   user-select: none;
   color: black;
-  background: white;
+  background: darkseagreen;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -15,6 +15,6 @@ body {
   }
   body {
     color: white;
-    background: black;
+    background: darkslategray;
   }
 }
