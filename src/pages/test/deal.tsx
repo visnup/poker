@@ -1,10 +1,6 @@
 import { useState } from "react";
-import { cross } from "d3-array";
 import { Card } from "../../components/Card";
-
-const suits = [..."♣♦♥♠"];
-const ranks = [..."23456789", "10", ..."JQKA"];
-const deck = cross(ranks, suits, (r, s) => r + s);
+import { deck } from "../../../convex/deals";
 
 export default function Test() {
   const [revealed, setRevealed] = useState(false);

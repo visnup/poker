@@ -4,7 +4,7 @@ import { mutation, query } from "./_generated/server.js";
 
 const suits = [..."♣♦♥♠"];
 const ranks = [..."23456789", "10", ..."JQKA"];
-const deck = cross(ranks, suits, (r, s) => r + s);
+export const deck = cross(suits, ranks, (s, r) => r + s);
 
 export const clear = mutation({
   args: { table: v.string() },
