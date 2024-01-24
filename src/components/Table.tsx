@@ -36,7 +36,7 @@ function DealerButton({
       });
       if (last && Math.hypot(...movement) > 200) onMove();
       return memo;
-    },
+    }
   );
 
   return (
@@ -60,9 +60,9 @@ function DealerButton({
         }
         @media (prefers-color-scheme: dark) {
           button {
-            background: linear-gradient(-25deg, #111, #222);
+            background: linear-gradient(-25deg, #222, #444);
             color: #ddd;
-            border-color: hsl(0, 0%, 12%);
+            border-color: #333;
           }
         }
       `}</style>
