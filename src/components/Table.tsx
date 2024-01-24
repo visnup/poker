@@ -36,7 +36,7 @@ function DealerButton({
       });
       if (last && Math.hypot(...movement) > 200) onMove();
       return memo;
-    }
+    },
   );
 
   return (
