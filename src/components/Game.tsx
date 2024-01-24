@@ -1,7 +1,9 @@
-import { useMutation } from "../../convex/_generated/react";
+import { useMutation } from "convex/react";
 import { useEffect, useRef, useState } from "react";
-import { Table } from "./Table";
+import { api } from "../../convex/_generated/api";
+import { Id } from "../../convex/_generated/dataModel";
 import { Hand } from "./Hand";
+import { Table } from "./Table";
 
 const Player = ({ player }: { player: { seat: number; id: string } }) => (
   <div>
@@ -18,8 +20,8 @@ const Player = ({ player }: { player: { seat: number; id: string } }) => (
 );
 
 export function Game({ table = "", seat }: { table?: string; seat?: number }) {
-  const join = useMutation("join");
-  const ping = useMutation("ping");
+  const join = useMutation(api.players.join);
+  const ping = useMutation(api.players.ping);
   const [player, setPlayer] = useState<Awaited<ReturnType<typeof join>>>();
   const joining = useRef(false);
 
@@ -34,14 +36,14 @@ export function Game({ table = "", seat }: { table?: string; seat?: number }) {
       joining.current = true;
       const stored = JSON.parse(sessionStorage.getItem("player") || "null");
       if (stored && stored.table === table) setPlayer(stored);
-      else join(table).then(setPlayer);
+      else join({ table }).then(setPlayer);
     }
   }, [join, table, player]);
 
   // Ping
   useEffect(() => {
     const interval = setInterval(() => {
-      if (player) ping(player.id);
+      if (player) ping({ id: player.id as Id<"players"> });
     }, 5e3);
     return () => clearInterval(interval);
   }, [ping, player]);
