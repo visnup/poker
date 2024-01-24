@@ -2,8 +2,9 @@ import { useDrag } from "@use-gesture/react";
 import Head from "next/head";
 import { ReactNode, useState } from "react";
 import { animated, useSpring } from "react-spring";
-import { useMutation, useQuery } from "../../convex/_generated/react";
+import { useMutation, useQuery } from "convex/react";
 import { Card } from "./Card";
+import { api } from "../../convex/_generated/api";
 
 function DealerButton({
   onMove,
@@ -113,9 +114,9 @@ function Board({
 }
 
 export function Table({ table }: { table: string }) {
-  const deal = useMutation("deal");
-  const clear = useMutation("clear");
-  const dealt = useQuery("getDealt", table);
+  const deal = useMutation(api.deals.deal);
+  const clear = useMutation(api.deals.clear);
+  const dealt = useQuery(api.deals.get, { table });
 
   // -1 = cleared, 0 = dealt, 1 = flop, 2 = turn, 3 = river
   const [revealed, setRevealed] = useState(0);
@@ -139,9 +140,9 @@ export function Table({ table }: { table: string }) {
       <DealerButton
         onMove={async () => {
           setRevealed(-1);
-          await clear(table);
+          await clear({ table });
           await new Promise((resolve) => setTimeout(resolve, 500));
-          await deal(table);
+          await deal({ table });
           setRevealed(0);
         }}
       >

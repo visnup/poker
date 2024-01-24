@@ -2,12 +2,13 @@ import { useDrag } from "@use-gesture/react";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { animated, config, useSpring } from "react-spring";
-import { useQuery } from "../../convex/_generated/react";
+import { useQuery } from "convex/react";
 import { Card } from "./Card";
+import { api } from "../../convex/_generated/api";
 
 const slow = { ...config.slow, precision: 0.0001 };
 export function Hand({ table, seat }: { table: string; seat: number }) {
-  const dealt = useQuery("getDealt", table);
+  const dealt = useQuery(api.deals.get, { table });
 
   const [rotation, setRotation] = useState(() => Math.random() * 10 - 5);
   useEffect(() => setRotation(Math.random() * 10 - 5), [dealt]);

@@ -309,6 +309,7 @@ export function Card({
           .card {
             position: relative;
             height: 100%;
+            transform-style: preserve-3d;
           }
 
           .back,

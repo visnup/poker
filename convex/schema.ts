@@ -1,16 +1,17 @@
-import { defineSchema, defineTable, s } from "convex/schema";
+import { defineSchema, defineTable} from "convex/server";
+import { v } from "convex/values";
 
 export default defineSchema({
   deals: defineTable({
-    table: s.string(),
-    cards: s.array(s.string()),
-    board: s.array(s.string()),
-    shuffled: s.array(s.string()),
-    cleared: s.boolean(),
-  }).index("byTable", ["table", "_creationTime"]),
+    table: v.string(),
+    cards: v.array(v.string()),
+    board: v.array(v.string()),
+    shuffled: v.array(v.string()),
+    cleared: v.boolean(),
+  }).index("byTable", ["table"]),
   players: defineTable({
-    table: s.string(),
-    seat: s.number(),
-    lastSeen: s.number(),
+    table: v.string(),
+    seat: v.number(),
+    lastSeen: v.number(),
   }).index("bySeat", ["table", "seat"]),
 });

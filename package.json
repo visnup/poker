@@ -1,29 +1,32 @@
 {
+  "name": "poker",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "npx convex dev & next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
-    "@use-gesture/react": "^10.2.20",
-    "classnames": "^2.3.2",
-    "convex": "^0.1.10",
-    "d3-array": "^3.2.0",
-    "next": "^12.3.0",
+    "@use-gesture/react": "^10.3.0",
+    "classnames": "^2.5.1",
+    "convex": "^1.8.0",
+    "d3-array": "^3.2.4",
+    "next": "^14.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-spring": "^9.5.4"
+    "react-spring": "^9.7.3"
   },
   "devDependencies": {
-    "@types/d3-array": "^3.0.3",
-    "@types/node": "^18.7.18",
-    "@types/react": "^18.0.20",
-    "@types/react-dom": "^18.0.6",
-    "@types/react-transition-group": "^4.4.5",
-    "eslint": "^8.23.1",
-    "eslint-config-next": "^12.3.0",
-    "prettier": "^2.7.1",
-    "typescript": "^4.8.3"
+    "@types/d3-array": "^3.2.1",
+    "@types/node": "^20.11.5",
+    "@types/react": "^18.2.48",
+    "@types/react-dom": "^18.2.18",
+    "@types/react-transition-group": "^4.4.10",
+    "eslint": "^8.56.0",
+    "eslint-config-next": "^14.1.0",
+    "prettier": "^3.2.4",
+    "typescript": "^5.3.3"
   }
 }
