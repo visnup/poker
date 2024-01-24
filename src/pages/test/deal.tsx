@@ -1,9 +1,10 @@
 import { useState } from "react";
+import { cross } from "d3-array";
 import { Card } from "../../components/Card";
 
 const suits = [..."♣♦♥♠"];
 const ranks = [..."23456789", "10", ..."JQKA"];
-const deck = suits.flatMap((s) => ranks.map((d) => d + s));
+const deck = cross(ranks, suits, (r, s) => r + s);
 
 export default function Test() {
   const [revealed, setRevealed] = useState(false);
