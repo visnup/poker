@@ -3,8 +3,8 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import { animated, config, useSpring } from "react-spring";
 import { useQuery } from "convex/react";
-import { Card } from "./Card";
 import { api } from "../../convex/_generated/api";
+import { Card } from "./Card";
 
 const slow = { ...config.slow, precision: 0.0001 };
 export function Hand({ table, seat }: { table: string; seat: number }) {

@@ -1,6 +1,6 @@
 import { v } from "convex/values";
-import { mutation, query } from "./_generated/server.js";
 import { shuffle } from "d3-array";
+import { mutation, query } from "./_generated/server.js";
 
 const suits = [..."♣♦♥♠"];
 const ranks = [..."23456789", "10", ..."JQKA"];

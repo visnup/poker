@@ -3,8 +3,8 @@ import Head from "next/head";
 import { ReactNode, useState } from "react";
 import { animated, useSpring } from "react-spring";
 import { useMutation, useQuery } from "convex/react";
-import { Card } from "./Card";
 import { api } from "../../convex/_generated/api";
+import { Card } from "./Card";
 
 function DealerButton({
   onMove,
@@ -36,7 +36,7 @@ function DealerButton({
       });
       if (last && Math.hypot(...movement) > 200) onMove();
       return memo;
-    }
+    },
   );
 
   return (

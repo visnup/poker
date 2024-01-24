@@ -244,7 +244,7 @@ export function Card({
 }: CardProps & JSX.IntrinsicElements["div"]) {
   const r = useMemo(
     () => (void card, rotation ?? Math.random() * 10 - 5),
-    [rotation, card]
+    [rotation, card],
   );
   const upsideDown = useMemo(() => (void card, Math.random() > 0.5), [card]);
 
