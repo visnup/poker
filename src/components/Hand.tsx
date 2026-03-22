@@ -56,7 +56,7 @@ export function Hand({ table, seat }: { table: string; seat: number }) {
   const index = (seat - 1) * 2;
   const cards = dealt?.cleared
     ? [undefined, undefined]
-    : dealt?.cards.slice(index, index + 2) ?? [];
+    : (dealt?.cards.slice(index, index + 2) ?? []);
 
   return (
     <div className="cards" {...bind()}>
