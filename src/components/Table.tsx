@@ -6,7 +6,7 @@ import { useMutation, useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Card } from "./Card";
 
-function DealerButton({
+export function DealerButton({
   onMove,
   children,
 }: {
@@ -70,7 +70,7 @@ function DealerButton({
   );
 }
 
-function Board({
+export function Board({
   cards,
   revealed = 0,
   ...props

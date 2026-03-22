@@ -6,7 +6,8 @@
     "dev": "concurrently \"pnpm dlx convex dev\" \"next dev\"",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "playwright test"
   },
   "dependencies": {
     "@use-gesture/react": "^10.3.0",
@@ -19,6 +20,7 @@
     "react-spring": "^9.7.3"
   },
   "devDependencies": {
+    "@playwright/test": "^1.58.2",
     "@types/d3-array": "^3.2.1",
     "@types/node": "^20.11.5",
     "@types/react": "^18.2.48",
