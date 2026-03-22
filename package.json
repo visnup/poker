@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"npx convex dev\" \"next dev\"",
+    "dev": "concurrently \"pnpm dlx convex dev\" \"next dev\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
