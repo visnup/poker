@@ -2,7 +2,7 @@ import cx from "classnames";
 import { range } from "d3-array";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
-import { animated, config, useSpring } from "react-spring";
+import { animated, config, useReducedMotion, useSpring } from "react-spring";
 
 const Column = ({
   pips = 0,
@@ -203,12 +203,14 @@ interface CardProps {
   revealed?: boolean;
   anchor?: "left" | "top";
   rotation?: number;
+  upsideDown?: boolean;
 }
 export function Card({
   card,
   revealed,
   anchor = "left",
   rotation,
+  upsideDown: upsideDownProp,
   ...props
 }: CardProps & React.JSX.IntrinsicElements["div"]) {
   const [r, setR] = useState(0);
@@ -216,11 +218,13 @@ export function Card({
     setR(rotation ?? Math.random() * 10 - 5);
   }, [rotation, card]);
 
-  const [upsideDown, setUpsideDown] = useState(false);
+  const [upsideDownRandom, setUpsideDownRandom] = useState(false);
   useEffect(() => {
-    setUpsideDown(Math.random() > 0.5);
+    setUpsideDownRandom(Math.random() > 0.5);
   }, [card]);
+  const upsideDown = upsideDownProp ?? upsideDownRandom;
 
+  const reduceMotion = useReducedMotion();
   const dealDelay = useRef(Math.random() * 200); // eslint-disable-line react-hooks/purity
   const revealDelay = useRef(Math.random() * 200); // eslint-disable-line react-hooks/purity
 
@@ -234,13 +238,15 @@ export function Card({
       rotate: r,
       ...(anchor === "left" ? { x: "0vw" } : { y: "0vh" }),
     },
-    delay: dealDelay.current,
+    delay: reduceMotion ? 0 : dealDelay.current,
+    immediate: reduceMotion ?? false,
     config: { ...config.slow, precision: 0.0001 },
   });
   const revealStyle = useSpring({
     rotateY: revealed ? 180 : 0,
     x: revealed ? -250 : 0,
-    delay: revealDelay.current,
+    delay: reduceMotion ? 0 : revealDelay.current,
+    immediate: reduceMotion ?? false,
     config: config.slow,
   });
 
