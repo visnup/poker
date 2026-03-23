@@ -1,6 +1,6 @@
 import { useDrag } from "@use-gesture/react";
 import Head from "next/head";
-import React, { ReactNode, useRef, useState } from "react";
+import React, { ReactNode, useEffect, useRef, useState } from "react";
 import { animated, useSpring, useSpringRef } from "react-spring";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
@@ -18,8 +18,12 @@ export function DealerButton({
   // the config on every render; using the function form let it reset to the
   // original {x:0,y:0} after each re-render causing the button to drift back).
   const pos = useRef({ x: 0, y: 0 });
-  const rotate = useRef(Math.random() * 20);
+  const rotate = useRef(0);
   const api = useSpringRef();
+  useEffect(() => {
+    rotate.current = Math.random() * 20;
+    api.start({ rotate: rotate.current });
+  }, [api]);
   const style = useSpring({
     ref: api,
     x: pos.current.x,

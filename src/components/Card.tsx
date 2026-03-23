@@ -1,6 +1,7 @@
 import cx from "classnames";
 import { range } from "d3-array";
-import React, { useMemo } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { backPoints } from "./card-back-points";
 import { animated, config, useSpring } from "react-spring";
 
 const Column = ({
@@ -186,11 +187,6 @@ const Face = ({ rank = "", suit = "" }: { rank?: string; suit?: string }) => (
 // Lines of One Inch, Four Directions, Four Colors, from Sixteen Lithographs in Color
 const margin = 15;
 const length = 100;
-const points = range(0, 300).map(() => [
-  Math.random() * 250 - length / 2,
-  Math.random() * (350 - 2 * margin) + margin,
-  Math.random() + 1,
-]);
 const Back = () => (
   <svg viewBox="0 0 250 350" width="100%" height="100%">
     <rect
@@ -203,7 +199,7 @@ const Back = () => (
       strokeOpacity="0.5"
       rx="2"
     />
-    {points.map(([x, y, w], i) => (
+    {backPoints.map(([x, y, w], i) => (
       <line
         key={i}
         x1={Math.max(x, margin)}
@@ -242,11 +238,18 @@ export function Card({
   rotation,
   ...props
 }: CardProps & React.JSX.IntrinsicElements["div"]) {
-  const r = useMemo(
-    () => (void card, rotation ?? Math.random() * 10 - 5), // eslint-disable-line react-hooks/purity
-    [rotation, card],
-  );
-  const upsideDown = useMemo(() => (void card, Math.random() > 0.5), [card]); // eslint-disable-line react-hooks/purity
+  const [r, setR] = useState(0);
+  useEffect(() => {
+    setR(rotation ?? Math.random() * 10 - 5);
+  }, [rotation, card]);
+
+  const [upsideDown, setUpsideDown] = useState(false);
+  useEffect(() => {
+    setUpsideDown(Math.random() > 0.5);
+  }, [card]);
+
+  const dealDelay = useRef(Math.random() * 200); // eslint-disable-line react-hooks/purity
+  const revealDelay = useRef(Math.random() * 200); // eslint-disable-line react-hooks/purity
 
   const dealStyle = useSpring({
     reverse: card === undefined,
@@ -258,13 +261,13 @@ export function Card({
       rotate: r,
       ...(anchor === "left" ? { x: "0vw" } : { y: "0vh" }),
     },
-    delay: Math.random() * 200, // eslint-disable-line react-hooks/purity
+    delay: dealDelay.current,
     config: { ...config.slow, precision: 0.0001 },
   });
   const revealStyle = useSpring({
     rotateY: revealed ? 180 : 0,
     x: revealed ? -250 : 0,
-    delay: Math.random() * 200, // eslint-disable-line react-hooks/purity
+    delay: revealDelay.current,
     config: config.slow,
   });
 

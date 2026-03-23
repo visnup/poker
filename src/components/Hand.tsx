@@ -10,7 +10,7 @@ const slow = { ...config.slow, precision: 0.0001 };
 export function Hand({ table, seat }: { table: string; seat: number }) {
   const dealt = useQuery(api.deals.get, { table });
 
-  const [rotation, setRotation] = useState(() => Math.random() * 10 - 5);
+  const [rotation, setRotation] = useState(0);
   useEffect(() => setRotation(Math.random() * 10 - 5), [dealt]); // eslint-disable-line react-hooks/set-state-in-effect
 
   const clipPath = (w: number) => ({ clipPath: `circle(${w}px at 10px 20px)` });
