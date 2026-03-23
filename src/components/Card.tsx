@@ -1,6 +1,6 @@
 import cx from "classnames";
+import { svg } from "@/lib/card-back";
 import { range } from "d3-array";
-import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import { animated, config, useReducedMotion, useSpring } from "react-spring";
 
@@ -186,15 +186,16 @@ const Face = ({ rank = "", suit = "" }: { rank?: string; suit?: string }) => (
   </div>
 );
 
-// Sol LeWitt — served by /api/card-back (stable per server start)
+// Sol LeWitt — inlined so @media (prefers-color-scheme) works
 const Back = () => (
-  <Image
-    src="/api/card-back"
-    alt=""
-    fill
-    unoptimized
-    loading="eager"
-    style={{ pointerEvents: "none" }}
+  <div
+    dangerouslySetInnerHTML={{ __html: svg }}
+    style={{
+      position: "absolute",
+      inset: 0,
+      pointerEvents: "none",
+      lineHeight: 0,
+    }}
   />
 );
 
