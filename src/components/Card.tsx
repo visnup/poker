@@ -184,7 +184,15 @@ const Face = ({ rank = "", suit = "" }: { rank?: string; suit?: string }) => (
 );
 
 // Sol LeWitt — served by /api/card-back (stable per server start)
-const Back = () => <Image src="/api/card-back" alt="" fill unoptimized />;
+const Back = () => (
+  <Image
+    src="/api/card-back"
+    alt=""
+    fill
+    unoptimized
+    style={{ pointerEvents: "none" }}
+  />
+);
 
 interface CardProps {
   card?: string;
