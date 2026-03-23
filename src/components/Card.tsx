@@ -190,6 +190,7 @@ const Back = () => (
     alt=""
     fill
     unoptimized
+    loading="eager"
     style={{ pointerEvents: "none" }}
   />
 );
