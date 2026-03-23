@@ -1,4 +1,4 @@
-import { deck } from "../../../convex/deals";
+import { deck } from "../../../convex/deck";
 import { Card } from "../../components/Card";
 
 export default function Test() {

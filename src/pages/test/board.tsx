@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Board } from "../../components/Table";
-import { deck } from "../../../convex/deals";
+import { deck } from "../../../convex/deck";
 
 const CARDS = deck.slice(0, 5);
 

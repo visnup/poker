@@ -1,10 +1,7 @@
 import { v } from "convex/values";
-import { cross, shuffle } from "d3-array";
+import { shuffle } from "d3-array";
 import { mutation, query } from "./_generated/server.js";
-
-const suits = [..."♣♦♥♠"];
-const ranks = [..."23456789", "10", ..."JQKA"];
-export const deck = cross(suits, ranks, (s, r) => r + s);
+import { deck } from "./deck";
 
 export const clear = mutation({
   args: { table: v.string() },

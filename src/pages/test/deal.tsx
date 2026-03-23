@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Card } from "../../components/Card";
-import { deck } from "../../../convex/deals";
+import { deck } from "../../../convex/deck";
 
 export default function Test() {
   const [revealed, setRevealed] = useState(false);
