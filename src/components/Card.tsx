@@ -9,11 +9,13 @@ const Column = ({
   suit,
   justify = "space-between",
   pad = 0,
+  size = 48,
 }: {
   pips?: number;
   suit?: string;
   justify?: string;
   pad?: number;
+  size?: number;
 }) => (
   <div className="column">
     {range(0, pips).map((i) => (
@@ -29,9 +31,10 @@ const Column = ({
         display: flex;
         flex-direction: column;
         justify-content: ${pips === 1 ? "space-evenly" : justify};
-        font-size: 48px;
+        font-size: ${size}px;
         padding: 30px 0;
-        width: 30%;
+        width: ${size > 48 ? "auto" : "30%"};
+        flex-grow: ${size > 48 ? "1" : "0"};
         text-align: center;
       }
       .pad {
@@ -143,7 +146,7 @@ const Face = ({ rank = "", suit = "" }: { rank?: string; suit?: string }) => (
         case "K":
           return <Court suit={suit} rank="♚" />;
         case "A":
-          return <Column pips={1} suit={suit} />;
+          return <Column pips={1} suit={suit} size={96} />;
       }
     })()}
     <style jsx>{`
