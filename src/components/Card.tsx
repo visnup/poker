@@ -1,6 +1,6 @@
 import cx from "classnames";
 import { range } from "d3-array";
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import { animated, config, useSpring } from "react-spring";
 
 const Column = ({
@@ -241,7 +241,7 @@ export function Card({
   anchor = "left",
   rotation,
   ...props
-}: CardProps & JSX.IntrinsicElements["div"]) {
+}: CardProps & React.JSX.IntrinsicElements["div"]) {
   const r = useMemo(
     () => (void card, rotation ?? Math.random() * 10 - 5),
     [rotation, card],

@@ -1,7 +1,7 @@
 import { useDrag } from "@use-gesture/react";
 import Head from "next/head";
-import { ReactNode, useState } from "react";
-import { animated, useSpring } from "react-spring";
+import React, { ReactNode, useRef, useState } from "react";
+import { animated, useSpring, useSpringRef } from "react-spring";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Card } from "./Card";
@@ -13,12 +13,21 @@ export function DealerButton({
   onMove: () => void;
   children: ReactNode;
 }) {
-  const [style, api] = useSpring(() => ({
-    x: 0,
-    y: 0,
+  // Refs hold the current position and rotation so the object-form spring
+  // always targets the correct values on re-render (react-spring v10 reads
+  // the config on every render; using the function form let it reset to the
+  // original {x:0,y:0} after each re-render causing the button to drift back).
+  const pos = useRef({ x: 0, y: 0 });
+  const rotate = useRef(Math.random() * 20);
+  const api = useSpringRef();
+  const style = useSpring({
+    ref: api,
+    x: pos.current.x,
+    y: pos.current.y,
     scale: 1,
-    rotate: Math.random() * 20,
-  }));
+    rotate: rotate.current,
+    immediate: (key) => "xy".includes(key),
+  });
   const bind = useDrag(
     ({
       active,
@@ -27,6 +36,8 @@ export function DealerButton({
       movement,
       offset: [x, y],
     }) => {
+      pos.current = { x, y };
+      rotate.current = memo;
       api.start({
         x,
         y,
@@ -74,7 +85,10 @@ export function Board({
   cards,
   revealed = 0,
   ...props
-}: { cards: string[]; revealed?: number } & JSX.IntrinsicElements["div"]) {
+}: {
+  cards: string[];
+  revealed?: number;
+} & React.JSX.IntrinsicElements["div"]) {
   const flop = cards.slice(0, 3);
   const turn = cards[3];
   const river = cards[4];
