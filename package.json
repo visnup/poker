@@ -14,7 +14,7 @@
     "classnames": "^2.5.1",
     "convex": "^1.8.0",
     "d3-array": "^3.2.4",
-    "next": "^14.1.0",
+    "next": "^16.2.1",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-spring": "^10.0.3"
@@ -28,7 +28,7 @@
     "@types/react-transition-group": "^4.4.10",
     "concurrently": "^9.2.1",
     "eslint": "^8.56.0",
-    "eslint-config-next": "^14.1.0",
+    "eslint-config-next": "^16.2.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-prettier": "^5.1.3",
