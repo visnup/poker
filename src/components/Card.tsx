@@ -243,10 +243,10 @@ export function Card({
   ...props
 }: CardProps & React.JSX.IntrinsicElements["div"]) {
   const r = useMemo(
-    () => (void card, rotation ?? Math.random() * 10 - 5),
+    () => (void card, rotation ?? Math.random() * 10 - 5), // eslint-disable-line react-hooks/purity
     [rotation, card],
   );
-  const upsideDown = useMemo(() => (void card, Math.random() > 0.5), [card]);
+  const upsideDown = useMemo(() => (void card, Math.random() > 0.5), [card]); // eslint-disable-line react-hooks/purity
 
   const dealStyle = useSpring({
     reverse: card === undefined,
@@ -258,13 +258,13 @@ export function Card({
       rotate: r,
       ...(anchor === "left" ? { x: "0vw" } : { y: "0vh" }),
     },
-    delay: Math.random() * 200,
+    delay: Math.random() * 200, // eslint-disable-line react-hooks/purity
     config: { ...config.slow, precision: 0.0001 },
   });
   const revealStyle = useSpring({
     rotateY: revealed ? 180 : 0,
     x: revealed ? -250 : 0,
-    delay: Math.random() * 200,
+    delay: Math.random() * 200, // eslint-disable-line react-hooks/purity
     config: config.slow,
   });
 

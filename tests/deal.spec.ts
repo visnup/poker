@@ -9,7 +9,10 @@ test("face ranks are present", async ({ page }) => {
   await page.goto("/test/deal");
   // .face[data-rank] targets the Face component div (not the outer container)
   await expect(page.locator(".face[data-rank]").first()).toBeVisible();
-  const rank = await page.locator(".face[data-rank]").first().getAttribute("data-rank");
+  const rank = await page
+    .locator(".face[data-rank]")
+    .first()
+    .getAttribute("data-rank");
   expect(rank).toBeTruthy();
 });
 

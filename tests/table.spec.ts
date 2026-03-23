@@ -19,7 +19,10 @@ test("dealer button stays at dragged position", async ({ page }) => {
   await expect(button).toBeVisible({ timeout: 10_000 });
 
   const before = await button.boundingBox();
-  await page.mouse.move(before!.x + before!.width / 2, before!.y + before!.height / 2);
+  await page.mouse.move(
+    before!.x + before!.width / 2,
+    before!.y + before!.height / 2,
+  );
   await page.mouse.down();
   await page.mouse.move(
     before!.x + before!.width / 2 + 150,
@@ -40,7 +43,10 @@ test("drag dealer button 250px deals cards", async ({ page }) => {
   await expect(button).toBeVisible({ timeout: 10_000 });
 
   const before = await button.boundingBox();
-  await page.mouse.move(before!.x + before!.width / 2, before!.y + before!.height / 2);
+  await page.mouse.move(
+    before!.x + before!.width / 2,
+    before!.y + before!.height / 2,
+  );
   await page.mouse.down();
   await page.mouse.move(
     before!.x + before!.width / 2 + 260,
@@ -61,7 +67,10 @@ test("board cycles reveal states on click", async ({ page }) => {
 
   // Deal first
   const before = await button.boundingBox();
-  await page.mouse.move(before!.x + before!.width / 2, before!.y + before!.height / 2);
+  await page.mouse.move(
+    before!.x + before!.width / 2,
+    before!.y + before!.height / 2,
+  );
   await page.mouse.down();
   await page.mouse.move(
     before!.x + before!.width / 2 + 260,

@@ -11,7 +11,10 @@ test("button stays at dragged position", async ({ page }) => {
   const before = await button.boundingBox();
 
   // drag 150px right and 100px down
-  await page.mouse.move(before!.x + before!.width / 2, before!.y + before!.height / 2);
+  await page.mouse.move(
+    before!.x + before!.width / 2,
+    before!.y + before!.height / 2,
+  );
   await page.mouse.down();
   await page.mouse.move(
     before!.x + before!.width / 2 + 150,
@@ -31,7 +34,10 @@ test("button stays at position after re-render", async ({ page }) => {
   const before = await button.boundingBox();
 
   // drag >200px — triggers onMove → parent re-renders (setMoved)
-  await page.mouse.move(before!.x + before!.width / 2, before!.y + before!.height / 2);
+  await page.mouse.move(
+    before!.x + before!.width / 2,
+    before!.y + before!.height / 2,
+  );
   await page.mouse.down();
   await page.mouse.move(
     before!.x + before!.width / 2 + 260,
@@ -53,7 +59,10 @@ test("onMove fires after large drag", async ({ page }) => {
   const before = await button.boundingBox();
 
   // drag >200px to trigger onMove
-  await page.mouse.move(before!.x + before!.width / 2, before!.y + before!.height / 2);
+  await page.mouse.move(
+    before!.x + before!.width / 2,
+    before!.y + before!.height / 2,
+  );
   await page.mouse.down();
   await page.mouse.move(
     before!.x + before!.width / 2 + 250,

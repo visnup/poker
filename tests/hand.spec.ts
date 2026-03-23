@@ -9,7 +9,10 @@ async function dealCards(page: import("@playwright/test").Page, table: string) {
   const button = page.getByRole("button", { name: "Dealer" });
   await expect(button).toBeVisible({ timeout: 10_000 });
   const before = await button.boundingBox();
-  await page.mouse.move(before!.x + before!.width / 2, before!.y + before!.height / 2);
+  await page.mouse.move(
+    before!.x + before!.width / 2,
+    before!.y + before!.height / 2,
+  );
   await page.mouse.down();
   await page.mouse.move(
     before!.x + before!.width / 2 + 260,
@@ -53,7 +56,9 @@ test("drag down reveals cards", async ({ browser }) => {
   const box = await playerPage.locator(".cards").boundingBox();
   await playerPage.mouse.move(box!.x + box!.width / 2, box!.y + 200);
   await playerPage.mouse.down();
-  await playerPage.mouse.move(box!.x + box!.width / 2, box!.y + 500, { steps: 20 });
+  await playerPage.mouse.move(box!.x + box!.width / 2, box!.y + 500, {
+    steps: 20,
+  });
   await playerPage.mouse.up();
 
   // Cards should still be present after reveal gesture
@@ -78,7 +83,9 @@ test("swipe up folds cards", async ({ browser }) => {
   const box = await playerPage.locator(".cards").boundingBox();
   await playerPage.mouse.move(box!.x + box!.width / 2, box!.y + 400);
   await playerPage.mouse.down();
-  await playerPage.mouse.move(box!.x + box!.width / 2, box!.y + 100, { steps: 5 });
+  await playerPage.mouse.move(box!.x + box!.width / 2, box!.y + 100, {
+    steps: 5,
+  });
   await playerPage.mouse.up();
 
   // Cards animate to y:-1000, still in DOM

@@ -6,6 +6,7 @@
     "dev": "concurrently \"convex dev\" \"next dev\"",
     "build": "next build",
     "start": "next start",
+    "lint": "eslint .",
     "test": "playwright test"
   },
   "dependencies": {
@@ -26,6 +27,11 @@
     "@types/react-dom": "^19.2.3",
     "@types/react-transition-group": "^4.4.10",
     "concurrently": "^9.2.1",
+    "eslint": "^9.39.4",
+    "eslint-config-next": "^16.2.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "prettier": "^3.8.1",
     "typescript": "^5.3.3"
   }
 }
