@@ -3,10 +3,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"pnpm dlx convex dev\" \"next dev\"",
+    "dev": "concurrently \"convex dev\" \"next dev\"",
     "build": "next build",
     "start": "next start",
-"test": "playwright test"
+    "test": "playwright test"
   },
   "dependencies": {
     "@use-gesture/react": "^10.3.0",
