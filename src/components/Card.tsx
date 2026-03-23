@@ -1,7 +1,7 @@
 import cx from "classnames";
 import { range } from "d3-array";
+import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
-import { backPoints } from "./card-back-points";
 import { animated, config, useSpring } from "react-spring";
 
 const Column = ({
@@ -183,47 +183,8 @@ const Face = ({ rank = "", suit = "" }: { rank?: string; suit?: string }) => (
   </div>
 );
 
-// Sol LeWitt
-// Lines of One Inch, Four Directions, Four Colors, from Sixteen Lithographs in Color
-const margin = 15;
-const length = 100;
-const Back = () => (
-  <svg viewBox="0 0 250 350" width="100%" height="100%">
-    <rect
-      x={margin}
-      y={margin}
-      width={250 - 2 * margin}
-      height={350 - 2 * margin}
-      fill="none"
-      stroke="currentColor"
-      strokeOpacity="0.5"
-      rx="2"
-    />
-    {backPoints.map(([x, y, w], i) => (
-      <line
-        key={i}
-        x1={Math.max(x, margin)}
-        y1={y}
-        x2={Math.min(x + length, 250 - margin)}
-        y2={y}
-        stroke="currentColor"
-        strokeWidth={w}
-        strokeOpacity="0.5"
-      />
-    ))}
-    <style jsx>{`
-      svg {
-        background-color: white;
-        color: steelblue;
-      }
-      @media (prefers-color-scheme: dark) {
-        svg {
-          background-color: #333;
-        }
-      }
-    `}</style>
-  </svg>
-);
+// Sol LeWitt — served by /api/card-back (stable per server start)
+const Back = () => <Image src="/api/card-back" alt="" fill unoptimized />;
 
 interface CardProps {
   card?: string;
