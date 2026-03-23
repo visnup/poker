@@ -19,13 +19,13 @@ export function DealerButton({
   // original {x:0,y:0} after each re-render causing the button to drift back).
   const pos = useRef({ x: 0, y: 0 });
   const rotate = useRef(0);
-  const api = useSpringRef();
+  const springRef = useSpringRef();
   useEffect(() => {
     rotate.current = Math.random() * 20;
-    api.start({ rotate: rotate.current });
-  }, [api]);
+    springRef.start({ rotate: rotate.current });
+  }, [springRef]);
   const style = useSpring({
-    ref: api,
+    ref: springRef,
     x: pos.current.x,
     y: pos.current.y,
     scale: 1,
@@ -42,7 +42,7 @@ export function DealerButton({
     }) => {
       pos.current = { x, y };
       rotate.current = memo;
-      api.start({
+      springRef.start({
         x,
         y,
         scale: active ? 1.1 : 1,

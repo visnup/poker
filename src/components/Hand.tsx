@@ -64,7 +64,6 @@ export function Hand({ table, seat }: { table: string; seat: number }) {
         <meta name="viewport" content="width=380" />
       </Head>
       <animated.div style={foldStyle}>
-        {/* <button onClick={() => setFolded(!folded)}>fold</button> */}
         {/* backs */}
         <div className="layer">
           {cards.map((c, i) => (

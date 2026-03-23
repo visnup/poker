@@ -22,7 +22,7 @@ export const deal = mutation({
     const shuffled = shuffle(deck.slice());
     const board = shuffled.slice(0, 5);
     const cards = shuffled.slice(5);
-    db.insert("deals", { table, shuffled, board, cards, cleared: false });
+    await db.insert("deals", { table, shuffled, board, cards, cleared: false });
   },
 });
 

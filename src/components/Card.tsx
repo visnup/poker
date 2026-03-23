@@ -240,10 +240,8 @@ export function Card({
     config: config.slow,
   });
 
-  const [rank, suit] = [
-    card?.slice(0, card.length - 1),
-    card?.slice(card.length - 1),
-  ];
+  const rank = card?.slice(0, -1);
+  const suit = card?.slice(-1);
 
   return (
     <animated.div style={dealStyle}>
