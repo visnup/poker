@@ -1,7 +1,7 @@
 import { useDrag } from "@use-gesture/react";
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { animated, config, useSpring } from "react-spring";
+import { animated, config, useSpring } from "@react-spring/web";
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Card } from "./Card";

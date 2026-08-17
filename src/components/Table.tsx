@@ -6,7 +6,7 @@ import {
   useReducedMotion,
   useSpring,
   useSpringRef,
-} from "react-spring";
+} from "@react-spring/web";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Card } from "./Card";

@@ -2,7 +2,12 @@ import cx from "classnames";
 import { svg } from "@/lib/card-back";
 import { range } from "d3-array";
 import React, { useEffect, useRef, useState } from "react";
-import { animated, config, useReducedMotion, useSpring } from "react-spring";
+import {
+  animated,
+  config,
+  useReducedMotion,
+  useSpring,
+} from "@react-spring/web";
 
 const Column = ({
   pips = 0,
