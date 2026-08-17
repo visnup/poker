@@ -8,9 +8,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 pnpm dev     # Run Convex dev server + Next.js dev server concurrently
 pnpm build   # Production build
 pnpm lint    # ESLint + Prettier validation
+pnpm test    # Playwright end-to-end tests
 ```
 
-No automated test framework is configured. Manual testing is done via `/test/deal` and `/test/faces` routes while `npm run dev` is running.
+Tests live in `tests/` and drive the `/test/*` pages (`board`, `deal`, `dealer-button`, `faces`). Playwright starts `next dev` itself, reusing a running server outside CI. `faces.spec.ts` is a screenshot test — update snapshots with `pnpm test -u`.
+
+## Toolchain
+
+Node is pinned to 24.19.0 LTS (`.nvmrc`, `engines`). pnpm 11 is pinned via `packageManager`; Vercel honors it through `ENABLE_EXPERIMENTAL_COREPACK=1`, set on the project. `pnpm-workspace.yaml` needs its `packages:` field — pnpm 9, the version Vercel falls back to, errors without it.
+
+`vercel.json` overrides the build command (the dashboard setting still said `yarn build`).
+
+TypeScript is held at 6.x: typescript-eslint hard-errors on TS 7 and takes the whole lint run down ([#10940](https://github.com/typescript-eslint/typescript-eslint/issues/10940)).
 
 ## Architecture
 
