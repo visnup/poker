@@ -8,5 +8,11 @@ export default defineConfig([
   ...nextTs,
   prettierRecommended,
   { settings: { react: { version: "19" } } }, // Avoids auto-detection crash (eslint-plugin-react #3977)
+  {
+    rules: {
+      "react-hooks/refs": "off", // react-spring targets ref.current from render
+      "react-hooks/set-state-in-effect": "off", // client-only Math.random(), keeps SSR hydration matching
+    },
+  },
   globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts"]),
 ]);
