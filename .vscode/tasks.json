@@ -6,7 +6,7 @@
 			"script": "dev",
 			"problemMatcher": [],
 			"label": "npm: dev",
-			"detail": "npx convex dev & next dev",
+			"detail": "concurrently \"convex dev\" \"next dev\"",
 			"runOptions": { "runOn": "folderOpen" }
 		}
 	]

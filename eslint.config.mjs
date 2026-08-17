@@ -14,5 +14,11 @@ export default defineConfig([
       "react-hooks/set-state-in-effect": "off", // client-only Math.random(), keeps SSR hydration matching
     },
   },
-  globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts"]),
+  globalIgnores([
+    ".next/**",
+    "out/**",
+    "build/**",
+    "next-env.d.ts",
+    "convex/_generated/**",
+  ]),
 ]);
