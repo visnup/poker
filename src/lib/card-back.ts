@@ -1,15 +1,26 @@
 import { range } from "d3-array";
 
-// Generated once per module load — stable for the lifetime of the process/bundle.
 const margin = 15;
 const length = 100;
 const width = 250;
 const height = 350;
 
+// Seeded so the server and client bundles emit byte-identical SVG; Math.random()
+// here renders a different back on each side and hydration discards the server's.
+function mulberry32(seed: number) {
+  return () => {
+    seed = (seed + 0x6d2b79f5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+const random = mulberry32(0x5eed);
+
 const points = range(0, 300).map(() => [
-  Math.random() * width - length / 2,
-  Math.random() * (height - 2 * margin) + margin,
-  Math.random() + 1,
+  random() * width - length / 2,
+  random() * (height - 2 * margin) + margin,
+  random() + 1,
 ]);
 
 const lines = points

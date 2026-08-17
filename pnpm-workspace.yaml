@@ -1,0 +1,6 @@
+packages: [] # pnpm 9 (Vercel default) errors without this
+
+allowBuilds:
+  esbuild: true
+  sharp: true
+  unrs-resolver: false

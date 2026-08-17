@@ -1,7 +1,12 @@
 import { useDrag } from "@use-gesture/react";
 import Head from "next/head";
 import React, { ReactNode, useEffect, useRef, useState } from "react";
-import { animated, useReducedMotion, useSpring, useSpringRef } from "react-spring";
+import {
+  animated,
+  useReducedMotion,
+  useSpring,
+  useSpringRef,
+} from "@react-spring/web";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Card } from "./Card";
@@ -23,7 +28,10 @@ export function DealerButton({
   const springRef = useSpringRef();
   useEffect(() => {
     rotate.current = Math.random() * 20;
-    springRef.start({ rotate: rotate.current, immediate: reduceMotion ?? false });
+    springRef.start({
+      rotate: rotate.current,
+      immediate: reduceMotion ?? false,
+    });
   }, [springRef, reduceMotion]);
   const style = useSpring({
     ref: springRef,

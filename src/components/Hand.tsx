@@ -1,7 +1,7 @@
 import { useDrag } from "@use-gesture/react";
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { animated, config, useSpring } from "react-spring";
+import { animated, config, useSpring } from "@react-spring/web";
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Card } from "./Card";
@@ -11,7 +11,7 @@ export function Hand({ table, seat }: { table: string; seat: number }) {
   const dealt = useQuery(api.deals.get, { table });
 
   const [rotation, setRotation] = useState(0);
-  useEffect(() => setRotation(Math.random() * 10 - 5), [dealt]); // eslint-disable-line react-hooks/set-state-in-effect
+  useEffect(() => setRotation(Math.random() * 10 - 5), [dealt]);
 
   const clipPath = (w: number) => ({ clipPath: `circle(${w}px at 10px 20px)` });
   const [revealStyle, revealing] = useSpring(() => ({

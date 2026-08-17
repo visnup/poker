@@ -2,6 +2,10 @@
   "name": "poker",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@11.10.0",
+  "engines": {
+    "node": "24.x"
+  },
   "scripts": {
     "dev": "concurrently \"convex dev\" \"next dev\"",
     "build": "next build",
@@ -10,28 +14,27 @@
     "test": "playwright test"
   },
   "dependencies": {
-    "@use-gesture/react": "^10.3.0",
+    "@react-spring/web": "^10.1.2",
+    "@use-gesture/react": "^10.3.1",
     "classnames": "^2.5.1",
-    "convex": "^1.8.0",
+    "convex": "^1.44.0",
     "d3-array": "^3.2.4",
-    "next": "^16.2.1",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4",
-    "react-spring": "^10.0.3"
+    "next": "^16.3.1",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
   },
   "devDependencies": {
-    "@playwright/test": "^1.58.2",
-    "@types/d3-array": "^3.2.1",
-    "@types/node": "^25.5.0",
-    "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.2.3",
-    "@types/react-transition-group": "^4.4.10",
-    "concurrently": "^9.2.1",
-    "eslint": "^10.1.0",
-    "eslint-config-next": "^16.2.1",
+    "@playwright/test": "^1.62.1",
+    "@types/d3-array": "^3.2.2",
+    "@types/node": "^26.2.0",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "concurrently": "^10.0.5",
+    "eslint": "^10.8.1",
+    "eslint-config-next": "^16.3.1",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.5",
-    "prettier": "^3.8.1",
-    "typescript": "^5.3.3"
+    "eslint-plugin-prettier": "^5.5.6",
+    "prettier": "^3.9.6",
+    "typescript": "^6.0.3"
   }
 }
