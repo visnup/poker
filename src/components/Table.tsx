@@ -1,12 +1,7 @@
 import { useDrag } from "@use-gesture/react";
 import Head from "next/head";
 import React, { ReactNode, useEffect, useRef, useState } from "react";
-import {
-  animated,
-  useReducedMotion,
-  useSpring,
-  useSpringRef,
-} from "@react-spring/web";
+import { animated, useSpring, useSpringRef } from "@react-spring/web";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Card } from "./Card";
@@ -24,15 +19,11 @@ export function DealerButton({
   // original {x:0,y:0} after each re-render causing the button to drift back).
   const pos = useRef({ x: 0, y: 0 });
   const rotate = useRef(0);
-  const reduceMotion = useReducedMotion();
   const springRef = useSpringRef();
   useEffect(() => {
     rotate.current = Math.random() * 20;
-    springRef.start({
-      rotate: rotate.current,
-      immediate: reduceMotion ?? false,
-    });
-  }, [springRef, reduceMotion]);
+    springRef.start({ rotate: rotate.current });
+  }, [springRef]);
   const style = useSpring({
     ref: springRef,
     x: pos.current.x,

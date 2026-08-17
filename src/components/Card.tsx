@@ -2,12 +2,7 @@ import cx from "classnames";
 import { svg } from "@/lib/card-back";
 import { range } from "d3-array";
 import React, { useEffect, useRef, useState } from "react";
-import {
-  animated,
-  config,
-  useReducedMotion,
-  useSpring,
-} from "@react-spring/web";
+import { animated, config, useSpring } from "@react-spring/web";
 
 const Column = ({
   pips = 0,
@@ -230,7 +225,6 @@ export function Card({
   }, [card]);
   const upsideDown = upsideDownProp ?? upsideDownRandom;
 
-  const reduceMotion = useReducedMotion();
   const dealDelay = useRef(Math.random() * 200); // eslint-disable-line react-hooks/purity
   const revealDelay = useRef(Math.random() * 200); // eslint-disable-line react-hooks/purity
 
@@ -244,15 +238,13 @@ export function Card({
       rotate: r,
       ...(anchor === "left" ? { x: "0vw" } : { y: "0vh" }),
     },
-    delay: reduceMotion ? 0 : dealDelay.current,
-    immediate: reduceMotion ?? false,
+    delay: dealDelay.current,
     config: { ...config.slow, precision: 0.0001 },
   });
   const revealStyle = useSpring({
     rotateY: revealed ? 180 : 0,
     x: revealed ? -250 : 0,
-    delay: reduceMotion ? 0 : revealDelay.current,
-    immediate: reduceMotion ?? false,
+    delay: revealDelay.current,
     config: config.slow,
   });
 
