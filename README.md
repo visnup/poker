@@ -1,9 +1,9 @@
 # Poker dance ♠️💃
 
-Play poker without cards. A web clone of [Bold Poker](https://www.boldpoker.net).
+Play Texas hold'em without a deck. Phones are the cards, a shared screen is
+the table. Chips stay real.
 
-Chips stay real. This replaces the deck and all the shuffling, nothing else.
-Players use their phones.
+<https://poker.dance>
 
 ## Play
 
@@ -33,3 +33,9 @@ Your seat:
 pnpm dev    # Convex + Next
 pnpm test   # Playwright
 ```
+
+Message or open issues if you’ve got ‘em.
+
+## Inspiration
+
+A web clone of [Bold Poker](https://www.boldpoker.net).

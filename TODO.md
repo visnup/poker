@@ -53,6 +53,15 @@ The full inventory of things a new player cannot discover:
       "pull down to peek · swipe up to fold" caption on the hand view, both
       fading out once the player has done it once. Persist "has dealt" /
       "has peeked" in `localStorage`. *(M)*
+- [ ] **Record a demo video.** A hand dealt, a peek, a fold. `hand.spec.ts`
+      already scripts all three gestures, so a Playwright recording script is
+      mostly assembly — and re-runnable when the UI changes. WebM, no
+      conversion: `recordVideo` writes `.webm` and nothing else (it throws on
+      any other extension, `videoRecorder.js:38`). Embed at the top of the
+      README; for a visual app it will outsell any copy. *(M)*
+      - Unverified: whether GitHub's README renderer plays a `.webm` committed
+        in the repo, or only ones uploaded to `user-attachments`. Check before
+        assuming a relative path works.
 - [ ] **Help overlay.** A `?` corner on the table view listing the gestures and
       showing the join URL, so the answer is on the big screen everyone is
       already looking at. *(S)*
