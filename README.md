@@ -23,8 +23,9 @@ Table:
 Your seat:
 
 - Pull down - peek at your cards
-- Swipe up - fold
 - Swipe down - reveal your cards
+- Swipe up - fold
+- Tap after folding - take back your cards (undo fold)
 
 ## Develop
 
