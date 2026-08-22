@@ -63,12 +63,18 @@ The full inventory of things a new player cannot discover:
       nothing at all until someone deals. Three different states that all look
       like a broken page. Add "connecting…", "fling the dealer button to
       start", and "waiting for the deal". *(S)*
+- [ ] **Fix or drop numbered seat URLs.** Verified by running the routing
+      logic: `[[...params]].tsx:9` maps only the literal `"0"` to a seat, so
+      `/kitchen/1` silently auto-assigns instead of claiming seat 1, and `/1`
+      is a table *named* "1". The path reads like `/:table/:seat` but the
+      segment is really a boolean "is this the table screen". Either honor the
+      number or rename the route. (`CLAUDE.md` describes it the old way too.)
+      *(S)*
 - [ ] **Explain the two roles.** It's surprising that the first phone to open
       the URL becomes the table screen rather than a seat. Either label it on
       screen ("this device is the table") or make choosing explicit. *(S)*
-- [ ] **README that covers actual use.** It's two lines and a link to Bold
-      Poker. Cover starting a table, which device is which, and the gestures.
-      *(S)*
+- [x] **README that covers actual use.** Table naming, which device is which,
+      and the four gestures.
 
 ## P2 — the game people actually want to play
 
