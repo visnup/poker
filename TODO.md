@@ -52,10 +52,12 @@ The full inventory of things a new player cannot discover:
       type your own table name — that's still open if it turns out to matter.
 - [ ] **Gesture hints on first use.** Table view now has a static caption
       ("share this link / move the dealer button to deal") that fades out
-      once cards are dealt — see `Table.tsx`. Still missing: a nudge animation
-      on the dealer button, the hand-view "pull down to peek · swipe up to
-      fold" caption, and persisting "has dealt" / "has peeked" in
-      `localStorage` so hints don't reappear after the first time. *(M)*
+      once cards are dealt — see `Table.tsx`. Hand view now has a matching
+      "pull down to peek · swipe up to fold" caption that fades out once a
+      player peeks, persisted via `localStorage` (`hasPeeked`) so it doesn't
+      reappear after the first time — see `Hand.tsx`, `hints.spec.ts`. Still
+      missing: a nudge animation on the dealer button, and persisting
+      "has dealt" the same way on the table view. *(S)*
 - [ ] **Record a demo video.** A hand dealt, a peek, a fold. `hand.spec.ts`
       already scripts all three gestures, so a Playwright recording script is
       mostly assembly — and re-runnable when the UI changes. WebM, no

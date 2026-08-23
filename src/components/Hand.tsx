@@ -1,4 +1,5 @@
 import { useDrag } from "@use-gesture/react";
+import cx from "classnames";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { animated, config, useSpring } from "@react-spring/web";
@@ -9,6 +10,9 @@ import { Card } from "./Card";
 const slow = { ...config.slow, precision: 0.0001 };
 export function Hand({ table, seat }: { table: string; seat: number }) {
   const dealt = useQuery(api.deals.get, { table });
+
+  const [peeked, setPeeked] = useState(true);
+  useEffect(() => setPeeked(localStorage.getItem("hasPeeked") === "true"), []);
 
   const [rotation, setRotation] = useState(0);
   useEffect(() => setRotation(Math.random() * 10 - 5), [dealt]);
@@ -39,8 +43,11 @@ export function Hand({ table, seat }: { table: string; seat: number }) {
     if (last) {
       if (y >= 0) {
         // pulled down to reveal or reset
-        if (h > 250) revealing.start(clipPath(500));
-        else setRotation(Math.random());
+        if (h > 250) {
+          revealing.start(clipPath(500));
+          localStorage.setItem("hasPeeked", "true");
+          setPeeked(true);
+        } else setRotation(Math.random());
       } else if (y < 0) {
         // swiped up to fold or reset
         if (vy > 1 || h > 250)
@@ -88,6 +95,11 @@ export function Hand({ table, seat }: { table: string; seat: number }) {
           </animated.div>
         </div>
       </animated.div>
+      <p className={cx("hint", { hidden: peeked })}>
+        Pull down to peek at your cards.
+        <br />
+        Swipe up to fold.
+      </p>
       <style jsx>
         {`
           .cards {
@@ -104,6 +116,20 @@ export function Hand({ table, seat }: { table: string; seat: number }) {
           }
           .placement {
             position: absolute;
+          }
+          .hint {
+            position: absolute;
+            top: 55vh;
+            width: 100%;
+            text-align: center;
+            font-family:
+              "Segoe Script", "Bradley Hand", "Apple Chancery", cursive;
+            font-size: large;
+            opacity: 0.5;
+            transition: opacity 1s;
+          }
+          .hint.hidden {
+            opacity: 0;
           }
           .placement + .placement {
             left: 50px;
