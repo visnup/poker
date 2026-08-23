@@ -4,7 +4,8 @@ export function Welcome({ onDismiss }: { onDismiss: () => void }) {
       <div className="card">
         <h1>♠ Poker</h1>
         <p>
-          A free poker table you can share with friends — no app, no signup.
+          Play Texas hold&rsquo;em without a deck. Phones are the cards, a
+          shared screen is the table.
         </p>
         <button>Start a table</button>
       </div>

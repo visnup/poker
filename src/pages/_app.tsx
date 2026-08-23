@@ -14,12 +14,12 @@ export default function App({ Component, pageProps }: AppProps) {
         <title>Poker</title>
         <meta
           name="description"
-          content="A free poker table you can share with friends — no app, no signup."
+          content="Play Texas hold'em without a deck. Phones are the cards, a shared screen is the table."
         />
         <meta property="og:title" content="Poker" />
         <meta
           property="og:description"
-          content="A free poker table you can share with friends — no app, no signup."
+          content="Play Texas hold'em without a deck. Phones are the cards, a shared screen is the table."
         />
       </Head>
       <Component {...pageProps} />

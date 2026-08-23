@@ -168,8 +168,8 @@ export function Table({ table }: { table: string }) {
       </DealerButton>
       {!dealt?.board.length && (
         <p className="hint">
-          Share this page&rsquo;s link — friends join from their phones. Drag
-          the dealer to deal.
+          Share this page&rsquo;s link so friends can join from their phones.
+          Drag the dealer to deal.
         </p>
       )}
       <style jsx>{`
