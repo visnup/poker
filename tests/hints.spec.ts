@@ -110,3 +110,43 @@ test("hint stays hidden on reload after peeking once", async ({ browser }) => {
   await expect(playerPage.locator(".hint")).toHaveClass(/hidden/);
   await playerCtx.close();
 });
+
+test("table view shows deal hint before first deal", async ({ page }) => {
+  const table = randomUUID();
+  await page.goto(`/${table}/0`);
+  await expect(page.getByRole("button", { name: "Dealer" })).toBeVisible({
+    timeout: 10_000,
+  });
+
+  await expect(page.locator(".hint")).toHaveText(
+    /Share this page.*Move the dealer button to deal/s,
+  );
+  await expect(page.locator(".hint")).not.toHaveClass(/hidden/);
+});
+
+test("dealing hides the table hint and persists to localStorage", async ({
+  page,
+}) => {
+  const table = randomUUID();
+  await dealCards(page, table);
+
+  await expect(page.locator(".hint")).toHaveClass(/hidden/);
+
+  const stored = await page.evaluate(() => localStorage.getItem("hasDealt"));
+  expect(stored).toBe("true");
+});
+
+test("table hint stays hidden on a new table after dealing once", async ({
+  page,
+}) => {
+  const table = randomUUID();
+  await dealCards(page, table);
+  await expect(page.locator(".hint")).toHaveClass(/hidden/);
+
+  // Same device/browser, a different (never-dealt) table.
+  await page.goto(`/${randomUUID()}/0`);
+  await expect(page.getByRole("button", { name: "Dealer" })).toBeVisible({
+    timeout: 10_000,
+  });
+  await expect(page.locator(".hint")).toHaveClass(/hidden/);
+});

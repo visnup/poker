@@ -140,6 +140,9 @@ export function Table({ table }: { table: string }) {
   // -1 = cleared, 0 = dealt, 1 = flop, 2 = turn, 3 = river
   const [revealed, setRevealed] = useState(0);
 
+  const [hasDealt, setHasDealt] = useState(true);
+  useEffect(() => setHasDealt(localStorage.getItem("hasDealt") === "true"), []);
+
   return (
     <div>
       <Head>
@@ -159,6 +162,8 @@ export function Table({ table }: { table: string }) {
       <DealerButton
         onMove={async () => {
           setRevealed(-1);
+          localStorage.setItem("hasDealt", "true");
+          setHasDealt(true);
           await clear({ table });
           await new Promise((resolve) => setTimeout(resolve, 500));
           await deal({ table });
@@ -167,7 +172,7 @@ export function Table({ table }: { table: string }) {
       >
         Dealer
       </DealerButton>
-      <p className={cx("hint", { hidden: dealt?.board.length })}>
+      <p className={cx("hint", { hidden: hasDealt || dealt?.board.length })}>
         Share this page&rsquo;s link so friends can join from their phones.
         <br />
         Move the dealer button to deal.
