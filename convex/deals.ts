@@ -8,8 +8,7 @@ export const clear = mutation({
   handler: async ({ db }, { table }) => {
     const dealt = await db
       .query("deals")
-      .withIndex("byTable")
-      .filter((q) => q.eq(q.field("table"), table))
+      .withIndex("byTable", (q) => q.eq("table", table))
       .order("desc")
       .first();
     if (dealt) await db.patch(dealt._id, { cleared: true });
@@ -31,8 +30,7 @@ export const get = query({
   handler: async (ctx, { table }) =>
     ctx.db
       .query("deals")
-      .withIndex("byTable")
-      .filter((q) => q.eq(q.field("table"), table))
+      .withIndex("byTable", (q) => q.eq("table", table))
       .order("desc")
       .first(),
 });

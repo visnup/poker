@@ -17,8 +17,7 @@ export const join = mutation({
     // Find an available seat.
     const players = await db
       .query("players")
-      .withIndex("bySeat")
-      .filter((q) => q.eq(q.field("table"), table))
+      .withIndex("bySeat", (q) => q.eq("table", table))
       .collect();
     for (let n = 0; n <= 10; n++)
       if (!players[n] || n < players[n].seat) {

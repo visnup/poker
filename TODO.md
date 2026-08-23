@@ -7,14 +7,17 @@ Effort is a rough sizing, not a promise.
 
 Things that make the app wrong or unplayable as-is.
 
-- [ ] **Actually use the indexes.** *Read from the installed types
-      (`node_modules/convex/dist/cjs-types/server/query.d.ts`), not reproduced;
-      the dashboard's documents-scanned count per call would confirm it.*
-      `deals.get`, `deals.clear`, and `players.join` all call `.withIndex(...)`
-      with no index range and then `.filter()` in the app layer. Per those
-      types, a range-less `withIndex` "will consider all documents in the
-      index" — so every one of these scans every row in the table and throws
-      most of them away. Pass `q => q.eq("table", table)` as the range. *(S)*
+- [x] **Actually use the indexes.** `deals.get`, `deals.clear`, and
+      `players.join` each named an index and then re-filtered on that index's
+      own key in the app layer, so the index supplied ordering and nothing
+      else. *Measured on the dev deployment (603 deals across 499 tables) by
+      walking the index exactly the way `deals.get` did: 4 documents scanned
+      for a table sorting late in the index, 527 for the earliest one, and all
+      603 for a table with no deals yet — which is what every phone hits
+      before the first deal. Ranged: 1.* At ~1KB a deal row that was also
+      ~600KB read per call and climbing toward Convex's 16384-document / 8MB
+      per-query ceiling. Now `withIndex("byTable", q => q.eq("table", table))`
+      with no `.filter()`.
 - [ ] **Fix seat assignment.** The `!players[n] || n < players[n].seat` loop
       assumes the query returns seats sorted and dense; concurrent joins can
       collide on a seat, and there's no seat cap enforcement (52 cards support
@@ -149,8 +152,8 @@ The full inventory of things a new player cannot discover:
   players aren't in the room and a laptop is one alt-tab away.
 - **Garbage-collecting old deals.** A deal row is ~1KB and a long night is a
   hundred hands; storage will never be the constraint. The only thing that made
-  accumulation matter was the range-less `withIndex` scan above — fix that and
-  the rows can pile up indefinitely.
+  accumulation matter was the range-less `withIndex` scan above; that's fixed,
+  so the rows can pile up indefinitely.
 - **Chips and betting.** Same philosophy as Bold Poker: this app exists to make
   real-life, in-person poker more fun, and the advantages of being in the room
   are things to depend on and leverage, not to reimplement. Betting happens with
