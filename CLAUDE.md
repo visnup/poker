@@ -28,12 +28,14 @@ This is a Next.js + Convex real-time poker app (similar to Bold Poker). Players 
 **Routing:** `src/pages/[[...params]].tsx` captures `/:table` (dealer) and `/:table/:seat` (player) URLs and renders `Game.tsx`.
 
 **Views:**
+
 - `Game.tsx` — session/join orchestration; routes to `Table` or `Hand` based on whether a seat param exists
 - `Table.tsx` — dealer view, shows community board cards with reveal animations
 - `Hand.tsx` — player view, drag gestures to reveal/fold hole cards
 - `Card.tsx` — card with 3D flip animation; renders suit/rank SVG
 
 **Backend (Convex):**
+
 - `convex/schema.ts` — two tables: `deals` (community cards) and `players` (active seats)
 - `convex/deals.ts` — `deal`, `clear` mutations; `get` query (latest deal for a table)
 - `convex/players.ts` — `join`, `ping` mutations; stale players (>10s) are auto-removed
@@ -41,6 +43,10 @@ This is a Next.js + Convex real-time poker app (similar to Bold Poker). Players 
 **Key libraries:** `react-spring` (animations), `@use-gesture/react` (drag), `d3-array` (`shuffle`/`cross` for deck generation)
 
 **Path alias:** `@/*` → `./src/*`
+
+## No junk
+
+Don't add speculative meta tags, config, or code "just in case" (og:title/og:description duplicating title/description, unused fallback logic, etc.). If it's not solving a real, current problem, leave it out — it's not worth the review time.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

@@ -16,11 +16,6 @@ export default function App({ Component, pageProps }: AppProps) {
           name="description"
           content="Play Texas hold'em without a deck. Phones are the cards, a shared screen is the table."
         />
-        <meta property="og:title" content="Poker" />
-        <meta
-          property="og:description"
-          content="Play Texas hold'em without a deck. Phones are the cards, a shared screen is the table."
-        />
       </Head>
       <Component {...pageProps} />
     </ConvexProvider>
