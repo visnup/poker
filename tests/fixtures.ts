@@ -2,23 +2,29 @@ import { test as base, expect, type Page } from "@playwright/test";
 import { randomUUID } from "crypto";
 
 // Fixtures for tests that hit real Convex tables — each test gets its own
-// table id, so they can run concurrently. Requires pnpm dev (including
+// room id, so they can run concurrently. Requires pnpm dev (including
 // Convex) to be running, not just next dev.
 
 export const test = base.extend<{
-  table: string;
+  room: string;
+  table: Page;
   dealCards: (page: Page) => Promise<void>;
-  playerPage: Page;
+  player: Page;
 }>({
-  table: async ({}, use) => {
+  room: async ({}, use) => {
     await use(randomUUID());
   },
 
-  // Navigates `page` to the dealer seat for `table` and drags the dealer
-  // button far enough to deal.
-  dealCards: async ({ table }, use) => {
+  // The dealer/table view, already navigated to `/room/0`.
+  table: async ({ page, room }, use) => {
+    await page.goto(`/${room}/0`);
+    await use(page);
+  },
+
+  // Drags the dealer button far enough to deal on an already-navigated
+  // table page.
+  dealCards: async ({}, use) => {
     await use(async (page) => {
-      await page.goto(`/${table}/0`);
       const button = page.getByRole("button", { name: "Dealer" });
       await expect(button).toBeVisible({ timeout: 10_000 });
       const before = await button.boundingBox();
@@ -37,16 +43,18 @@ export const test = base.extend<{
     });
   },
 
-  // A fresh player context/page for `table`, joined after a dealer (in its
+  // A fresh player context/page for `room`, joined after a dealer (in its
   // own throwaway context) has already dealt.
-  playerPage: async ({ browser, table, dealCards }, use) => {
+  player: async ({ browser, room, dealCards }, use) => {
     const dealerCtx = await browser.newContext();
-    await dealCards(await dealerCtx.newPage());
+    const dealerPage = await dealerCtx.newPage();
+    await dealerPage.goto(`/${room}/0`);
+    await dealCards(dealerPage);
     await dealerCtx.close();
 
     const playerCtx = await browser.newContext();
     const playerPage = await playerCtx.newPage();
-    await playerPage.goto(`/${table}`);
+    await playerPage.goto(`/${room}`);
     await expect(playerPage.locator(".card")).toHaveCount(4, {
       timeout: 10_000,
     });

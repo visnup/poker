@@ -1,61 +1,55 @@
 import { randomUUID } from "crypto";
 import { expect, test } from "./fixtures";
 
-test("hand hint shows until peeked, then stays hidden", async ({
-  playerPage,
-}) => {
-  await expect(playerPage.locator(".hint")).toHaveText(
+test("hand hint shows until peeked, then stays hidden", async ({ player }) => {
+  await expect(player.locator(".hint")).toHaveText(
     /Pull down to peek.*Swipe up to fold/s,
   );
-  await expect(playerPage.locator(".hint")).not.toHaveClass(/hidden/);
+  await expect(player.locator(".hint")).not.toHaveClass(/hidden/);
   // Let gesture handlers finish hydrating before dragging.
-  await playerPage.waitForTimeout(300);
+  await player.waitForTimeout(300);
 
   // Drag down >250px to peek
-  const box = await playerPage.locator(".cards").boundingBox();
-  await playerPage.mouse.move(box!.x + box!.width / 2, box!.y + 100);
-  await playerPage.mouse.down();
-  await playerPage.mouse.move(box!.x + box!.width / 2, box!.y + 400, {
+  const box = await player.locator(".cards").boundingBox();
+  await player.mouse.move(box!.x + box!.width / 2, box!.y + 100);
+  await player.mouse.down();
+  await player.mouse.move(box!.x + box!.width / 2, box!.y + 400, {
     steps: 20,
   });
-  await playerPage.mouse.up();
+  await player.mouse.up();
 
-  await expect(playerPage.locator(".hint")).toHaveClass(/hidden/);
+  await expect(player.locator(".hint")).toHaveClass(/hidden/);
 
-  const stored = await playerPage.evaluate(() =>
-    localStorage.getItem("hasPeeked"),
-  );
+  const stored = await player.evaluate(() => localStorage.getItem("hasPeeked"));
   expect(stored).toBe("true");
 
-  await playerPage.reload();
-  await expect(playerPage.locator(".card")).toHaveCount(4, { timeout: 10_000 });
-  await expect(playerPage.locator(".hint")).toHaveClass(/hidden/);
+  await player.reload();
+  await expect(player.locator(".card")).toHaveCount(4, { timeout: 10_000 });
+  await expect(player.locator(".hint")).toHaveClass(/hidden/);
 });
 
 test("table hint shows until dealt, then stays hidden", async ({
-  page,
   table,
   dealCards,
 }) => {
-  await page.goto(`/${table}/0`);
-  await expect(page.getByRole("button", { name: "Dealer" })).toBeVisible({
+  await expect(table.getByRole("button", { name: "Dealer" })).toBeVisible({
     timeout: 10_000,
   });
-  await expect(page.locator(".hint")).toHaveText(
+  await expect(table.locator(".hint")).toHaveText(
     /Share this page.*Move the dealer button to deal/s,
   );
-  await expect(page.locator(".hint")).not.toHaveClass(/hidden/);
+  await expect(table.locator(".hint")).not.toHaveClass(/hidden/);
 
-  await dealCards(page);
-  await expect(page.locator(".hint")).toHaveClass(/hidden/);
+  await dealCards(table);
+  await expect(table.locator(".hint")).toHaveClass(/hidden/);
 
-  const stored = await page.evaluate(() => localStorage.getItem("hasDealt"));
+  const stored = await table.evaluate(() => localStorage.getItem("hasDealt"));
   expect(stored).toBe("true");
 
   // Same device/browser, a different (never-dealt) table.
-  await page.goto(`/${randomUUID()}/0`);
-  await expect(page.getByRole("button", { name: "Dealer" })).toBeVisible({
+  await table.goto(`/${randomUUID()}/0`);
+  await expect(table.getByRole("button", { name: "Dealer" })).toBeVisible({
     timeout: 10_000,
   });
-  await expect(page.locator(".hint")).toHaveClass(/hidden/);
+  await expect(table.locator(".hint")).toHaveClass(/hidden/);
 });
