@@ -33,3 +33,11 @@ test("clear empties card content", async ({ page }) => {
   await page.getByRole("button", { name: "clear" }).click();
   await expect(face).toHaveAttribute("data-rank", ""); // empty after clear
 });
+
+test("faces screenshot", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/test/faces");
+  const cards = page.locator("main > div");
+  await expect(cards).toHaveCount(104); // 52 faces, upright and upside down
+  await expect(page).toHaveScreenshot({ fullPage: true });
+});

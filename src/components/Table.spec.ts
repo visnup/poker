@@ -1,4 +1,4 @@
-import { expect, test } from "./fixtures";
+import { expect, test } from "../../test/fixtures";
 
 test("dealer view loads and shows dealer button", async ({ table }) => {
   await expect(table.getByRole("button", { name: "Dealer" })).toBeVisible({

@@ -1,5 +1,5 @@
 import { randomUUID } from "crypto";
-import { expect, test } from "./fixtures";
+import { expect, test } from "../../test/fixtures";
 
 test("hand hint shows until peeked, then stays hidden", async ({ player }) => {
   await expect(player.locator(".hint")).toHaveText(

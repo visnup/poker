@@ -1,4 +1,4 @@
-import { expect, test } from "./fixtures";
+import { expect, test } from "../../test/fixtures";
 
 test("player view loads and shows cards (2 per layer)", async ({ player }) => {
   // Hand renders 2 cards in 2 layers (backs + hidden faces) = 4 .card elements

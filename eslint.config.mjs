@@ -15,7 +15,7 @@ export default defineConfig([
     },
   },
   {
-    files: ["tests/**"],
+    files: ["**/*.spec.ts", "test/**"],
     rules: {
       // Playwright fixtures also call a `use` function — not React hooks.
       "react-hooks/rules-of-hooks": "off",

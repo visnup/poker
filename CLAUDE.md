@@ -11,7 +11,7 @@ pnpm lint    # ESLint + Prettier validation
 pnpm test    # Playwright end-to-end tests
 ```
 
-Tests live in `tests/` and drive the `/test/*` pages (`board`, `deal`, `dealer-button`, `faces`). Playwright starts `next dev` itself, reusing a running server outside CI. `faces.spec.ts` is a screenshot test — update snapshots with `pnpm test -u`.
+Specs sit next to what they exercise — `src/components/Table.spec.ts` for `Table.tsx` — so `testDir` is `./src` and Playwright's default `**/*.spec.ts` match finds them. Shared fixtures (a per-test room, a dealer page, a joined player) live in `test/fixtures.ts` and need a live Convex dev server; the specs that drive the `/test/*` pages instead (`Board`, `Card`, `DealerButton`) import `@playwright/test` directly and need only `next dev`, which Playwright starts itself, reusing a running server outside CI. `Card.spec.ts` holds the screenshot test — update snapshots with `pnpm test -u`. Specs stay out of `src/pages/`, which is the only place Next routes from — `pageExtensions` defaults to `ts`/`tsx`, so a `board.spec.ts` under `pages/` would become the route `/test/board.spec` and fail `next build` for want of a default export.
 
 ## Toolchain
 

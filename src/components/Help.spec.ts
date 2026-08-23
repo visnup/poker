@@ -1,4 +1,4 @@
-import { expect, test } from "./fixtures";
+import { expect, test } from "../../test/fixtures";
 
 test("help overlay lists the gestures and the join link", async ({
   table,
