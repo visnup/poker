@@ -39,7 +39,7 @@ test("hand view shows peek/fold hint before first peek", async ({
   await expect(playerPage.locator(".card")).toHaveCount(4, { timeout: 10_000 });
 
   await expect(playerPage.locator(".hint")).toHaveText(
-    /Pull down to peek[\s\S]*Swipe up to fold/,
+    /Pull down to peek.*Swipe up to fold/s,
   );
   await expect(playerPage.locator(".hint")).not.toHaveClass(/hidden/);
   await playerCtx.close();
@@ -119,7 +119,7 @@ test("table view shows deal hint before first deal", async ({ page }) => {
   });
 
   await expect(page.locator(".hint")).toHaveText(
-    /Share this page[\s\S]*Move the dealer button to deal/,
+    /Share this page.*Move the dealer button to deal/s,
   );
   await expect(page.locator(".hint")).not.toHaveClass(/hidden/);
 });
