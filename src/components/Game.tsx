@@ -2,6 +2,7 @@ import { useMutation } from "convex/react";
 import { useEffect, useRef, useState } from "react";
 import { api } from "../../convex/_generated/api";
 import { Id } from "../../convex/_generated/dataModel";
+import { useWakeLock } from "../lib/useWakeLock";
 import { Hand } from "./Hand";
 import { Help } from "./Help";
 import { Table } from "./Table";
@@ -30,6 +31,8 @@ export function Game({ table = "", seat }: { table?: string; seat?: number }) {
   const ping = useMutation(api.players.ping);
   const [player, setPlayer] = useState<Awaited<ReturnType<typeof join>>>();
   const joining = useRef(false);
+
+  useWakeLock();
 
   // Sync player with sessionStorage
   useEffect(() => {

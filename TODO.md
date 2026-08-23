@@ -121,7 +121,7 @@ The full inventory of things a new player cannot discover:
       deal it is and who posts, while the chips stay real. *(S–M)*
 - [ ] **Player names.** Prompt on join, show them on the table view around the
       board and next to revealed hands. Makes a shared screen legible. *(S)*
-- [ ] **Screen wake lock on the table view.** The dealer screen going to sleep
+- [x] **Screen wake lock on the table view.** The dealer screen going to sleep
       mid-hand is a guaranteed real-world annoyance. `navigator.wakeLock`. *(S)*
 
 ## P3 — polish
