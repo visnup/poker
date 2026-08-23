@@ -1,4 +1,5 @@
 import { useDrag } from "@use-gesture/react";
+import cx from "classnames";
 import Head from "next/head";
 import React, { ReactNode, useEffect, useRef, useState } from "react";
 import { animated, useSpring, useSpringRef } from "@react-spring/web";
@@ -166,13 +167,11 @@ export function Table({ table }: { table: string }) {
       >
         Dealer
       </DealerButton>
-      {!dealt?.board.length && (
-        <p className="hint">
-          Share this page&rsquo;s link so friends can join from their phones.
-          <br />
-          Move the dealer button to deal.
-        </p>
-      )}
+      <p className={cx("hint", { hidden: dealt?.board.length })}>
+        Share this page&rsquo;s link so friends can join from their phones.
+        <br />
+        Move the dealer button to deal.
+      </p>
       <style jsx>{`
         .hint {
           position: absolute;
@@ -182,6 +181,10 @@ export function Table({ table }: { table: string }) {
             "Segoe Script", "Bradley Hand", "Apple Chancery", cursive;
           font-size: large;
           opacity: 0.5;
+          transition: opacity 1s;
+        }
+        .hint.hidden {
+          opacity: 0;
         }
       `}</style>
     </div>
