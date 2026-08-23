@@ -18,14 +18,6 @@ Things that make the app wrong or unplayable as-is.
       ~600KB read per call and climbing toward Convex's 16384-document / 8MB
       per-query ceiling. Now `withIndex("byTable", q => q.eq("table", table))`
       with no `.filter()`.
-- [ ] **Fix seat assignment.** The `!players[n] || n < players[n].seat` loop
-      assumes the query returns seats sorted and dense; concurrent joins can
-      collide on a seat, and there's no seat cap enforcement (52 cards support
-      at most ~10 hands + board, which the loop happens to match by accident,
-      not by rule). *(S–M)*
-- [ ] **Scope stale-player cleanup to the table.** `players.join` collects every
-      stale player across *all* tables and deletes them. It's a full table scan
-      on each join and it evicts other games' players. Filter by `table`. *(S)*
 - [ ] **Keep a seat across sessions, not just reloads.** *Verified by running
       it: a same-tab reload keeps the seat and player id; a second browser
       context on the same table gets a new seat.* State lives in
@@ -63,16 +55,34 @@ The full inventory of things a new player cannot discover:
       "pull down to peek · swipe up to fold" caption. Both fade out on first
       use and stay hidden on reload via `localStorage` (`tableHint`,
       `handHint`) — see `Table.tsx`, `Hand.tsx`, `hints.spec.ts`.
-- [ ] **Help overlay.** A `?` corner on the table view listing the gestures and
-      showing the join URL, so the answer is on the big screen everyone is
-      already looking at. *(S)*
-- [ ] **QR code to join.** On the table view and in the help overlay, so people
-      point a phone at the TV instead of typing a URL. *(S)*
+- [x] **Help overlay.** A `?` at the end of the `Player` line, so it's on every
+      screen rather than only the table. Opens a card listing the gestures for
+      both roles and the join link. `Help.tsx`, `help.spec.ts`.
+- [x] **QR code to join.** In the help overlay next to the join link, so people
+      point a phone at the TV instead of typing a URL. Rendered as inline SVG
+      from `qrcode-generator` (2.0.4, no deps) — dark modules on an explicit
+      white plate so it still scans in dark mode.
 - [ ] **Fill the blank screens.** `Game` renders `null` while joining, `Table`
       renders no board before the first deal, and a player's phone renders
       nothing at all until someone deals. Three different states that all look
       like a broken page. Add "connecting…", "fling the dealer button to
       start", and "waiting for the deal". *(S)*
+- [ ] **Say something when the table is full.** `players.join` scans seats
+      `0..10` — seat 0 is the table screen, so ten hands — and when they're all
+      taken it falls out of the loop and returns `undefined`. `Game` stores
+      that, `joining.current` is already `true` so nothing retries, and
+      `if (!player) return null` leaves the eleventh player staring at a blank
+      page forever. The fix isn't in `Hand`; `Hand` never mounts. `join` has to
+      return the refusal — plain `undefined` is indistinguishable from "still
+      joining" on the client — and `Game` has to render it. Same family as the
+      blank screens above. *(S)*
+      - *Verified by firing 14 simultaneous joins at one fresh table, three
+        times: seats 0–10, all unique, plus three `undefined`s. Convex
+        mutations are transactional and OCC-retried, so concurrent joins do not
+        collide on a seat.*
+      - The cap of ten is a poker-table choice, not a deck limit: `deal` leaves
+        47 cards after the board and `Hand` indexes `(seat - 1) * 2`, so the
+        deck would seat 23. Worth stating as a rule wherever the cap lands.
 - [ ] **Record a demo video.** A hand dealt, a peek, a fold. `hand.spec.ts`
       already scripts all three gestures, so a Playwright recording script is
       mostly assembly — and re-runnable when the UI changes. WebM, no
@@ -154,6 +164,11 @@ The full inventory of things a new player cannot discover:
   hundred hands; storage will never be the constraint. The only thing that made
   accumulation matter was the range-less `withIndex` scan above; that's fixed,
   so the rows can pile up indefinitely.
+- **Scoping stale-player cleanup to the table.** `players.join` collects every
+  player unseen for >10s across *all* tables and deletes them. Global, but
+  stale is stale — those rows are dead wherever they live, and unlike `deals`
+  the table self-prunes, so the scan is over roughly the number of people
+  playing right now rather than a history that only grows.
 - **Chips and betting.** Same philosophy as Bold Poker: this app exists to make
   real-life, in-person poker more fun, and the advantages of being in the room
   are things to depend on and leverage, not to reimplement. Betting happens with

@@ -3,16 +3,22 @@ import { useEffect, useRef, useState } from "react";
 import { api } from "../../convex/_generated/api";
 import { Id } from "../../convex/_generated/dataModel";
 import { Hand } from "./Hand";
+import { Help } from "./Help";
 import { Table } from "./Table";
 
 const Player = ({ player }: { player: { seat: number; id: string } }) => (
   <div>
-    {player.seat}:{player.id.slice(0, 5)}
+    <span>
+      {player.seat}:{player.id.slice(0, 5)}
+    </span>
+    <Help />
     <style jsx>{`
       div {
         font-size: small;
         position: absolute;
         bottom: 5px;
+      }
+      span {
         opacity: 0.5;
       }
     `}</style>
