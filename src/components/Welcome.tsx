@@ -20,7 +20,6 @@ export function Welcome({ onDismiss }: { onDismiss: () => void }) {
         }
         .card {
           background: honeydew;
-          color: black;
           border-radius: 12px;
           padding: 40px;
           max-width: 320px;
@@ -38,7 +37,6 @@ export function Welcome({ onDismiss }: { onDismiss: () => void }) {
         @media (prefers-color-scheme: dark) {
           .card {
             background: darkslategray;
-            color: white;
           }
           button {
             background: #444;
