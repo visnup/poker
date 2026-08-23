@@ -2,13 +2,13 @@ import cx from "classnames";
 import React from "react";
 
 export function Hint({
-  hidden,
+  visible,
   className,
   children,
   ...props
-}: { hidden: boolean } & React.JSX.IntrinsicElements["p"]) {
+}: { visible: boolean } & React.JSX.IntrinsicElements["p"]) {
   return (
-    <p className={cx("hint", { hidden }, className)} {...props}>
+    <p className={cx("hint", { visible }, className)} {...props}>
       {children}
       <style jsx>{`
         .hint {
@@ -16,11 +16,11 @@ export function Hint({
           font-family:
             "Segoe Script", "Bradley Hand", "Apple Chancery", cursive;
           font-size: large;
-          opacity: 0.5;
+          opacity: 0;
           transition: opacity 1s;
         }
-        .hint.hidden {
-          opacity: 0;
+        .hint.visible {
+          opacity: 0.5;
         }
       `}</style>
     </p>

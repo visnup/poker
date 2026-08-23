@@ -140,14 +140,18 @@ export function Table({ table }: { table: string }) {
 
   // -1 = cleared, 0 = dealt, 1 = flop, 2 = turn, 3 = river
   const [revealed, setRevealed] = useState(0);
-
-  const [hasDealt, setHasDealt] = useLocalStorageState("hasDealt", true);
+  const [hint, setHint] = useLocalStorageState("tableHint", true);
 
   return (
     <div>
       <Head>
         <meta name="viewport" content="width=1140" />
       </Head>
+      <Hint className="table-hint" visible={hint}>
+        Share this page&rsquo;s link so friends can join from their phones.
+        <br />
+        Move the dealer button to deal.
+      </Hint>
       {dealt ? (
         revealed === -1 || dealt.cleared ? (
           <Board cards={[]} />
@@ -162,7 +166,7 @@ export function Table({ table }: { table: string }) {
       <DealerButton
         onMove={async () => {
           setRevealed(-1);
-          setHasDealt(true);
+          setHint(false);
           await clear({ table });
           await new Promise((resolve) => setTimeout(resolve, 500));
           await deal({ table });
@@ -171,15 +175,10 @@ export function Table({ table }: { table: string }) {
       >
         Dealer
       </DealerButton>
-      <Hint className="table-hint" hidden={hasDealt || !!dealt?.board.length}>
-        Share this page&rsquo;s link so friends can join from their phones.
-        <br />
-        Move the dealer button to deal.
-      </Hint>
       <style jsx>{`
         :global(.table-hint) {
-          top: 250px;
-          left: 30px;
+          top: 90px;
+          left: 260px;
         }
       `}</style>
     </div>

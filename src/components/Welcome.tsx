@@ -16,7 +16,7 @@ export function Welcome({ onDismiss }: { onDismiss: () => void }) {
           display: flex;
           justify-content: center;
           align-items: center;
-          background: hsla(0, 0%, 0%, 0.6);
+          background: hsla(0, 0%, 0%, 0.5);
         }
         .card {
           background: honeydew;
