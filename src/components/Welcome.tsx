@@ -3,7 +3,9 @@ export function Welcome({ onDismiss }: { onDismiss: () => void }) {
     <div className="overlay" onClick={onDismiss}>
       <div className="card">
         <h1>♠ Poker</h1>
-        <p>Deal cards here, join on your phone to see your hand.</p>
+        <p>
+          A free poker table you can share with friends — no app, no signup.
+        </p>
         <button>Start a table</button>
       </div>
       <style jsx>{`

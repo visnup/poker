@@ -12,6 +12,15 @@ export default function App({ Component, pageProps }: AppProps) {
     <ConvexProvider client={convex}>
       <Head>
         <title>Poker</title>
+        <meta
+          name="description"
+          content="A free poker table you can share with friends — no app, no signup."
+        />
+        <meta property="og:title" content="Poker" />
+        <meta
+          property="og:description"
+          content="A free poker table you can share with friends — no app, no signup."
+        />
       </Head>
       <Component {...pageProps} />
     </ConvexProvider>

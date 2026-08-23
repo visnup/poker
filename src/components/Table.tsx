@@ -166,6 +166,22 @@ export function Table({ table }: { table: string }) {
       >
         Dealer
       </DealerButton>
+      {!dealt?.board.length && (
+        <p className="hint">
+          Share this page&rsquo;s link — friends join from their phones. Drag
+          the dealer to deal.
+        </p>
+      )}
+      <style jsx>{`
+        .hint {
+          position: absolute;
+          top: 250px;
+          left: 30px;
+          max-width: 260px;
+          font-size: small;
+          opacity: 0.5;
+        }
+      `}</style>
     </div>
   );
 }
