@@ -1,5 +1,4 @@
 import { useDrag } from "@use-gesture/react";
-import cx from "classnames";
 import Head from "next/head";
 import React, { ReactNode, useEffect, useRef, useState } from "react";
 import { animated, useSpring, useSpringRef } from "@react-spring/web";
@@ -7,6 +6,7 @@ import { useMutation, useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { useLocalStorageState } from "../lib/useLocalStorageState";
 import { Card } from "./Card";
+import { Hint } from "./Hint";
 
 export function DealerButton({
   onMove,
@@ -171,24 +171,15 @@ export function Table({ table }: { table: string }) {
       >
         Dealer
       </DealerButton>
-      <p className={cx("hint", { hidden: hasDealt || dealt?.board.length })}>
+      <Hint className="table-hint" hidden={hasDealt || !!dealt?.board.length}>
         Share this page&rsquo;s link so friends can join from their phones.
         <br />
         Move the dealer button to deal.
-      </p>
+      </Hint>
       <style jsx>{`
-        .hint {
-          position: absolute;
+        :global(.table-hint) {
           top: 250px;
           left: 30px;
-          font-family:
-            "Segoe Script", "Bradley Hand", "Apple Chancery", cursive;
-          font-size: large;
-          opacity: 0.5;
-          transition: opacity 1s;
-        }
-        .hint.hidden {
-          opacity: 0;
         }
       `}</style>
     </div>

@@ -1,5 +1,4 @@
 import { useDrag } from "@use-gesture/react";
-import cx from "classnames";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { animated, config, useSpring } from "@react-spring/web";
@@ -7,6 +6,7 @@ import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { useLocalStorageState } from "../lib/useLocalStorageState";
 import { Card } from "./Card";
+import { Hint } from "./Hint";
 
 const slow = { ...config.slow, precision: 0.0001 };
 export function Hand({ table, seat }: { table: string; seat: number }) {
@@ -94,11 +94,11 @@ export function Hand({ table, seat }: { table: string; seat: number }) {
           </animated.div>
         </div>
       </animated.div>
-      <p className={cx("hint", { hidden: peeked })}>
+      <Hint className="hand-hint" hidden={peeked}>
         Pull down to peek at your cards.
         <br />
         Swipe up to fold.
-      </p>
+      </Hint>
       <style jsx>
         {`
           .cards {
@@ -116,19 +116,10 @@ export function Hand({ table, seat }: { table: string; seat: number }) {
           .placement {
             position: absolute;
           }
-          .hint {
-            position: absolute;
+          :global(.hand-hint) {
             top: 55vh;
             width: 100%;
             text-align: center;
-            font-family:
-              "Segoe Script", "Bradley Hand", "Apple Chancery", cursive;
-            font-size: large;
-            opacity: 0.5;
-            transition: opacity 1s;
-          }
-          .hint.hidden {
-            opacity: 0;
           }
           .placement + .placement {
             left: 50px;
