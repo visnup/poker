@@ -7,18 +7,6 @@ Effort is a rough sizing, not a promise.
 
 Things that make the app wrong or unplayable as-is.
 
-- [ ] **Scope stale-player cleanup to the table.** `players.join` collects every
-      stale player across *all* tables and deletes them. It's a full table scan
-      on each join and it evicts other games' players. Filter by `table`. *(S)*
-- [ ] **Fix seat assignment.** The `!players[n] || n < players[n].seat` loop
-      assumes the query returns seats sorted and dense; concurrent joins can
-      collide on a seat, and there's no seat cap enforcement (52 cards support
-      at most ~10 hands + board, which the loop happens to match by accident,
-      not by rule). *(S–M)*
-- [ ] **Rejoin the same seat after refresh.** State lives in `sessionStorage`,
-      so a reload in a new tab, or a phone that drops the tab, burns a seat and
-      the player comes back as someone else. Move to `localStorage` keyed by
-      table + a client id. *(S)*
 - [ ] **Actually use the indexes.** *Read from the installed types
       (`node_modules/convex/dist/cjs-types/server/query.d.ts`), not reproduced;
       the dashboard's documents-scanned count per call would confirm it.*
@@ -27,6 +15,23 @@ Things that make the app wrong or unplayable as-is.
       types, a range-less `withIndex` "will consider all documents in the
       index" — so every one of these scans every row in the table and throws
       most of them away. Pass `q => q.eq("table", table)` as the range. *(S)*
+- [ ] **Fix seat assignment.** The `!players[n] || n < players[n].seat` loop
+      assumes the query returns seats sorted and dense; concurrent joins can
+      collide on a seat, and there's no seat cap enforcement (52 cards support
+      at most ~10 hands + board, which the loop happens to match by accident,
+      not by rule). *(S–M)*
+- [ ] **Scope stale-player cleanup to the table.** `players.join` collects every
+      stale player across *all* tables and deletes them. It's a full table scan
+      on each join and it evicts other games' players. Filter by `table`. *(S)*
+- [ ] **Keep a seat across sessions, not just reloads.** *Verified by running
+      it: a same-tab reload keeps the seat and player id; a second browser
+      context on the same table gets a new seat.* State lives in
+      `sessionStorage` under one `"player"` key, so anything that starts a
+      fresh session — reopening the app, a phone dropping the tab, a new
+      window — burns a seat and the player comes back as someone else. Opening
+      a second table in the same tab overwrites the key, so returning to the
+      first burns one too. Move to `localStorage` keyed by table + a client
+      id. *(S)*
 
 ## P1 — teaching people how to play
 
@@ -53,17 +58,8 @@ The full inventory of things a new player cannot discover:
 - [x] **Gesture hints on first use.** Table view has a "share this link /
       move the dealer button to deal" caption, hand view has a matching
       "pull down to peek · swipe up to fold" caption. Both fade out on first
-      use and stay hidden on reload via `localStorage` (`hasDealt`,
-      `hasPeeked`) — see `Table.tsx`, `Hand.tsx`, `hints.spec.ts`.
-- [ ] **Record a demo video.** A hand dealt, a peek, a fold. `hand.spec.ts`
-      already scripts all three gestures, so a Playwright recording script is
-      mostly assembly — and re-runnable when the UI changes. WebM, no
-      conversion: `recordVideo` writes `.webm` and nothing else (it throws on
-      any other extension, `videoRecorder.js:38`). Embed at the top of the
-      README; for a visual app it will outsell any copy. *(M)*
-      - Unverified: whether GitHub's README renderer plays a `.webm` committed
-        in the repo, or only ones uploaded to `user-attachments`. Check before
-        assuming a relative path works.
+      use and stay hidden on reload via `localStorage` (`tableHint`,
+      `handHint`) — see `Table.tsx`, `Hand.tsx`, `hints.spec.ts`.
 - [ ] **Help overlay.** A `?` corner on the table view listing the gestures and
       showing the join URL, so the answer is on the big screen everyone is
       already looking at. *(S)*
@@ -74,6 +70,18 @@ The full inventory of things a new player cannot discover:
       nothing at all until someone deals. Three different states that all look
       like a broken page. Add "connecting…", "fling the dealer button to
       start", and "waiting for the deal". *(S)*
+- [ ] **Record a demo video.** A hand dealt, a peek, a fold. `hand.spec.ts`
+      already scripts all three gestures, so a Playwright recording script is
+      mostly assembly — and re-runnable when the UI changes. WebM, no
+      conversion: `recordVideo` writes `.webm` and nothing else (it throws on
+      any other extension, `videoRecorder.js:38`). Embed at the top of the
+      README; for a visual app it will outsell any copy. *(M)*
+      - Unverified: whether GitHub's README renderer plays a `.webm` committed
+        in the repo, or only ones uploaded to `user-attachments`. Check before
+        assuming a relative path works.
+- [ ] **Explain the two roles.** It's surprising that the first phone to open
+      the URL becomes the table screen rather than a seat. Either label it on
+      screen ("this device is the table") or make choosing explicit. *(S)*
 - [ ] **Fix or drop numbered seat URLs.** Verified by running the routing
       logic: `[[...params]].tsx:9` maps only the literal `"0"` to a seat, so
       `/kitchen/1` silently auto-assigns instead of claiming seat 1, and `/1`
@@ -81,9 +89,6 @@ The full inventory of things a new player cannot discover:
       segment is really a boolean "is this the table screen". Either honor the
       number or rename the route. (`CLAUDE.md` describes it the old way too.)
       *(S)*
-- [ ] **Explain the two roles.** It's surprising that the first phone to open
-      the URL becomes the table screen rather than a seat. Either label it on
-      screen ("this device is the table") or make choosing explicit. *(S)*
 - [x] **README that covers actual use.** Table naming, which device is which,
       and the four gestures.
 
