@@ -169,7 +169,8 @@ export function Table({ table }: { table: string }) {
       {!dealt?.board.length && (
         <p className="hint">
           Share this page&rsquo;s link so friends can join from their phones.
-          Drag the dealer to deal.
+          <br />
+          Move the dealer button to deal.
         </p>
       )}
       <style jsx>{`
@@ -177,8 +178,9 @@ export function Table({ table }: { table: string }) {
           position: absolute;
           top: 250px;
           left: 30px;
-          max-width: 260px;
-          font-size: small;
+          font-family:
+            "Segoe Script", "Bradley Hand", "Apple Chancery", cursive;
+          font-size: large;
           opacity: 0.5;
         }
       `}</style>
