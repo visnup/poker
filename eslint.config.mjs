@@ -14,6 +14,13 @@ export default defineConfig([
       "react-hooks/set-state-in-effect": "off", // client-only Math.random(), keeps SSR hydration matching
     },
   },
+  {
+    files: ["tests/**"],
+    rules: {
+      // Playwright fixtures also call a `use` function — not React hooks.
+      "react-hooks/rules-of-hooks": "off",
+    },
+  },
   globalIgnores([
     ".next/**",
     "out/**",
