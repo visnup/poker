@@ -45,14 +45,17 @@ The full inventory of things a new player cannot discover:
 | Hand | Swipe up to fold | `Hand.tsx:52` |
 | Join | First device to open `/:table` becomes the shared screen (seat 0) | `Game.tsx:52` |
 
-- [ ] **A landing page at `/`.** Right now `/` isn't a home page — it's a live
-      table whose name is the empty string, shared by everyone who ever visits
-      the bare domain. It should instead explain the app in a sentence, let you
-      name a table, and send you to it. *(M)*
-- [ ] **Gesture hints on first use.** A nudge animation on the dealer button, a
-      "pull down to peek · swipe up to fold" caption on the hand view, both
-      fading out once the player has done it once. Persist "has dealt" /
-      "has peeked" in `localStorage`. *(M)*
+- [x] **A landing page at `/`.** Was a live table whose name was the empty
+      string, shared by everyone who ever visited the bare domain. Now a
+      dismissible welcome overlay explains the app and sends you to a random
+      word-based table (`/raven`, `/tiger`) on dismiss. Doesn't yet let you
+      type your own table name — that's still open if it turns out to matter.
+- [ ] **Gesture hints on first use.** Table view now has a static caption
+      ("share this link / move the dealer button to deal") that fades out
+      once cards are dealt — see `Table.tsx`. Still missing: a nudge animation
+      on the dealer button, the hand-view "pull down to peek · swipe up to
+      fold" caption, and persisting "has dealt" / "has peeked" in
+      `localStorage` so hints don't reappear after the first time. *(M)*
 - [ ] **Record a demo video.** A hand dealt, a peek, a fold. `hand.spec.ts`
       already scripts all three gestures, so a Playwright recording script is
       mostly assembly — and re-runnable when the UI changes. WebM, no
