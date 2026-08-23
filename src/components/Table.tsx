@@ -5,6 +5,7 @@ import React, { ReactNode, useEffect, useRef, useState } from "react";
 import { animated, useSpring, useSpringRef } from "@react-spring/web";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
+import { useLocalStorageState } from "../lib/useLocalStorageState";
 import { Card } from "./Card";
 
 export function DealerButton({
@@ -140,8 +141,7 @@ export function Table({ table }: { table: string }) {
   // -1 = cleared, 0 = dealt, 1 = flop, 2 = turn, 3 = river
   const [revealed, setRevealed] = useState(0);
 
-  const [hasDealt, setHasDealt] = useState(true);
-  useEffect(() => setHasDealt(localStorage.getItem("hasDealt") === "true"), []);
+  const [hasDealt, setHasDealt] = useLocalStorageState("hasDealt", true);
 
   return (
     <div>
@@ -162,7 +162,6 @@ export function Table({ table }: { table: string }) {
       <DealerButton
         onMove={async () => {
           setRevealed(-1);
-          localStorage.setItem("hasDealt", "true");
           setHasDealt(true);
           await clear({ table });
           await new Promise((resolve) => setTimeout(resolve, 500));
