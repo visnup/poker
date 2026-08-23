@@ -1,4 +1,4 @@
-export const TAGLINE =
+export const description =
   "Play Texas hold'em without a deck. Phones are the cards, a shared screen is the table.";
 
 export function Welcome({ onDismiss }: { onDismiss: () => void }) {
@@ -6,7 +6,7 @@ export function Welcome({ onDismiss }: { onDismiss: () => void }) {
     <div className="overlay" onClick={onDismiss}>
       <div className="card">
         <h1>♠ Poker</h1>
-        <p>{TAGLINE}</p>
+        <p>{description}</p>
         <button>Start a table</button>
       </div>
       <style jsx>{`
