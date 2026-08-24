@@ -28,7 +28,7 @@ const Player = ({ player }: { player: { seat: number; id: string } }) => (
   </div>
 );
 
-export function Game({ table = "", seat }: { table?: string; seat?: number }) {
+export function Game({ table, seat }: { table: string; seat?: number }) {
   const join = useMutation(api.players.join);
   const ping = useMutation(api.players.ping);
   const [player, setPlayer] = useState<Awaited<ReturnType<typeof join>>>();

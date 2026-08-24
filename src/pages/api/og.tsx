@@ -30,7 +30,6 @@ const deal = [
   { rotate: 5, left: 230 },
 ];
 
-/** How far right the cards actually reach — a tilted one overhangs its box. */
 const spread = Math.max(
   ...deal.map(({ rotate, left }) => {
     const r = (rotate * Math.PI) / 180;
@@ -88,7 +87,7 @@ export default async function handler(
           display: "flex",
           flex: 1,
           justifyContent: "center",
-          marginLeft: spread, // the rotated cards reach further than their boxes
+          marginLeft: spread,
         }}
       >
         <div

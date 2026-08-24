@@ -33,7 +33,7 @@ function Qr({ url }: { url: string }) {
 
 export function Help() {
   const [open, setOpen] = useState(false);
-  const url = location.origin + location.pathname.replace(/\/0$/, "");
+  const url = location.origin + location.pathname;
 
   return (
     <>

@@ -15,7 +15,6 @@ test("help overlay lists the gestures and the join link", async ({
   await expect(help.getByText(/Move the dealer button/)).toBeVisible();
   await expect(help.getByText(/Pull down to peek/)).toBeVisible();
   await expect(help.locator("svg.qr")).toBeVisible();
-  // The dealer screen is /:room/0; the link to share drops the seat.
   await expect(help.getByText(`http://localhost:3000/${room}`)).toBeVisible();
 
   await help.click({ position: { x: 5, y: 5 } });

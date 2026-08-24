@@ -25,7 +25,7 @@ TypeScript is held at 6.x: typescript-eslint hard-errors on TS 7 and takes the w
 
 This is a Next.js + Convex real-time poker app (similar to Bold Poker). Players join a table on their phones; the dealer view shows community cards on a separate screen.
 
-**Routing:** `src/pages/[[...params]].tsx` captures `/:table` (dealer) and `/:table/:seat` (player) URLs and renders `Game.tsx`.
+**Routing:** `src/pages/index.tsx` is a dead landing page — a fixed board and the welcome card, no Convex. `src/pages/[table].tsx` is the live one, rendering `Game.tsx`; `?table` forces the table view and is stripped from the URL on arrival. Both use `previewProps` for the `og:image`, which is why they're server-rendered.
 
 **Views:**
 

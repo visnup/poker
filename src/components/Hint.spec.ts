@@ -45,7 +45,7 @@ test("table hint shows until dealt, then stays hidden", async ({
   expect(stored).toBe("false");
 
   // Same device/browser, a different (never-dealt) table.
-  await table.goto(`/${randomUUID()}/0`);
+  await table.goto(`/${randomUUID()}?table`);
   await expect(table.getByRole("button", { name: "Dealer" })).toBeVisible({
     timeout: 10_000,
   });

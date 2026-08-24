@@ -6,6 +6,14 @@ test("dealer view loads and shows dealer button", async ({ table }) => {
   });
 });
 
+test("?table takes the table view and drops out of the url", async ({
+  table,
+  room,
+}) => {
+  await expect(table.getByRole("button", { name: "Dealer" })).toBeVisible();
+  await expect(table).toHaveURL(new RegExp(`/${room}$`));
+});
+
 test("dealer button stays at dragged position", async ({ table }) => {
   const button = table.getByRole("button", { name: "Dealer" });
   await expect(button).toBeVisible({ timeout: 10_000 });

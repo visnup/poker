@@ -15,9 +15,9 @@ export const test = base.extend<{
     await use(randomUUID());
   },
 
-  // The dealer/table view, already navigated to `/room/0`.
+  // The dealer/table view, already navigated to `/room?table`.
   table: async ({ page, room }, use) => {
-    await page.goto(`/${room}/0`);
+    await page.goto(`/${room}?table`);
     await use(page);
   },
 
@@ -48,7 +48,7 @@ export const test = base.extend<{
   player: async ({ browser, room, dealCards }, use) => {
     const dealerCtx = await browser.newContext();
     const dealerPage = await dealerCtx.newPage();
-    await dealerPage.goto(`/${room}/0`);
+    await dealerPage.goto(`/${room}?table`);
     await dealCards(dealerPage);
     await dealerCtx.close();
 
