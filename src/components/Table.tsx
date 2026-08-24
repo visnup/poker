@@ -142,6 +142,10 @@ export function Table({ table }: { table: string }) {
   const [revealed, setRevealed] = useState(0);
   const [hint, setHint] = useLocalStorageState("tableHint", true);
 
+  useEffect(() => {
+    if (dealt === null) deal({ table });
+  }, [dealt, deal, table]);
+
   return (
     <div>
       <Head>

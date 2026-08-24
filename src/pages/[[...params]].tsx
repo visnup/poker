@@ -12,7 +12,9 @@ export default function Index() {
   return (
     <>
       <Game table={table} seat={seat === "0" ? 0 : undefined} />
-      {!params && <Welcome onDismiss={() => router.push(`/${randomWord()}`)} />}
+      {!params && (
+        <Welcome onDismiss={() => router.push(`/${randomWord()}/0`)} />
+      )}
     </>
   );
 }
