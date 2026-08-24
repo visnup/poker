@@ -52,9 +52,7 @@ function Board({ router }: { router: ReturnType<typeof useRouter> }) {
   return (
     <>
       <Game table={table} seat={seat === "0" ? 0 : undefined} />
-      {!params && (
-        <Welcome onDismiss={() => router.push(`/${randomWord()}/0`)} />
-      )}
+      {!params && <Welcome onDismiss={() => router.push(`/${randomWord()}`)} />}
     </>
   );
 }
