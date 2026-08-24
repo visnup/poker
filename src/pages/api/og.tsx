@@ -25,6 +25,21 @@ const fonts = [
 const height = 560;
 const width = (height * 5) / 7;
 const top = 630 - (height * 5) / 6; // the bottom sixth runs off the frame
+const deal = [
+  { rotate: -9, left: 50 },
+  { rotate: 5, left: 190 },
+];
+
+/** How far right the cards actually reach — a tilted one overhangs its box. */
+const spread = Math.max(
+  ...deal.map(({ rotate, left }) => {
+    const r = (rotate * Math.PI) / 180;
+    const half =
+      Math.abs((width / 2) * Math.cos(r)) +
+      Math.abs((height / 2) * Math.sin(r));
+    return left + width / 2 + half;
+  }),
+);
 
 const card = (back: string, paper: string, rotate: number, left: number) => (
   <div
@@ -67,34 +82,37 @@ export default async function handler(
         color: darkInk,
       }}
     >
-      {card(back, paper, -9, 50)}
-      {card(back, paper, 5, 190)}
+      {deal.map(({ rotate, left }) => card(back, paper, rotate, left))}
       <div
         style={{
           display: "flex",
-          flexDirection: "column",
-          marginLeft: 660,
-          maxWidth: 470,
+          flex: 1,
+          justifyContent: "center",
+          marginLeft: spread, // the rotated cards reach further than their boxes
         }}
       >
         <div
-          style={{
-            fontFamily: face,
-            fontSize: title,
-            lineHeight: 1.3,
-          }}
+          style={{ display: "flex", flexDirection: "column", maxWidth: 470 }}
         >
-          {headline}
-        </div>
-        <div
-          style={{
-            fontFamily: "Dosis",
-            fontSize: 36,
-            letterSpacing: 1,
-            opacity: 0.7,
-          }}
-        >
-          {`poker.dance/${table}`.replace(/\/$/, "")}
+          <div
+            style={{
+              fontFamily: face,
+              fontSize: title,
+              lineHeight: 1.3,
+            }}
+          >
+            {headline}
+          </div>
+          <div
+            style={{
+              fontFamily: "Dosis",
+              fontSize: 36,
+              letterSpacing: 1,
+              opacity: 0.7,
+            }}
+          >
+            {`poker.dance/${table}`.replace(/\/$/, "")}
+          </div>
         </div>
       </div>
     </div>,
