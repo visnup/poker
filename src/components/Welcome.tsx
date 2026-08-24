@@ -19,15 +19,16 @@ export function Welcome({ onDismiss }: { onDismiss: () => void }) {
           font: inherit;
           font-weight: bold;
           text-transform: uppercase;
-          background: honeydew;
+          background: black;
+          color: white;
           border-radius: 8px;
           border: none;
           padding: 12px 24px;
         }
         @media (prefers-color-scheme: dark) {
           button {
-            background: #444;
-            color: #ddd;
+            background: white;
+            color: black;
           }
         }
       `}</style>

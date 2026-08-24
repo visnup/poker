@@ -316,6 +316,11 @@ export const backs = {
 /** Everything /test/backs shows, including designs not in the rotation yet. */
 export const allBacks = { ...backs, qr };
 
+/** Fill the box rather than fit inside it, for a back stretched over something
+    that isn't 5:7. */
+export const slice = (svg: string) =>
+  svg.replace("<svg", `<svg preserveAspectRatio="xMidYMid slice"`);
+
 /** The table name picks the design and the palette; nothing else configures it. */
 export function backFor(table: string) {
   const seed = hash(table);

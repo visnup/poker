@@ -71,8 +71,8 @@ export function Game({ table = "", seat }: { table?: string; seat?: number }) {
         ) : (
           <Hand table={table} seat={seat} />
         )}
+        <Player player={player} />
       </BackContext.Provider>
-      <Player player={player} />
       <style jsx>
         {`
           main {
