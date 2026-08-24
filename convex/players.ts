@@ -31,6 +31,8 @@ export const join = mutation({
 export const ping = mutation({
   args: { id: v.id("players") },
   handler: async ({ db }, { id }) => {
+    if (!(await db.get(id))) return false; // swept while this tab was quiet
     await db.patch(id, { lastSeen: Date.now() });
+    return true;
   },
 });

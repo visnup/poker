@@ -57,11 +57,14 @@ export function Game({ table, seat }: { table: string; seat?: number }) {
 
   // Ping
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (player) ping({ id: player.id as Id<"players"> });
+    const interval = setInterval(async () => {
+      if (!player) return;
+      if (await ping({ id: player.id as Id<"players"> })) return;
+      const rejoined = await join({ table });
+      if (rejoined) setPlayer(rejoined);
     }, 5e3);
     return () => clearInterval(interval);
-  }, [ping, player]);
+  }, [ping, join, table, player]);
 
   if (!player) return null;
   seat ??= player.seat;
