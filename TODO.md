@@ -98,6 +98,22 @@ Things that make the app wrong or unplayable as-is.
       a second table in the same tab overwrites the key, so returning to the
       first burns one too. Move to `localStorage` keyed by table + a client
       id. *(S)*
+- [ ] **Re-join when the seat has been swept.** *Reproduced against the dev
+      deployment: join a table, wait past the stale window without pinging, let
+      any other client join **any** table, then ping — Convex throws
+      `Uncaught Error: Update on nonexistent document ID <id>`.* `players.join`
+      deletes every player unseen past the window across all tables (on
+      purpose — see "Deliberately not doing"), and `players.ping` is a bare
+      `db.patch`, so a swept client throws on its next ping. `Game.tsx:49`
+      makes it permanent: a reload restores the player id from
+      `sessionStorage` without checking the row still exists, so the tab pings
+      a dead id every 5s forever. Widening the window to 30s (`fbecae7`) cuts
+      the frequency but can't close it — a backgrounded tab's timers are
+      throttled to roughly once a minute, still past 30s. Swallowing the error
+      in `ping` isn't the fix either; that leaves the tab sitting in no seat.
+      `ping` has to report the miss, and `Game` has to drop the stored player
+      and re-join. Pairs with the seat-persistence item above — both are about
+      a seat outliving the tab that claimed it. *(S–M)*
 
 ## P1 — teaching people how to play
 
