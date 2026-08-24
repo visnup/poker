@@ -1,7 +1,13 @@
 import cx from "classnames";
 import { svg } from "@/lib/card-back";
 import { range } from "d3-array";
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { animated, config, useSpring } from "@react-spring/web";
 
 const Column = ({
@@ -186,10 +192,12 @@ const Face = ({ rank = "", suit = "" }: { rank?: string; suit?: string }) => (
   </div>
 );
 
-// Sol LeWitt — inlined so @media (prefers-color-scheme) works
+export const BackContext = createContext(svg);
+
+// Inlined so @media (prefers-color-scheme) works
 const Back = () => (
   <div
-    dangerouslySetInnerHTML={{ __html: svg }}
+    dangerouslySetInnerHTML={{ __html: useContext(BackContext) }}
     style={{
       position: "absolute",
       inset: 0,

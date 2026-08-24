@@ -1,8 +1,10 @@
 import { useMutation } from "convex/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { api } from "../../convex/_generated/api";
 import { Id } from "../../convex/_generated/dataModel";
+import { backFor } from "../lib/card-back";
 import { useWakeLock } from "../lib/useWakeLock";
+import { BackContext } from "./Card";
 import { Hand } from "./Hand";
 import { Help } from "./Help";
 import { Table } from "./Table";
@@ -31,6 +33,7 @@ export function Game({ table = "", seat }: { table?: string; seat?: number }) {
   const ping = useMutation(api.players.ping);
   const [player, setPlayer] = useState<Awaited<ReturnType<typeof join>>>();
   const joining = useRef(false);
+  const back = useMemo(() => backFor(table), [table]);
 
   useWakeLock();
 
@@ -62,11 +65,13 @@ export function Game({ table = "", seat }: { table?: string; seat?: number }) {
 
   return (
     <main>
-      {seat === 0 ? (
-        <Table table={table} />
-      ) : (
-        <Hand table={table} seat={seat} />
-      )}
+      <BackContext.Provider value={back}>
+        {seat === 0 ? (
+          <Table table={table} />
+        ) : (
+          <Hand table={table} seat={seat} />
+        )}
+      </BackContext.Provider>
       <Player player={player} />
       <style jsx>
         {`
