@@ -26,8 +26,8 @@ const height = 560;
 const width = (height * 5) / 7;
 const top = 630 - (height * 5) / 6; // the bottom sixth runs off the frame
 const deal = [
-  { rotate: -9, left: 50 },
-  { rotate: 5, left: 190 },
+  { rotate: -9, left: 90 },
+  { rotate: 5, left: 230 },
 ];
 
 /** How far right the cards actually reach — a tilted one overhangs its box. */
