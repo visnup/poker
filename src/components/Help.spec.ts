@@ -9,15 +9,16 @@ test("help overlay lists the gestures and the join link", async ({
   });
   await table.getByRole("button", { name: "?" }).click();
 
-  // Scoped to the card: the table hint says "Move the dealer button" too.
-  const help = table.locator(".card");
+  // Scoped to the popup: the table hint says "Move the dealer button" too,
+  // and the board's cards are .card as well.
+  const help = table.locator(".overlay");
   await expect(help.getByText(/Move the dealer button/)).toBeVisible();
   await expect(help.getByText(/Pull down to peek/)).toBeVisible();
   await expect(help.locator("svg.qr")).toBeVisible();
   // The dealer screen is /:room/0; the link to share drops the seat.
   await expect(help.getByText(`http://localhost:3000/${room}`)).toBeVisible();
 
-  await table.locator(".overlay").click({ position: { x: 5, y: 5 } });
+  await help.click({ position: { x: 5, y: 5 } });
   await expect(help).toHaveCount(0);
 });
 

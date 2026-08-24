@@ -1,5 +1,6 @@
 import qrcode from "qrcode-generator";
 import { useState } from "react";
+import { Popup } from "./Popup";
 
 function Qr({ url }: { url: string }) {
   const qr = qrcode(0, "M");
@@ -40,31 +41,29 @@ export function Help() {
         ?
       </button>
       {open && (
-        <div className="overlay" onClick={() => setOpen(false)}>
-          <div className="card">
-            <dl>
-              <dt>Table</dt>
-              <dd>
-                Move the dealer button to deal.
-                <br />
-                Tap the board for the flop, turn, and river.
-              </dd>
-              <dt>Hand</dt>
-              <dd>
-                Pull down to peek at your cards, all the way to reveal.
-                <br />
-                Swipe up to fold then tap to un-fold.
-              </dd>
-              <dt>Join</dt>
-              <dd>
-                {url}
-                <p>
-                  <Qr url={url} />
-                </p>
-              </dd>
-            </dl>
-          </div>
-        </div>
+        <Popup onClose={() => setOpen(false)}>
+          <dl>
+            <dt>Table</dt>
+            <dd>
+              Move the dealer button to deal.
+              <br />
+              Tap the board for the flop, turn, and river.
+            </dd>
+            <dt>Hand</dt>
+            <dd>
+              Pull down to peek at your cards, all the way to reveal.
+              <br />
+              Swipe up to fold then tap to un-fold.
+            </dd>
+            <dt>Join</dt>
+            <dd>
+              {url}
+              <p>
+                <Qr url={url} />
+              </p>
+            </dd>
+          </dl>
+        </Popup>
       )}
       <style jsx>{`
         .open {
@@ -76,21 +75,6 @@ export function Help() {
           cursor: pointer;
           color: inherit;
         }
-        .overlay {
-          position: fixed;
-          inset: 0;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          background: hsla(0, 0%, 0%, 0.5);
-        }
-        .card {
-          box-sizing: border-box;
-          background: honeydew;
-          border-radius: 12px;
-          padding: 32px;
-          max-width: min(480px, 100% - 24px);
-        }
         dl {
           margin: 0;
         }
@@ -100,11 +84,6 @@ export function Help() {
         dd {
           margin: 4px 0 16px;
           line-height: 150%;
-        }
-        @media (prefers-color-scheme: dark) {
-          .card {
-            background: darkslategray;
-          }
         }
       `}</style>
     </>
