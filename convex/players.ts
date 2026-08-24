@@ -5,7 +5,7 @@ export const join = mutation({
   args: { table: v.string() },
   handler: async ({ db }, { table }) => {
     const now = Date.now();
-    const recent = now - 10e3;
+    const recent = now - 30e3;
 
     // Remove stale.
     const stale = await db
