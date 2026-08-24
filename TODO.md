@@ -17,12 +17,17 @@ Roughly easiest-and-organic first.
       type to find *this*. The name is the only distinctive string we own —
       and it's the tab label on the TV. `_app.tsx:16`, plus the `<h1>` on the
       welcome card (`Welcome.tsx:10`).
-- [ ] **An `og:image` so a shared link isn't a grey box.** This is the one
-      social tag that earns its place here: the link *is* the product, and it
-      gets pasted into iMessage and group chats every single session. A static
-      card — a fanned hand, the wordmark, the table name if it's cheap to
-      render — turns every invite into a small ad. Everything else in the OG
-      family stays out per the no-junk rule. *(S)*
+- [x] **An `og:image` so a shared link isn't a grey box.** Not static in the
+      end: `/api/og` renders that table's own card back — design, palette, and
+      the face `familyFor` picks — beside the table name, so `/jade` and
+      `/cedar` preview as themselves. `next/og` ships inside Next, but Satori
+      needs raw font bytes rather than `next/font`, hence `src/fonts`. The
+      catch was `/:table` being statically prerendered, so every table served
+      identical HTML and no per-table tag was possible; that's what
+      `getServerSideProps` is for. Only `og:image` and
+      `twitter:card=summary_large_image` — Slack and a preview tool both fall
+      back to `<title>` and `<meta description>`, so the rest of the OG family
+      stayed out. *Verified in production.*
 - [ ] **Say "poker.dance" out loud in the room.** The table screen shows a join
       link in the help overlay; the domain isn't on screen otherwise. Someone
       photographing the TV should end up with the URL in the shot. *(XS)*

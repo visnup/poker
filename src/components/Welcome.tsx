@@ -1,7 +1,7 @@
 import { Popup } from "./Popup";
 
 export const description =
-  "Play Texas hold'em without a deck. Phones are the cards, a shared screen is the table.";
+  "Play Texas hold ’em in real life, but without a deck. Phones are the cards, a shared screen is the table.";
 
 export function Welcome({ onDismiss }: { onDismiss: () => void }) {
   return (
