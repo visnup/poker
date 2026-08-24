@@ -3,6 +3,77 @@
 Feature backlog for Poker dance, roughly in the order worth doing them.
 Effort is a rough sizing, not a promise.
 
+## P-1 — traffic
+
+Nobody is going to find this by accident. The share loop is already the whole
+app — every table is a URL someone sends to the people sitting next to them —
+so the cheap wins are all about making that link, and the domain behind it,
+survive contact with an audience.
+
+Roughly easiest-and-organic first.
+
+- [x] **Title the page "Poker dance".** Was `<title>Poker</title>`, which
+      competes with every poker site on earth and matches nothing anyone would
+      type to find *this*. The name is the only distinctive string we own —
+      and it's the tab label on the TV. `_app.tsx:16`, plus the `<h1>` on the
+      welcome card (`Welcome.tsx:10`).
+- [ ] **An `og:image` so a shared link isn't a grey box.** This is the one
+      social tag that earns its place here: the link *is* the product, and it
+      gets pasted into iMessage and group chats every single session. A static
+      card — a fanned hand, the wordmark, the table name if it's cheap to
+      render — turns every invite into a small ad. Everything else in the OG
+      family stays out per the no-junk rule. *(S)*
+- [ ] **Say "poker.dance" out loud in the room.** The table screen shows a join
+      link in the help overlay; the domain isn't on screen otherwise. Someone
+      photographing the TV should end up with the URL in the shot. *(XS)*
+- [ ] **Post it where in-person poker people are.** r/poker, r/homepoker,
+      Hacker News ("Show HN"), the boardgame-adjacent corners of Bluesky/Mastodon.
+      One good post outperforms months of SEO for a thing like this, and it
+      costs an evening. Gate on the demo video below — a visual app posted
+      without a video reads as vaporware. *(S, recurring)*
+- [ ] **Demo video, everywhere — not just the README.** Already tracked in P1;
+      note here that the same WebM/GIF is the payload for every post, tweet,
+      and app-store-style listing. Record once, reuse. *(see P1)*
+- [ ] **Make the landing page say what it is above the fold.** The welcome
+      overlay explains the app to someone who already opened it; a stranger
+      arriving from a link decides in two seconds. One line, one image, one
+      button. Doubles as the SEO body copy, which right now is a `<meta
+      description>` and nothing else. *(S)*
+- [ ] **Own "poker without cards" / "phone poker deck" / "poker night no deck".**
+      Long-tail searches by exactly the person who wants this — someone whose
+      deck is missing at 9pm. A short page or a README section answering that
+      literal question is most of the work. Unverified: whether these have any
+      volume at all; check before writing copy for them. *(S)*
+- [ ] **Ask the people who already played.** Everyone who has sat at a table is
+      a person who could run one at their next game night. There's no email, no
+      account, and nothing to ask them with — the lowest-friction version is a
+      "star this on GitHub" or "share poker.dance" line in the help overlay
+      after a session, not a signup. *(S)*
+- [ ] **Actually read the analytics before doing any of this.** `@vercel/analytics`
+      is already wired up in `_app.tsx`. Nobody has looked. How many tables get
+      created, how many get a second player, how many get past the first deal —
+      that ratio decides whether the problem is traffic or the first thirty
+      seconds of the app. *(XS)*
+- [ ] **Ship it to the Bold Poker crowd.** The README already credits Bold
+      Poker; its users are the exact audience and it's iOS-only. A web version
+      that needs no install is a real pitch to anyone who has searched for it.
+      Where they congregate is unverified — find out first. *(S)*
+- [ ] **Make a table name something to show off.** Word-based tables
+      (`/raven`) are already memorable; a table that renders its own name
+      nicely on the big screen is something people photograph and post. Free
+      distribution from a feature that is mostly typography. *(S)*
+- [ ] **Rules/reference pages that stand alone.** "Texas hold'em in 90 seconds",
+      hand rankings, dealer-button order — the things a table full of beginners
+      googles mid-game anyway, hosted here with a "deal a hand" button on each.
+      This is a real content bet, not a weekend: it only pays if it's genuinely
+      better than the forty existing versions. *(L)*
+- [ ] **Ambitious: make the app work for remote play.** The single biggest
+      addressable-audience change, and the one thing the "deliberately not
+      doing" list is built against — hidden hole cards, spectators, voice.
+      Listed here only to name the tradeoff honestly: it multiplies the
+      potential audience and subtracts the thing that makes the app good. *(XL,
+      probably no)*
+
 ## P0 — correctness & trust
 
 Things that make the app wrong or unplayable as-is.

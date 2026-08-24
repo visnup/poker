@@ -7,7 +7,7 @@ export function Welcome({ onDismiss }: { onDismiss: () => void }) {
   return (
     <Popup onClose={onDismiss}>
       <div className="content">
-        <h1>♠ Poker</h1>
+        <h1>♠ Poker Dance 💃</h1>
         <p>{description}</p>
         <button>Start a table</button>
       </div>

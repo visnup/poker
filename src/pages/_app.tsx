@@ -13,7 +13,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <ConvexProvider client={convex}>
       <Head>
-        <title>Poker</title>
+        <title>Poker Dance</title>
         <meta name="description" content={description} />
       </Head>
       <Component {...pageProps} />
