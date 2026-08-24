@@ -15,6 +15,9 @@ export function Welcome({ onDismiss }: { onDismiss: () => void }) {
         .content {
           text-align: center;
         }
+        h1 {
+          font-family: var(--font-title);
+        }
         button {
           font: inherit;
           font-weight: bold;

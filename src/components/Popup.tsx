@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { animated, config, useTransition } from "@react-spring/web";
-import { slice } from "@/lib/card-back";
-import { BackContext } from "./Card";
+import { slice } from "@/lib/card";
+import { CardContext } from "./Card";
 
 export function Popup({
   visible = true,
@@ -12,7 +12,7 @@ export function Popup({
   visible?: boolean;
   onClose: () => void;
 } & React.JSX.IntrinsicElements["div"]) {
-  const back = slice(useContext(BackContext));
+  const back = slice(useContext(CardContext).svg);
   const transitions = useTransition(visible, {
     from: { opacity: 0, y: "100vh" },
     enter: { opacity: 1, y: "0vh" },

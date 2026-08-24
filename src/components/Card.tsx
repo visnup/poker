@@ -1,5 +1,5 @@
 import cx from "classnames";
-import { svg } from "@/lib/card-back";
+import { familyFor, svg } from "@/lib/card";
 import { range } from "d3-array";
 import React, {
   createContext,
@@ -9,6 +9,8 @@ import React, {
   useState,
 } from "react";
 import { animated, config, useSpring } from "@react-spring/web";
+
+export const CardContext = createContext({ svg, family: familyFor("") });
 
 const Column = ({
   pips = 0,
@@ -69,6 +71,7 @@ const Court = ({ rank = "", suit = "" }: { rank?: string; suit?: string }) => (
     <style jsx>{`
       .court {
         align-self: center;
+        line-height: 1; /* else tall font metrics push the halves off the card */
       }
       .court div:last-of-type {
         transform: rotate(180deg);
@@ -82,122 +85,124 @@ const Court = ({ rank = "", suit = "" }: { rank?: string; suit?: string }) => (
     `}</style>
   </div>
 );
-const Face = ({ rank = "", suit = "" }: { rank?: string; suit?: string }) => (
-  <div className={cx("face", { red: "♦♥".includes(suit) })} data-rank={rank}>
-    {(() => {
-      switch (rank) {
-        case "2":
-        case "3":
-          return <Column pips={+rank} suit={suit} />;
-        case "4":
-          return (
-            <>
-              <Column pips={2} suit={suit} />
-              <Column />
-              <Column pips={2} suit={suit} />
-            </>
-          );
-        case "5":
-          return (
-            <>
-              <Column pips={2} suit={suit} />
-              <Column pips={1} suit={suit} />
-              <Column pips={2} suit={suit} />
-            </>
-          );
-        case "6":
-          return (
-            <>
-              <Column pips={3} suit={suit} />
-              <Column />
-              <Column pips={3} suit={suit} />
-            </>
-          );
-        case "7":
-          return (
-            <>
-              <Column pips={3} suit={suit} />
-              <Column pips={1} suit={suit} pad={1} />
-              <Column pips={3} suit={suit} />
-            </>
-          );
-        case "8":
-          return (
-            <>
-              <Column pips={3} suit={suit} />
-              <Column pips={2} suit={suit} justify="space-evenly" />
-              <Column pips={3} suit={suit} />
-            </>
-          );
-        case "9":
-          return (
-            <>
-              <Column pips={4} suit={suit} />
-              <Column pips={1} suit={suit} />
-              <Column pips={4} suit={suit} />
-            </>
-          );
-        case "10":
-          return (
-            <>
-              <Column pips={4} suit={suit} />
-              <Column pips={2} suit={suit} justify="space-around" />
-              <Column pips={4} suit={suit} />
-            </>
-          );
-        case "J":
-          return <Court suit={suit} rank="♞" />;
-        case "Q":
-          return <Court suit={suit} rank="♛" />;
-        case "K":
-          return <Court suit={suit} rank="♚" />;
-        case "A":
-          return <Column pips={1} suit={suit} size={96} />;
-      }
-    })()}
-    <style jsx>{`
-      .face {
-        background: white;
-        font-size: 32px;
-        box-sizing: border-box;
-        padding: 10px;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: stretch;
-      }
-      .face.red {
-        color: red;
-      }
-      @media (prefers-color-scheme: dark) {
+const Face = ({ rank = "", suit = "" }: { rank?: string; suit?: string }) => {
+  const { family } = useContext(CardContext);
+  return (
+    <div className={cx("face", { red: "♦♥".includes(suit) })} data-rank={rank}>
+      {(() => {
+        switch (rank) {
+          case "2":
+          case "3":
+            return <Column pips={+rank} suit={suit} />;
+          case "4":
+            return (
+              <>
+                <Column pips={2} suit={suit} />
+                <Column />
+                <Column pips={2} suit={suit} />
+              </>
+            );
+          case "5":
+            return (
+              <>
+                <Column pips={2} suit={suit} />
+                <Column pips={1} suit={suit} />
+                <Column pips={2} suit={suit} />
+              </>
+            );
+          case "6":
+            return (
+              <>
+                <Column pips={3} suit={suit} />
+                <Column />
+                <Column pips={3} suit={suit} />
+              </>
+            );
+          case "7":
+            return (
+              <>
+                <Column pips={3} suit={suit} />
+                <Column pips={1} suit={suit} pad={1} />
+                <Column pips={3} suit={suit} />
+              </>
+            );
+          case "8":
+            return (
+              <>
+                <Column pips={3} suit={suit} />
+                <Column pips={2} suit={suit} justify="space-evenly" />
+                <Column pips={3} suit={suit} />
+              </>
+            );
+          case "9":
+            return (
+              <>
+                <Column pips={4} suit={suit} />
+                <Column pips={1} suit={suit} />
+                <Column pips={4} suit={suit} />
+              </>
+            );
+          case "10":
+            return (
+              <>
+                <Column pips={4} suit={suit} />
+                <Column pips={2} suit={suit} justify="space-around" />
+                <Column pips={4} suit={suit} />
+              </>
+            );
+          case "J":
+            return <Court suit={suit} rank="♞" />;
+          case "Q":
+            return <Court suit={suit} rank="♛" />;
+          case "K":
+            return <Court suit={suit} rank="♚" />;
+          case "A":
+            return <Column pips={1} suit={suit} size={96} />;
+        }
+      })()}
+      <style jsx>{`
         .face {
-          background: #333;
+          background: white;
+          font-family: var(--font-${family});
+          font-size: 32px;
+          box-sizing: border-box;
+          padding: 10px;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          justify-content: space-between;
+          align-items: stretch;
         }
         .face.red {
-          color: firebrick;
+          color: red;
         }
-      }
+        @media (prefers-color-scheme: dark) {
+          .face {
+            background: #333;
+          }
+          .face.red {
+            color: firebrick;
+          }
+        }
 
-      .face:before,
-      .face:after {
-        content: attr(data-rank) " ${suit}";
-        text-align: center;
-        width: 1.1em;
-      }
-      .face:after {
-        transform: rotate(180deg);
-      }
-    `}</style>
-  </div>
-);
-
-export const BackContext = createContext(svg);
+        .face:before,
+        .face:after {
+          content: attr(data-rank) " ${suit}";
+          text-align: center;
+          width: 1.1em;
+        }
+        .face:after {
+          transform: rotate(180deg);
+        }
+      `}</style>
+    </div>
+  );
+};
 
 // Inlined so @media (prefers-color-scheme) works
 const Back = () => (
   <div
-    dangerouslySetInnerHTML={{ __html: useContext(BackContext) }}
+    dangerouslySetInnerHTML={{ __html: useContext(CardContext).svg }}
     style={{
       position: "absolute",
       inset: 0,

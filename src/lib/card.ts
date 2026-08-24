@@ -321,11 +321,20 @@ export const allBacks = { ...backs, qr };
 export const slice = (svg: string) =>
   svg.replace("<svg", `<svg preserveAspectRatio="xMidYMid slice"`);
 
+const designs = Object.keys(backs) as (keyof typeof backs)[];
+
 /** The table name picks the design and the palette; nothing else configures it. */
+export const designFor = (table: string) =>
+  designs[hash(table) % designs.length];
+
 export function backFor(table: string) {
-  const seed = hash(table);
-  const designs = Object.values(backs);
-  return designs[seed % designs.length](seed);
+  return backs[designFor(table)](hash(table));
 }
+
+/** The drawn backs take the title face; the geometric ones take the body face. */
+export const familyFor = (table: string) =>
+  designFor(table) === "guilloche" || designFor(table) === "truchet"
+    ? "title"
+    : "body";
 
 export const svg = backFor("");

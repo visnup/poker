@@ -13,14 +13,13 @@ export function Hint({
       <style jsx>{`
         .hint {
           position: absolute;
-          font-family:
-            "Segoe Script", "Bradley Hand", "Apple Chancery", cursive;
+          font-family: var(--font-script);
           font-size: large;
           opacity: 0;
           transition: opacity 1s;
         }
         .hint.visible {
-          opacity: 0.5;
+          opacity: 0.8;
         }
       `}</style>
     </p>

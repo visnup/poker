@@ -77,6 +77,7 @@ export function Help() {
           margin: 0;
         }
         dt {
+          font-family: var(--font-title);
           font-weight: bold;
         }
         dd {

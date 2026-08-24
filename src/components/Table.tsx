@@ -62,6 +62,7 @@ export function DealerButton({
       <style jsx>{`
         button {
           touch-action: none;
+          font-family: inherit;
           font-size: 42px;
           font-weight: bold;
           text-transform: uppercase;

@@ -1,11 +1,5 @@
 import { useState } from "react";
-import {
-  allBacks,
-  hash,
-  Palette,
-  paletteFor,
-  palettes,
-} from "../../lib/card-back";
+import { allBacks, hash, Palette, paletteFor, palettes } from "../../lib/card";
 import { randomWord } from "../../lib/words";
 
 export default function Test() {
