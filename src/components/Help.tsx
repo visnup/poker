@@ -40,31 +40,29 @@ export function Help() {
       <button className="open" onClick={() => setOpen(true)}>
         ?
       </button>
-      {open && (
-        <Popup onClose={() => setOpen(false)}>
-          <dl>
-            <dt>Table</dt>
-            <dd>
-              Move the dealer button to deal.
-              <br />
-              Tap the board for the flop, turn, and river.
-            </dd>
-            <dt>Hand</dt>
-            <dd>
-              Pull down to peek at your cards, all the way to reveal.
-              <br />
-              Swipe up to fold then tap to un-fold.
-            </dd>
-            <dt>Join</dt>
-            <dd>
-              {url}
-              <p>
-                <Qr url={url} />
-              </p>
-            </dd>
-          </dl>
-        </Popup>
-      )}
+      <Popup visible={open} onClose={() => setOpen(false)}>
+        <dl>
+          <dt>Table</dt>
+          <dd>
+            Move the dealer button to deal.
+            <br />
+            Tap the board for the flop, turn, and river.
+          </dd>
+          <dt>Hand</dt>
+          <dd>
+            Pull down to peek at your cards, all the way to reveal.
+            <br />
+            Swipe up to fold then tap to un-fold.
+          </dd>
+          <dt>Join</dt>
+          <dd>
+            {url}
+            <p>
+              <Qr url={url} />
+            </p>
+          </dd>
+        </dl>
+      </Popup>
       <style jsx>{`
         .open {
           font: inherit;
