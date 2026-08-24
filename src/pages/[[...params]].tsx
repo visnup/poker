@@ -6,24 +6,44 @@ import { Welcome } from "../components/Welcome";
 import { randomWord } from "../lib/words";
 
 // Only so the crawler's HTML names the table; the client still reads the router.
-export function getServerSideProps({ params, res }: GetServerSidePropsContext) {
+export function getServerSideProps({
+  params,
+  req,
+  res,
+}: GetServerSidePropsContext) {
   // the markup is a pure function of the table name, and a deploy gets a fresh cache
   res.setHeader(
     "Cache-Control",
     "public, max-age=0, s-maxage=86400, stale-while-revalidate=604800",
   );
   const path = params?.params as string[] | undefined;
-  return { props: { table: !path || path[0] === "0" ? "" : path[0] } };
+  return {
+    props: {
+      table: !path || path[0] === "0" ? "" : path[0],
+      // previews and localhost point at themselves; production stays pinned so
+      // a forged Host can't steer markup the CDN then holds for a day
+      origin:
+        process.env.VERCEL_ENV === "production"
+          ? "https://poker.dance"
+          : `${req.headers["x-forwarded-proto"] ?? "http"}://${req.headers.host}`,
+    },
+  };
 }
 
-export default function Index({ table: shared }: { table: string }) {
+export default function Index({
+  table: shared,
+  origin,
+}: {
+  table: string;
+  origin: string;
+}) {
   const router = useRouter();
   return (
     <>
       <Head>
         <meta
           property="og:image"
-          content={`https://poker.dance/api/og?table=${encodeURIComponent(shared)}`}
+          content={`${origin}/api/og?table=${encodeURIComponent(shared)}`}
         />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
