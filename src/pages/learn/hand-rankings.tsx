@@ -140,6 +140,9 @@ function Ranking({ index, players }: { index: number; players: number }) {
           button {
             flex-wrap: wrap;
           }
+          .again {
+            display: none;
+          }
           .right {
             margin-left: 0;
             align-items: flex-start;
@@ -297,6 +300,11 @@ export default function HandRankings() {
           }
           .head .odds {
             margin-left: 0;
+          }
+          /* out past the page padding, so the cards get the whole screen */
+          ol {
+            margin-left: -24px;
+            margin-right: -24px;
           }
         }
       `}</style>
