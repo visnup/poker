@@ -221,9 +221,18 @@ The full inventory of things a new player cannot discover:
       conversion: `recordVideo` writes `.webm` and nothing else (it throws on
       any other extension, `videoRecorder.js:38`). Embed at the top of the
       README; for a visual app it will outsell any copy. *(M)*
-      - Unverified: whether GitHub's README renderer plays a `.webm` committed
-        in the repo, or only ones uploaded to `user-attachments`. Check before
-        assuming a relative path works.
+      - Recorded — `public/demo.webm`, 1280×720, 27s. Placing it is what's
+        left, and a committed file can't be the one placed: GitHub strips an
+        authored `<video>` from a README whatever its `src` (verified against
+        `repos/:owner/:repo/readme` — the tag renders as an empty `<p>`), and
+        `raw.githubusercontent` serves `.webm` as `audio/webm`,
+        `content-disposition: attachment`, `nosniff`. The only route is a
+        *bare* `https://github.com/user-attachments/assets/…` URL on its own
+        line, which GitHub rewrites into the `<video>` itself (`nocobase`'s
+        README does exactly this). That store takes MP4/MOV, so the upload is
+        `tmp/demo.mp4` — h.264, faststart, 1.5MB — dragged into any comment
+        box. A GIF is the fallback if the upload is unwanted: 3.7MB at
+        640px/10fps, five times the WebM, dithered, no controls.
 - [ ] **Explain the two roles.** It's surprising that the first phone to open
       the URL becomes the table screen rather than a seat. Either label it on
       screen ("this device is the table") or make choosing explicit. *(S)*
