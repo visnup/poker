@@ -48,6 +48,27 @@ Roughly easiest-and-organic first.
       so the three can't drift. Dropped the × from the welcome card: every
       way of dismissing it deals a hand, so an affordance promising a page
       behind it was a lie.
+- [ ] **Rules pages that deal, not diagram.** The highest-conviction item here.
+      Every hand-rankings page on the internet is a static table of card images;
+      this app already has a deck, real card faces, a 3D flip, and a board that
+      reveals flop-turn-river on tap. A rankings page where each hand *deals
+      itself* is a different artifact, and it's the one piece of content that
+      can't be copied from us without rebuilding the cards.
+      - Interactive beats illustrated: tap a ranking and watch it dealt; step a
+        board through the streets with the existing `Board`; drag the dealer
+        button to see the order move.
+      - The feedback loop is the point. "Which hand wins?" with two hands and a
+        board, you pick, it flips and highlights the winning five — then deals
+        another. That's a reason to come back, which no reference page has.
+      - Needs a hand evaluator, which is **winner detection** in P2 — a pure
+        function, easy to unit test, and the same one showdown needs. Build it
+        here and P2 gets it free; that's the argument for doing this before the
+        gameplay items rather than after.
+      - Each drill can be its own URL, so `/api/og` renders the actual hand into
+        the preview — a shareable "can you beat this?" instead of a link to a
+        page. Feeds the share loop rather than sitting beside it.
+      - Still a real bet, not a weekend: it only pays if it's genuinely better
+        than the forty existing versions. The cards are why it can be. *(L)*
 - [ ] **Own "poker without cards" / "phone poker deck" / "poker night no deck".**
       Long-tail searches by exactly the person who wants this — someone whose
       deck is missing at 9pm. A short page or a README section answering that
@@ -71,11 +92,6 @@ Roughly easiest-and-organic first.
       (`/raven`) are already memorable; a table that renders its own name
       nicely on the big screen is something people photograph and post. Free
       distribution from a feature that is mostly typography. *(S)*
-- [ ] **Rules/reference pages that stand alone.** "Texas hold'em in 90 seconds",
-      hand rankings, dealer-button order — the things a table full of beginners
-      googles mid-game anyway, hosted here with a "deal a hand" button on each.
-      This is a real content bet, not a weekend: it only pays if it's genuinely
-      better than the forty existing versions. *(L)*
 - [ ] **Ambitious: make the app work for remote play.** The single biggest
       addressable-audience change, and the one thing the "deliberately not
       doing" list is built against — hidden hole cards, spectators, voice.
@@ -203,8 +219,9 @@ The full inventory of things a new player cannot discover:
       prove anything. Let a player push their cards to the table view so the big
       screen shows them. This is the single biggest gameplay gap. *(M)*
 - [ ] **Winner detection.** Evaluate the best 5-of-7 for revealed hands and
-      highlight the winner on the table view. Pure function, easy to unit test.
-      *(M)*
+      highlight the winner on the table view. Pure function, easy to unit test —
+      and the same evaluator the rules pages in P-1 need, which is the one
+      argument for writing it before there's a showdown to use it on. *(M)*
 - [ ] **Sync reveal state across viewers.** `revealed` is `useState` local to
       one `Table`. Two dealer screens (or a reload mid-hand) disagree about
       whether the flop is out. Move it into the `deals` row. *(S)*

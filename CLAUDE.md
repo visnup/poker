@@ -17,7 +17,7 @@ Specs sit next to what they exercise — `src/components/Table.spec.ts` for `Tab
 
 Node is pinned to 24.19.0 LTS (`.nvmrc`, `engines`). pnpm 11 is pinned via `packageManager`; Vercel honors it through `ENABLE_EXPERIMENTAL_COREPACK=1`, set on the project. `pnpm-workspace.yaml` needs its `packages:` field — pnpm 9, the version Vercel falls back to, errors without it.
 
-`vercel.json` overrides the build command (the dashboard setting still said `yarn build`).
+`vercel.json` overrides the build command (the dashboard setting still said `yarn build`) with `convex deploy --cmd 'pnpm build'`, so Vercel — and only Vercel — pushes the schema. Don't fold that into `package.json`'s `build`: `convex deploy` targets the *production* deployment whenever `CONVEX_DEPLOYMENT` is set, which it is in `.env.local`, so a local `pnpm build` would publish. Convex runs `--cmd` first and pushes last, but any failed step fails the command, so a deployment that went live is one whose schema landed.
 
 TypeScript is held at 6.x: typescript-eslint hard-errors on TS 7 and takes the whole lint run down ([#10940](https://github.com/typescript-eslint/typescript-eslint/issues/10940)).
 
