@@ -86,8 +86,7 @@ export function Game({ table, seat }: { table: string; seat?: number }) {
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            min-height: -webkit-fill-available;
+            min-height: 100dvh;
           }
         `}
       </style>

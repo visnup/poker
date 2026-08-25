@@ -22,8 +22,7 @@ export default function Home() {
           display: flex;
           justify-content: center;
           align-items: center;
-          min-height: 100vh;
-          min-height: -webkit-fill-available;
+          min-height: 100dvh;
           overflow: hidden;
         }
       `}</style>

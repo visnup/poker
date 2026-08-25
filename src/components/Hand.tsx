@@ -103,8 +103,7 @@ export function Hand({ table, seat }: { table: string; seat: number }) {
           .cards {
             position: relative;
             min-width: 325px;
-            min-height: 100vh;
-            min-height: -webkit-fill-available;
+            min-height: 100dvh;
             touch-action: none;
           }
           .layer {
