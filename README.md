@@ -1,6 +1,6 @@
 # Poker dance ♠️💃
 
-Looking to play Texas hold ’em and nobody brought cards? Send everyone a link —
+Looking to play Texas hold ’em and nobody brought cards? Send everyone a link:
 phones are the hands, the TV is the table, chips stay real. Nothing to install.
 
 <https://poker.dance>

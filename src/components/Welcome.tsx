@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Popup } from "./Popup";
 
 export const description =
-  "Looking to play Texas hold ’em and nobody brought cards? Send everyone a link — phones are the hands, the TV is the table, chips stay real.";
+  "Looking to play Texas hold ’em and nobody brought cards? Send everyone a link: phones are the hands, the TV is the table, chips stay real.";
 
 export function Welcome({ onDismiss }: { onDismiss: () => void }) {
   return (
@@ -18,6 +18,10 @@ export function Welcome({ onDismiss }: { onDismiss: () => void }) {
       <style jsx>{`
         .content {
           text-align: center;
+        }
+        h1,
+        p {
+          text-wrap: balance;
         }
         h1 {
           font-family: var(--font-title);

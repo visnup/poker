@@ -110,6 +110,7 @@ export default async function handler(
               lineHeight: 1.4,
               marginTop: 10,
               opacity: 0.75,
+              textWrap: "balance",
             }}
           >
             {description}
