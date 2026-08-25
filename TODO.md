@@ -34,8 +34,9 @@ Roughly easiest-and-organic first.
 - [ ] **Post it where in-person poker people are.** r/poker, r/homepoker,
       Hacker News ("Show HN"), the boardgame-adjacent corners of Bluesky/Mastodon.
       One good post outperforms months of SEO for a thing like this, and it
-      costs an evening. Gate on the demo video below — a visual app posted
-      without a video reads as vaporware. *(S, recurring)*
+      costs an evening. Was gated on the demo video, which is now recorded and
+      on the README; `tmp/demo.mp4` is the copy for anywhere that won't take
+      WebM. *(S, recurring)*
 - [ ] **Demo video, everywhere — not just the README.** Already tracked in P1;
       note here that the same WebM/GIF is the payload for every post, tweet,
       and app-store-style listing. Record once, reuse. *(see P1)*
@@ -215,24 +216,24 @@ The full inventory of things a new player cannot discover:
       - The cap of ten is a poker-table choice, not a deck limit: `deal` leaves
         47 cards after the board and `Hand` indexes `(seat - 1) * 2`, so the
         deck would seat 23. Worth stating as a rule wherever the cap lands.
-- [ ] **Record a demo video.** A hand dealt, a peek, a fold. `hand.spec.ts`
-      already scripts all three gestures, so a Playwright recording script is
-      mostly assembly — and re-runnable when the UI changes. WebM, no
-      conversion: `recordVideo` writes `.webm` and nothing else (it throws on
-      any other extension, `videoRecorder.js:38`). Embed at the top of the
-      README; for a visual app it will outsell any copy. *(M)*
-      - Recorded — `public/demo.webm`, 1280×720, 27s. Placing it is what's
-        left, and a committed file can't be the one placed: GitHub strips an
-        authored `<video>` from a README whatever its `src` (verified against
-        `repos/:owner/:repo/readme` — the tag renders as an empty `<p>`), and
+- [x] **Record a demo video.** A hand dealt, a peek, a fold — `test/demo.mjs`,
+      re-runnable when the UI changes. WebM, no conversion: `recordVideo`
+      writes `.webm` and nothing else (it throws on any other extension,
+      `videoRecorder.js:38`), and GitHub's attachment store takes that webm
+      as-is.
+      - The README embed is a `user-attachments` URL, which is the only thing
+        that plays: an authored `<video>` is stripped whatever its `src`, and
         `raw.githubusercontent` serves `.webm` as `audio/webm`,
-        `content-disposition: attachment`, `nosniff`. The only route is a
-        *bare* `https://github.com/user-attachments/assets/…` URL on its own
-        line, which GitHub rewrites into the `<video>` itself (`nocobase`'s
-        README does exactly this). That store takes MP4/MOV, so the upload is
-        `tmp/demo.mp4` — h.264, faststart, 1.5MB — dragged into any comment
-        box. A GIF is the fallback if the upload is unwanted: 3.7MB at
-        640px/10fps, five times the WebM, dithered, no controls.
+        `content-disposition: attachment`, `nosniff`. GitHub writes the
+        `<video>` itself — `controls`, `muted`, a signed `.webm` src — from
+        either a bare URL or a `[demo.webm](…)` link. The upload has to happen
+        in a comment box; there's no API for that store.
+      - `public/demo.webm` is still committed and still unreferenced. It's
+        what `poker.dance/demo.webm` serves — `video/webm`, inline,
+        `access-control-allow-origin: *` — so it's the src for a landing-page
+        embed, where a `<video>` tag is just a `<video>` tag.
+      - `tmp/demo.mp4` (h.264, faststart, 1.5MB) is the payload for anywhere
+        that won't take WebM — Reddit, Bluesky, most upload forms.
 - [ ] **Explain the two roles.** It's surprising that the first phone to open
       the URL becomes the table screen rather than a seat. Either label it on
       screen ("this device is the table") or make choosing explicit. *(S)*
