@@ -96,7 +96,13 @@ function Ranking({ index, players }: { index: number; players: number }) {
         <span className="right">
           <span className="odds">
             {odds.map((n, i) => (
-              <span key={i}>1 in {oneIn(n)}</span>
+              <span key={i}>
+                1 in {oneIn(n)}
+                {/* filled to the real share, so the rare ones read as empty */}
+                <span className="bar">
+                  <span style={{ width: `${100 / n}%` }} />
+                </span>
+              </span>
             ))}
           </span>
           {players === 1 && note && <span className="note">{note}</span>}
@@ -162,9 +168,29 @@ function Ranking({ index, players }: { index: number; players: number }) {
           font-variant-numeric: tabular-nums;
           opacity: 0.55;
         }
-        .odds span {
+        .odds > span {
           width: 96px;
           text-align: right;
+        }
+        .bar {
+          display: flex;
+          justify-content: flex-end;
+          width: 76px;
+          height: 4px;
+          margin: 4px 0 0 auto;
+          border-radius: 2px;
+          background: hsla(0, 0%, 0%, 0.16);
+          overflow: hidden;
+        }
+        .bar > span {
+          width: auto;
+          height: 100%;
+          background: currentColor;
+        }
+        @media (prefers-color-scheme: dark) {
+          .bar {
+            background: hsla(0, 0%, 100%, 0.22);
+          }
         }
         @media (max-width: 880px) {
           button {
@@ -323,7 +349,7 @@ export default function HandRankings() {
           font-size: 13px;
           opacity: 0.45;
         }
-        .head .odds span {
+        .head .odds > span {
           width: 96px;
           text-align: right;
         }
