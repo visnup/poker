@@ -8,7 +8,7 @@ import { oddsByPlayers } from "../../lib/odds";
 
 const scale = 0.4;
 const overlap = -132; // of a 250px card, so the rank corner of each stays clear
-const kicker = 24;
+const kicker = 20;
 // every row reserves the widest case — five cards with a kicker set apart
 const lane = (270 + 3 * (270 + overlap) + (270 + kicker)) * scale;
 
@@ -143,6 +143,10 @@ function Ranking({ index, players }: { index: number; players: number }) {
           .again {
             display: none;
           }
+          .name,
+          .right {
+            padding-left: 10px;
+          }
           .right {
             margin-left: 0;
             align-items: flex-start;
@@ -170,12 +174,11 @@ export default function HandRankings() {
       </p>
       <h1>Hand rankings</h1>
       <p className="lede">
-        Best to worst. Cards set apart don&rsquo;t make the hand — they only
-        break ties. Tap a row to deal another example. Odds are exact; a night
-        is about thirty hands.
+        Best to worst. Cards set apart don&rsquo;t make the hand, but they break
+        ties. Tap a row to deal another example. A night is about thirty hands.
       </p>
       <p className="chooser">
-        <label htmlFor="players">Counting</label>{" "}
+        <label htmlFor="players">Consider</label>{" "}
         <select
           id="players"
           value={players}
@@ -189,9 +192,7 @@ export default function HandRankings() {
           ))}
         </select>{" "}
         <span className="source">
-          {players === 1
-            ? "odds are exact"
-            : "odds are simulated — hands at a table share a board, so they aren’t independent"}
+          (odds are {players === 1 ? " exact" : " simulated and dependent"})
         </span>
       </p>
       <ol>
@@ -199,7 +200,7 @@ export default function HandRankings() {
           <span className="what">
             {players === 1
               ? "how often this is your hand"
-              : "how often someone at the table has it"}
+              : "how often someone at the table has one"}
           </span>
           <span className="odds">
             <span>after the flop</span>
@@ -305,6 +306,9 @@ export default function HandRankings() {
           ol {
             margin-left: -24px;
             margin-right: -24px;
+          }
+          .head {
+            padding-left: 24px;
           }
         }
       `}</style>
