@@ -5,6 +5,8 @@ shared screen is the table. Chips stay real.
 
 <https://poker.dance>
 
+[demo.webm](https://github.com/user-attachments/assets/fe7e42b1-154b-40f5-884a-236b8dc20079)
+
 ## Play
 
 Everyone opens the same URL: the site plus any table name, e.g. <https://poker.dance/kitchen>.
