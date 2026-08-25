@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Card } from "../../components/Card";
 import { dealRanking, rankings } from "../../lib/hands";
 import { oddsByPlayers } from "../../lib/odds";
+import { randomWord } from "../../lib/words";
 
 const scale = 0.4;
 const overlap = -132; // of a 250px card, so the rank corner of each stays clear
@@ -191,6 +192,9 @@ function Ranking({ index, players }: { index: number; players: number }) {
 
 export default function HandRankings() {
   const [players, setPlayers] = useState(1);
+  // picked after mount: a word chosen while rendering wouldn't survive hydration
+  const [table, setTable] = useState("/");
+  useEffect(() => setTable(`/${randomWord()}`), []);
   return (
     <main>
       <Head>
@@ -242,10 +246,9 @@ export default function HandRankings() {
         ))}
       </ol>
       <p className="outro">
-        None of these are pictures of cards. They&rsquo;re dealt by the same
-        deck <Link href="/">Poker Dance</Link> deals to a room full of phones —
-        one screen is the table, everyone else is holding their hand.{" "}
-        <Link href="/">Start a table →</Link>
+        Learning these for poker night? If you&rsquo;re playing in person, skip
+        the shuffling and play here on <Link href="/">Poker Dance</Link>.{" "}
+        <Link href={table}>Start a table →</Link>
       </p>
       <style jsx>{`
         main {
