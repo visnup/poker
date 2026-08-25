@@ -106,7 +106,7 @@ export const rankings: {
       },
       {
         players: [1, 10],
-        text: "Half of all boards pair — and on those, full houses outnumber flushes more than two to one.",
+        text: "Half of all boards pair by the river — and on those, full houses outnumber flushes more than two to one.",
       },
     ],
     deal: (r) => {
