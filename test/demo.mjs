@@ -1,45 +1,43 @@
 import { chromium, devices } from "@playwright/test";
-import { readFileSync } from "node:fs";
+import { ConvexHttpClient } from "convex/browser";
+import { mkdirSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+import { api } from "../convex/_generated/api.js";
+import { deck } from "../convex/deck.ts";
 
-const OUT = process.env.OUT ?? ".";
+const OUT = process.env.OUT ?? "./tmp";
+mkdirSync(OUT, { recursive: true });
 const ORIGIN = process.env.ORIGIN ?? "http://localhost:3000";
-// The card back, its palette and the face design are all seeded from the table
-// name, so a fixed one keeps the look reproducible between takes.
 const room = process.env.ROOM ?? "bison";
-// The table everything sits on, bundled beside the script so a bare run needs
-// no arguments. 3200x2000 is pixel parity with the still at deviceScaleFactor 2.
-// "Dark wooden floor", freestocktextures.com/texture/dark-wooden-floor,1658.html
-// — CC0, no attribution required. Cropped to 16:10 from the 5824x3264 original.
+// https://freestocktextures.com/texture/dark-wooden-floor,1658.html CC0 license
 const SURFACE =
   process.env.SURFACE ?? fileURLToPath(new URL("wood.webp", import.meta.url));
 
+// The same hand every take. Queens lead the flop, the flush takes it away on
+// the turn, the board pairs on the river and fills the queens up — and the
+// hand that mucked before any of it would have made trip sevens.
+const BOARD = ["Q♥", "9♥", "4♠", "7♥", "7♣"];
+const HOLES = ["A♥", "K♥", "Q♠", "Q♣", "7♠", "2♦"];
+const dealt = [...BOARD, ...HOLES];
+const stacked = [...dealt, ...deck.filter((card) => !dealt.includes(card))];
+
 const STAGE = { width: 1600, height: 1000 };
-// A seat is an angle and a radius from the board. The ring is an ellipse, not
-// a circle — the table is landscape, so a seat at the end of it is much closer
-// than one along the side — and the board rides above the middle of the frame
-// to leave a whole phone's worth of room under the near seat.
+// A seat is an angle and a radius from the board, on an ellipse because the
+// table is landscape. `reach` pulls one seat in on its own — the seats beside
+// the tablet have to clear it, the seat past its end has to stay in frame.
 const O = { x: STAGE.width / 2, y: 400 };
 const RING = { x: 830, y: 520 };
-// `reach` pulls one seat in or out on its own: the seats beside the tablet have
-// to clear it, and the seat past its end has to stay inside the frame, and one
-// ellipse can't do both.
 const at = (angle, reach = 1) => ({
   x: O.x + Math.cos((angle * Math.PI) / 180) * RING.x * reach,
   y: O.y + Math.sin((angle * Math.PI) / 180) * RING.y * reach,
 });
 
-// Every device lays the app out at the width its own <meta name="viewport">
-// asks for — 1140 for a table, 380 for a hand — and then scales that to the
-// size the device really is. One shared SCALE keeps them all to the same ruler,
-// so an iPad and a Pixel are as different on screen as they are on a table.
-// A seat at the end of the table has to fit the tablet's half height plus a
-// whole phone inside the frame below it, which is what caps this.
+// Each device lays the app out at the width its own <meta name="viewport"> asks
+// for — 1140 for a table, 380 for a hand — scaled to the size it really is, so
+// an iPad and a Pixel differ on screen the way they do on a table.
 const SCALE = 0.6;
-// `bezel` and `radius` are the case around the screen. Bezel is a fraction of
-// the device's own width — 4.9% is 3.5mm on a phone, 3.4% is 6mm on an iPad —
-// so the case grows with the device instead of staying a fixed rim as the whole
-// composition zooms.
+// Bezel as a fraction of the device's width: 4.9% is 3.5mm on a phone, 3.4% is
+// 6mm on an iPad, so the case grows with the device as the composition zooms.
 const screen = (name, layout, { bezel, radius }) => {
   const { width, height } = devices[name].viewport;
   return {
@@ -51,10 +49,8 @@ const screen = (name, layout, { bezel, radius }) => {
   };
 };
 
-// Where a seat sits is polar; which way its phone is turned is not. Facing the
-// board squarely leaves everyone but the near seats sideways and unreadable, so
-// each phone turns back toward upright — all the way for the near seats, to
-// upside down for the far ones, which is what a real table looks like anyway.
+// Face the board, then turn most of the way back to readable: square-on leaves
+// every seat but the near ones sideways.
 const READ = 0.75;
 const norm = (deg) => ((((deg + 180) % 360) + 360) % 360) - 180;
 const facing = (angle) => {
@@ -63,17 +59,15 @@ const facing = (angle) => {
   return board + (upright - board) * READ;
 };
 
-// Nobody sets a phone down on a perfect ring. Fixed rather than random so two
-// takes can be compared.
+// Nobody sets a phone down on a perfect ring. Fixed, not random, so two takes
+// can be compared.
 const JITTER = [
   { x: -12, y: 8, turn: 6 },
   { x: 14, y: 10, turn: -5 },
   { x: -10, y: -14, turn: 4 },
 ];
 
-// Three at a four-sided table leaves a corner open, which is what three people
-// actually looks like. Near seats first, so the two who peek together are the
-// two sitting next to each other.
+// Near seats first: the two who peek together are the two sitting side by side.
 const TABLE = {
   ...screen("iPad Pro 11 landscape", 1140, { bezel: 0.034, radius: 20 }),
   ...O,
@@ -100,9 +94,8 @@ const surface = (file) => {
   const data = readFileSync(file).toString("base64");
   return `url(data:image/${type ?? "jpeg"};base64,${data})`;
 };
-// Gentle, because the devices cover the middle: the only part of the photo
-// anyone sees is the ring around them, and a heavy vignette crushes exactly
-// that. Enough falloff to hold the eye on the table, not enough to lose grain.
+// Gentle: the devices cover the middle, so the only part of the photo anyone
+// sees is the ring around them, which a heavy vignette crushes.
 const ground = `background-image:
      radial-gradient(120% 90% at 50% 45%, rgba(0,0,0,.05) 0%, rgba(0,0,0,.2) 60%, rgba(0,0,0,.5) 100%),
      ${surface(SURFACE)};
@@ -136,8 +129,7 @@ const wrapper = `<!doctype html>
 </style>
 <div id="stage"></div>`;
 
-// The shell is padded by the bezel, so it is offset by that much to keep the
-// screen — not the case — centred on the seat.
+// Offset by the bezel so the screen, not the case, is centred on the seat.
 const place = ({ w, h, x, y, scale, facing, pad, radius }) =>
   `left:${x - w / 2 - pad}px;top:${y - h / 2 - pad}px;padding:${pad}px;` +
   `border-radius:${radius + pad}px;transform:rotate(${facing}deg) scale(${scale});`;
@@ -152,8 +144,6 @@ try {
   });
 
   await context.addInitScript(() => {
-    if (!new URLSearchParams(location.search).has("demo")) return;
-
     const hide = () => {
       const style = document.createElement("style");
       style.textContent = "nextjs-portal { display: none !important }";
@@ -163,8 +153,7 @@ try {
     else addEventListener("DOMContentLoaded", hide);
 
     // Same-origin iframes share the tab's sessionStorage, so every frame would
-    // read the first one's player id back and revive its row. `?demo=` gives
-    // each its own.
+    // read the first one's player id back and revive its row.
     const store = new Map();
     Object.defineProperty(window, "sessionStorage", {
       configurable: true,
@@ -238,10 +227,9 @@ try {
     await paint();
   }
 
-  // A hand's whole screen is the drag surface. Gestures run down the phone's
-  // own axis in its own pixels, measured from the top edge, because every hand
-  // lays out at 380px wide however big the phone is — the cards are in the same
-  // place on all of them, only the screen below is taller or shorter.
+  // Gestures run down the phone's own axis, in its own pixels from the top
+  // edge: every hand lays out at 380 wide, so the cards are in the same place
+  // on all of them and only the screen below is taller or shorter.
   const along = ({ x, y, h, scale, facing }, top) => {
     const f = (facing * Math.PI) / 180;
     const d = (top - h / 2) * scale;
@@ -252,14 +240,14 @@ try {
 
   // 250px is where a pull stops being a peek: let go short of it and the cards
   // flip back, go past it and they stay face up.
-  const peek = (seat) => gesture(seat, 120, 330, { pause: 18, hold: 700 });
+  const PEEK = [120, 295];
+  const peek = (seat) => gesture(seat, ...PEEK, { pause: 18, hold: 700 });
   const reveal = (seat) => gesture(seat, 120, 540, { pause: 14 });
   const fold = (seat) => gesture(seat, 300, -100, { steps: 14, pause: 8 });
 
-  // Everyone looks at their cards at once, a beat apart. Chrome's touch input
-  // is a single device — a touchEnd carries no points and lifts every finger,
-  // and dropping a point from a touchMove releases nothing — so the hands can
-  // start staggered but they all let go together.
+  // Chrome's touch input is one device: a touchEnd carries no points and lifts
+  // every finger, and dropping a point from a touchMove releases nothing. So
+  // hands can start staggered but they all let go together.
   const cdp = await context.newCDPSession(page);
   const dispatch = (type) =>
     cdp.send("Input.dispatchTouchEvent", {
@@ -275,8 +263,8 @@ try {
   async function peekTogether(seats, { stagger = 9, steps = 20, tick = 24 }) {
     const pulls = seats.map((seat, i) => ({
       id: i + 1,
-      from: along(seat, 120),
-      to: along(seat, 330),
+      from: along(seat, PEEK[0]),
+      to: along(seat, PEEK[1]),
       begin: i * stagger,
     }));
     const last = Math.max(...pulls.map((p) => p.begin)) + steps + 24;
@@ -323,39 +311,28 @@ try {
     return frame;
   }
 
-  // The table has to join first: `join` hands out the lowest free seat, and a
-  // phone holding seat 0 would render a second table view.
-  const table = await add("table", `${ORIGIN}/${room}?demo=t&table`, TABLE);
+  // Stack the deck before anyone is looking.
+  process.loadEnvFile(".env.local");
+  const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL);
+  await convex.mutation(api.deals.deal, { table: room, stacked });
+
+  // The table joins first: `join` hands out the lowest free seat, and a phone
+  // holding seat 0 would render a second table view.
+  const table = await add("table", `${ORIGIN}/${room}?table`, TABLE);
   const board = () => table.locator(".board").boundingBox();
 
-  // Open on a table nobody has joined yet, because that is the part worth
-  // showing: the seats fill by opening a link, with nothing to install.
   await page.screencast.start({ path: `${OUT}/demo.webm`, size: STAGE });
   await wait(1800);
   for (const [i, seat] of SEATS.entries()) {
-    await add(`p${i}`, `${ORIGIN}/${room}?demo=${i}`, seat);
+    await add(`p${i}`, `${ORIGIN}/${room}`, seat);
     await wait(800);
   }
   await page.screenshot({ path: `${OUT}/demo-still.png` });
   await wait(900);
 
-  // Deal: the button rests in the felt's top left corner, and the deal passes
-  // clockwise, so it goes straight across to the next seat rather than
-  // diagonally over the whole table.
-  const onTable = (lx, ly) => ({
-    x: TABLE.x + (lx - TABLE.w / 2) * TABLE.scale,
-    y: TABLE.y + (ly - TABLE.h / 2) * TABLE.scale,
-  });
-  await drag(onTable(130, 130), onTable(TABLE.w - 130, 130), {
-    steps: 22,
-    pause: 16,
-  });
-  await wait(2000);
-
   // Pre-flop everyone looks and nobody shows: each pull stops short and springs
-  // back. Two go at once a beat apart and let go together, because one touch
-  // device can only lift every finger at the same time; the third looks after
-  // them, on the mouse pointer, which releases on its own.
+  // back. Two go at once and let go together; the third looks after them, on
+  // the mouse pointer, which releases on its own.
   await peekTogether(SEATS.slice(0, 2), { stagger: 9 });
   await wait(900);
   await peek(SEATS[2]);
@@ -375,7 +352,19 @@ try {
   await tap(await board()); // turn
   await wait(1600);
   await tap(await board()); // river
-  await wait(3000);
+  await wait(2200);
+
+  // Next hand: the button rests in the felt's top left corner and the deal
+  // passes clockwise, so it goes straight across rather than diagonally.
+  const onTable = (lx, ly) => ({
+    x: TABLE.x + (lx - TABLE.w / 2) * TABLE.scale,
+    y: TABLE.y + (ly - TABLE.h / 2) * TABLE.scale,
+  });
+  await drag(onTable(130, 130), onTable(TABLE.w - 130, 130), {
+    steps: 22,
+    pause: 16,
+  });
+  await wait(2600);
 
   await page.screencast.stop();
   console.log(`${OUT}/demo.webm  room=${room}`);
