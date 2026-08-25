@@ -31,12 +31,33 @@ Roughly easiest-and-organic first.
 - [ ] **Say "poker.dance" out loud in the room.** The table screen shows a join
       link in the help overlay; the domain isn't on screen otherwise. Someone
       photographing the TV should end up with the URL in the shot. *(XS)*
-- [ ] **Post it where in-person poker people are.** r/poker, r/homepoker,
-      Hacker News ("Show HN"), the boardgame-adjacent corners of Bluesky/Mastodon.
-      One good post outperforms months of SEO for a thing like this, and it
-      costs an evening. Was gated on the demo video, which is now recorded and
-      on the README; `tmp/demo.mp4` is the copy for anywhere that won't take
-      WebM. *(S, recurring)*
+- [ ] **Post it where in-person poker people are.** Was gated on the demo
+      video, which is now recorded and on the README; `tmp/demo.mp4` is the
+      copy for anywhere that won't take WebM. Replying to someone already
+      asking beats a launch post, and the live asks are on Reddit — r/poker,
+      r/homepoker — which is the one place that can't be checked from here
+      (it refuses the crawler and search strips it out). *(S, recurring)*
+      - **Not Show HN.** The whole category dies there, every time: Bold Poker
+        in 2012 took 6 points and *zero* comments, Smart Dealer's own Show HN
+        in 2024 took 3 and 3, a home-game settler 2 and 3, Zoker 1 and 1. Best
+        in the space is 10 points, and that was "Poker over SSH" winning on
+        the SSH. Fourteen years of tails.
+      - Expect one objection, because it's the only one anyone raises. Top
+        comment on Smart Dealer's Show HN: *"the last thing I want to do with
+        a bunch of friends is stare at our phones together."* Poker Chip
+        Forum, on this same iPad-and-phones design: *"unnecessarily
+        complicated and expensive"*, against "handling chips and cards".
+      - That objection is the pitch. Everything else in the category automates
+        the chips, which is what makes it phone-staring; this doesn't, on
+        purpose. The phone is the cards and it lies face down. "Deliberately
+        not doing" is the answer to the review, not a limitation to apologise
+        for.
+      - Venues that exist and aren't Reddit: the twoplustwo Home Poker forum
+        (`forumserver.twoplustwo.com/24/home-poker/`), Poker Chip Forum —
+        right demographic, openly skeptical of the idea — and AlternativeTo,
+        which is where this category gets comparison-shopped and where the app
+        is absent. Threads found there are stale (2023–2024); live ones are
+        the Reddit gap above.
 - [ ] **Demo video, everywhere — not just the README.** Already tracked in P1;
       note here that the same WebM/GIF is the payload for every post, tweet,
       and app-store-style listing. Record once, reuse. *(see P1)*
@@ -84,8 +105,12 @@ Roughly easiest-and-organic first.
 - [ ] **Own "poker without cards" / "phone poker deck" / "poker night no deck".**
       Long-tail searches by exactly the person who wants this — someone whose
       deck is missing at 9pm. A short page or a README section answering that
-      literal question is most of the work. Unverified: whether these have any
-      volume at all; check before writing copy for them. *(S)*
+      literal question is most of the work. Volume is still unverified, but
+      the terms are not unclaimed: searching them surfaces EasyPoker, Smart
+      Dealer and the rest ahead of anything here. Competing on the phrase
+      means competing with an app that claims 1.5M players, so the wedge has
+      to be the two things they can't say — no install, real chips — not the
+      phrase itself. *(S)*
 - [ ] **Ask the people who already played.** Everyone who has sat at a table is
       a person who could run one at their next game night. There's no email, no
       account, and nothing to ask them with — the lowest-friction version is a
@@ -97,10 +122,23 @@ Roughly easiest-and-organic first.
       leaving the funnel with no denominator to measure. Nothing above is
       gated on it now; the tables-created → second-player → first-deal ratio
       is worth looking at again once a post has sent anyone.
-- [ ] **Ship it to the Bold Poker crowd.** The README already credits Bold
-      Poker; its users are the exact audience and it's iOS-only. A web version
-      that needs no install is a real pitch to anyone who has searched for it.
-      Where they congregate is unverified — find out first. *(S)*
+- ~~**Ship it to the Bold Poker crowd.**~~ There isn't one. Last updated
+      December 2022 and 29 ratings all-in; its own 2012 HN post drew zero
+      comments. The iOS-only pitch doesn't hold either — its press page and an
+      APK listing both claim Android, though the App Store shows none, so the
+      one differentiator that item rested on is at best in dispute. The README
+      still calls this a Bold Poker clone, which is a description of where it
+      came from, not of who to sell it to.
+- [ ] **Know the field, since it isn't Bold Poker.** *(surveyed 2026-08-25)*
+      EasyPoker claims 1.5M+ players and replaces cards *and* chips. Smart
+      Dealer Poker is the architectural twin — browser table on a TV or
+      laptop, phone as the private hand — but every player installs an app and
+      types a 6-digit code, and it automates chips, blinds, side pots and
+      payouts. Bullets Poker and Couch Poker (AirConsole, on a TV) round it
+      out. Two things nobody else in that list can say: **nobody installs
+      anything**, and **chips stay real**. Both are already true; neither is
+      written down anywhere a stranger would see. That's the copy problem
+      worth solving before any of the posting items above. *(S)*
 - [ ] **Make a table name something to show off.** Word-based tables
       (`/raven`) are already memorable; a table that renders its own name
       nicely on the big screen is something people photograph and post. Free
