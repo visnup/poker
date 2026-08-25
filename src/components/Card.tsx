@@ -12,12 +12,14 @@ import { animated, config, useSpring } from "@react-spring/web";
 
 export const CardContext = createContext({ svg, family: familyFor("") });
 
+const pip = 60;
+
 const Column = ({
   pips = 0,
   suit,
   justify = "space-between",
   pad = 0,
-  size = 48,
+  size = pip,
 }: {
   pips?: number;
   suit?: string;
@@ -41,8 +43,8 @@ const Column = ({
         justify-content: ${pips === 1 ? "space-evenly" : justify};
         font-size: ${size}px;
         padding: 30px 0;
-        width: ${size > 48 ? "auto" : "30%"};
-        flex-grow: ${size > 48 ? "1" : "0"};
+        width: ${size > pip ? "auto" : "30%"};
+        flex-grow: ${size > pip ? "1" : "0"};
         text-align: center;
       }
       .pad {
@@ -157,7 +159,7 @@ const Face = ({ rank = "", suit = "" }: { rank?: string; suit?: string }) => {
           case "K":
             return <Court suit={suit} rank="♚" />;
           case "A":
-            return <Column pips={1} suit={suit} size={96} />;
+            return <Column pips={1} suit={suit} size={pip * 2} />;
         }
       })()}
       <style jsx>{`
