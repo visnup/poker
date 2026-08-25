@@ -1,5 +1,5 @@
 import qrcode from "qrcode-generator";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Popup } from "./Popup";
 
 function Qr({ url }: { url: string }) {
@@ -33,7 +33,8 @@ function Qr({ url }: { url: string }) {
 
 export function Help() {
   const [open, setOpen] = useState(false);
-  const url = location.origin + location.pathname;
+  const [url, setUrl] = useState("");
+  useEffect(() => setUrl(location.origin + location.pathname), []);
 
   return (
     <>
@@ -57,9 +58,7 @@ export function Help() {
           <dt>Join</dt>
           <dd>
             {url}
-            <p>
-              <Qr url={url} />
-            </p>
+            <p>{url && <Qr url={url} />}</p>
           </dd>
         </dl>
       </Popup>

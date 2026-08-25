@@ -181,24 +181,37 @@ The full inventory of things a new player cannot discover:
       point a phone at the TV instead of typing a URL. Rendered as inline SVG
       from `qrcode-generator` (2.0.4, no deps) — dark modules on an explicit
       white plate so it still scans in dark mode.
-- [ ] **Fill the blank screens.** `Game` renders `null` while joining, `Table`
-      renders no board before the first deal, and a player's phone renders
-      nothing at all until someone deals. Three different states that all look
-      like a broken page. Add "connecting…", "fling the dealer button to
-      start", and "waiting for the deal". *(S)*
-- [ ] **Say something when the table is full.** `players.join` scans seats
-      `0..10` — seat 0 is the table screen, so ten hands — and when they're all
-      taken it falls out of the loop and returns `undefined`. `Game` stores
-      that, `joining.current` is already `true` so nothing retries, and
-      `if (!player) return null` leaves the eleventh player staring at a blank
-      page forever. The fix isn't in `Hand`; `Hand` never mounts. `join` has to
-      return the refusal — plain `undefined` is indistinguishable from "still
-      joining" on the client — and `Game` has to render it. Same family as the
-      blank screens above. *(S)*
+- [x] **Fill the blank screens.** Not three screens in the end — one status
+      line. `Game` used to `return null` until `join` resolved, so every
+      undecided state was the same blank page. The line at the bottom that had
+      been printing `seat:id` is now that state, saying "joining…" or "every
+      seat is taken" and otherwise staying `seat:id`. These states last a few
+      hundred milliseconds and swapping whole screens would strobe, so the line
+      fades in over a second instead: one that resolves on its own is a shadow
+      before the text moves on.
+      `Table` needed nothing — it auto-deals when there's no deal, and the
+      dealer button and hint are on screen the whole time.
+      - Rendering *anything* before `join` came back turned up two latent SSR
+        crashes that `return null` had been hiding: `Help` read `location`
+        during render, and `Table` reached `localStorage` through
+        `useLocalStorageState`. `Help` now fills the join link in an effect;
+        the views still wait for a player, so only the status line is
+        server-rendered.
+      - A phone with no deal to show says nothing. The first device on a table
+        takes seat 0 and deals immediately, so the only way to sit at a table
+        with no deal row is for that device to leave inside the 30s window —
+        rare enough that the line would have been dead text.
+- [x] **Say something when the table is full.** `players.join` scans seats
+      `0..10` — seat 0 is the table screen, so ten hands — and returns `null`
+      when they're all taken. `Game` distinguishes that from the `undefined` it
+      holds while joining, so the eleventh player reads "every seat is taken"
+      instead of staring at a blank page. `Game.spec.ts` seats eleven tabs in
+      one context (`sessionStorage` is per-tab, so tabs are players) and checks
+      the twelfth is told.
       - *Verified by firing 14 simultaneous joins at one fresh table, three
-        times: seats 0–10, all unique, plus three `undefined`s. Convex
-        mutations are transactional and OCC-retried, so concurrent joins do not
-        collide on a seat.*
+        times: seats 0–10, all unique, plus three refusals. Convex mutations
+        are transactional and OCC-retried, so concurrent joins do not collide
+        on a seat.*
       - The cap of ten is a poker-table choice, not a deck limit: `deal` leaves
         47 cards after the board and `Hand` indexes `(seat - 1) * 2`, so the
         deck would seat 23. Worth stating as a rule wherever the cap lands.

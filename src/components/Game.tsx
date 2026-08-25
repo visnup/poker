@@ -1,5 +1,5 @@
 import { useMutation } from "convex/react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { api } from "../../convex/_generated/api";
 import { Id } from "../../convex/_generated/dataModel";
 import { backFor, familyFor } from "../lib/card";
@@ -9,11 +9,9 @@ import { Hand } from "./Hand";
 import { Help } from "./Help";
 import { Table } from "./Table";
 
-const Player = ({ player }: { player: { seat: number; id: string } }) => (
+const Status = ({ children }: { children: ReactNode }) => (
   <div>
-    <span>
-      {player.seat}:{player.id.slice(0, 5)}
-    </span>
+    <span>{children}</span>
     <Help />
     <style jsx>{`
       div {
@@ -64,18 +62,23 @@ export function Game({ table, seat }: { table: string; seat?: number }) {
     return () => clearInterval(interval);
   }, [ping, player]);
 
-  if (!player) return null;
-  seat ??= player.seat;
+  seat ??= player?.seat;
 
   return (
     <main>
       <CardContext.Provider value={back}>
-        {seat === 0 ? (
+        {!player || seat === undefined ? null : seat === 0 ? (
           <Table table={table} />
         ) : (
           <Hand table={table} seat={seat} />
         )}
-        <Player player={player} />
+        <Status>
+          {player === undefined
+            ? "Joining"
+            : player === null
+              ? "Every seat is taken"
+              : `${player.seat}:${player.id.slice(0, 5)}`}
+        </Status>
       </CardContext.Provider>
       <style jsx>
         {`
