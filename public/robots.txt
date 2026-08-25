@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /$
+Allow: /learn/
+Allow: /api/og
+Disallow: /
+
+Sitemap: https://poker.dance/sitemap.xml

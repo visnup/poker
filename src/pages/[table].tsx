@@ -1,4 +1,5 @@
 import type { GetServerSidePropsContext } from "next";
+import Head from "next/head";
 import { useEffect } from "react";
 import { Game } from "../components/Game";
 import { Preview } from "../components/Preview";
@@ -26,6 +27,9 @@ export default function TablePage({
 
   return (
     <>
+      <Head>
+        <meta name="robots" content="noindex, follow" />
+      </Head>
       <Preview table={table} />
       <Game table={table} seat={asTable ? 0 : undefined} />
     </>

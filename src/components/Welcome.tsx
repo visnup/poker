@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Popup } from "./Popup";
 
 export const description =
@@ -10,6 +11,9 @@ export function Welcome({ onDismiss }: { onDismiss: () => void }) {
         <h1>♠ Poker Dance 💃</h1>
         <p>{description}</p>
         <button>Start a table</button>
+        <p className="learn" onPointerDown={(e) => e.stopPropagation()}>
+          <Link href="/learn/hand-rankings">Hand rankings →</Link>
+        </p>
       </div>
       <style jsx>{`
         .content {
@@ -27,6 +31,15 @@ export function Welcome({ onDismiss }: { onDismiss: () => void }) {
           border-radius: 8px;
           border: none;
           padding: 12px 24px;
+        }
+        .learn {
+          margin-bottom: 0;
+          font-size: 15px;
+          opacity: 0.6;
+        }
+        .learn :global(a) {
+          color: inherit;
+          text-underline-offset: 3px;
         }
         @media (prefers-color-scheme: dark) {
           button {

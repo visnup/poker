@@ -21,13 +21,16 @@ const script = Nothing_You_Could_Do({
 
 const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps, router }: AppProps) {
   useReducedMotion(); // sets the global skipAnimation, which also bypasses delays
   return (
     <ConvexProvider client={convex}>
       <Head>
         <title>Poker Dance</title>
         <meta name="description" content={description} />
+        {router.pathname.startsWith("/test/") && (
+          <meta name="robots" content="noindex" />
+        )}
       </Head>
       <div
         className={`${body.className} ${body.variable} ${title.variable} ${script.variable}`}
