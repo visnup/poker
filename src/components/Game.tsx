@@ -50,21 +50,19 @@ export function Game({ table, seat }: { table: string; seat?: number }) {
     if (!player && !joining.current) {
       joining.current = true;
       const stored = JSON.parse(sessionStorage.getItem("player") || "null");
-      if (stored && stored.table === table) setPlayer(stored);
-      else join({ table }).then(setPlayer);
+      const id =
+        stored?.table === table ? (stored.id as Id<"players">) : undefined;
+      join({ table, id }).then(setPlayer);
     }
   }, [join, table, player]);
 
   // Ping
   useEffect(() => {
-    const interval = setInterval(async () => {
-      if (!player) return;
-      if (await ping({ id: player.id as Id<"players"> })) return;
-      const rejoined = await join({ table });
-      if (rejoined) setPlayer(rejoined);
+    const interval = setInterval(() => {
+      if (player) ping({ id: player.id });
     }, 5e3);
     return () => clearInterval(interval);
-  }, [ping, join, table, player]);
+  }, [ping, player]);
 
   if (!player) return null;
   seat ??= player.seat;

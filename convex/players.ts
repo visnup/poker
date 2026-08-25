@@ -1,38 +1,41 @@
+import { range } from "d3-array";
 import { v } from "convex/values";
 import { mutation } from "./_generated/server.js";
 
+const window = 30e3;
+
 export const join = mutation({
-  args: { table: v.string() },
-  handler: async ({ db }, { table }) => {
+  args: { table: v.string(), id: v.optional(v.id("players")) },
+  handler: async ({ db }, { table, id }) => {
     const now = Date.now();
-    const recent = now - 30e3;
-
-    // Remove stale.
-    const stale = await db
+    const previous = id ? await db.get(id) : null;
+    const returning = previous?.table === table ? previous : null;
+    const active = await db
       .query("players")
-      .filter((q) => q.lt(q.field("lastSeen"), recent))
+      .withIndex("byLastSeen", (q) =>
+        q.eq("table", table).gt("lastSeen", now - window),
+      )
       .collect();
-    for (const { _id } of stale) await db.delete(_id);
+    const seats = new Set(
+      active.filter((p) => p._id !== returning?._id).map((p) => p.seat),
+    );
+    const seat =
+      returning && !seats.has(returning.seat)
+        ? returning.seat
+        : range(11).find((n) => !seats.has(n));
+    if (seat === undefined) return null;
 
-    // Find an available seat.
-    const players = await db
-      .query("players")
-      .withIndex("bySeat", (q) => q.eq("table", table))
-      .collect();
-    for (let n = 0; n <= 10; n++)
-      if (!players[n] || n < players[n].seat) {
-        const player = { table, seat: n, lastSeen: now };
-        const id = await db.insert("players", player);
-        return { id: id.toString(), table, seat: n };
-      }
+    if (returning) {
+      await db.patch(returning._id, { seat, lastSeen: now });
+      return { id: returning._id, table, seat };
+    } else {
+      const id = await db.insert("players", { table, seat, lastSeen: now });
+      return { id, table, seat };
+    }
   },
 });
 
 export const ping = mutation({
   args: { id: v.id("players") },
-  handler: async ({ db }, { id }) => {
-    if (!(await db.get(id))) return false; // swept while this tab was quiet
-    await db.patch(id, { lastSeen: Date.now() });
-    return true;
-  },
+  handler: ({ db }, { id }) => db.patch(id, { lastSeen: Date.now() }),
 });

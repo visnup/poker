@@ -13,5 +13,5 @@ export default defineSchema({
     table: v.string(),
     seat: v.number(),
     lastSeen: v.number(),
-  }).index("bySeat", ["table", "seat"]),
+  }).index("byLastSeen", ["table", "lastSeen"]),
 });

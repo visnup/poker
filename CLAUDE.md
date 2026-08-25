@@ -25,7 +25,7 @@ TypeScript is held at 6.x: typescript-eslint hard-errors on TS 7 and takes the w
 
 This is a Next.js + Convex real-time poker app (similar to Bold Poker). Players join a table on their phones; the dealer view shows community cards on a separate screen.
 
-**Routing:** `src/pages/index.tsx` is a dead landing page — a fixed board and the welcome card, no Convex. `src/pages/[table].tsx` is the live one, rendering `Game.tsx`; `?table` forces the table view and is stripped from the URL on arrival. Both use `previewProps` for the `og:image`, which is why they're server-rendered.
+**Routing:** `src/pages/index.tsx` is a dead landing page — a fixed board and the welcome card, no Convex hooks, so it never opens a socket and stays static. `src/pages/[table].tsx` is the live one, rendering `Game.tsx`; `?table` forces the table view and is stripped from the URL on arrival. It's server-rendered only so the crawler's HTML can name the table in `og:image` — `/:table` was statically prerendered before, and every table served identical markup. Its `Cache-Control` lives in `next.config.js`, not the page.
 
 **Views:**
 
@@ -38,7 +38,7 @@ This is a Next.js + Convex real-time poker app (similar to Bold Poker). Players 
 
 - `convex/schema.ts` — two tables: `deals` (community cards) and `players` (active seats)
 - `convex/deals.ts` — `deal`, `clear` mutations; `get` query (latest deal for a table)
-- `convex/players.ts` — `join`, `ping` mutations; stale players (>10s) are auto-removed
+- `convex/players.ts` — `join`, `ping` mutations. Nothing is ever deleted: `join` reads only the live range off `byLastSeen` and stale rows simply aren't counted, so `ping` can be a bare `db.patch` that can't miss. A player is its document id, kept in `sessionStorage`; handing that id back to `join` revives the row and keeps the seat unless someone live has taken it.
 
 **Key libraries:** `react-spring` (animations), `@use-gesture/react` (drag), `d3-array` (`shuffle`/`cross` for deck generation)
 
@@ -47,6 +47,30 @@ This is a Next.js + Convex real-time poker app (similar to Bold Poker). Players 
 ## No junk
 
 Don't add speculative meta tags, config, or code "just in case" (og:title/og:description duplicating title/description, unused fallback logic, etc.). If it's not solving a real, current problem, leave it out — it's not worth the review time.
+
+## Style
+
+Comments are rare and load-bearing. `// Ping` over a ping loop, or `// Stale rows are left alone` over a query that visibly leaves them alone, is noise — rename the thing instead. What earns a comment is what the code can't say: `// query.table is the path segment here, so the flag has to come off the raw url` names a trap, `// not immutable: a sixth back reshuffles hash(table) % designs.length` names a constraint.
+
+Inline anything with one call site. A helper called once is indirection, not abstraction.
+
+Name a local for what it is, not for its relationship to the caller: `previous`, `returning`, `active`, `seats` — not `mine`, `live`, `taken`.
+
+Let a real fork read as a fork. Two symmetric branches that both return — patch an existing row, or insert a new one — are `if`/`else`, not an early return that makes the first one look like a guard clause.
+
+Return Convex ids as ids. `{ id: returning._id, table, seat }`, never `.toString()` — stringifying discards the brand and forces an `as Id<"players">` cast at every call site. Name the local `id` so the literal can use shorthand: `const id = await db.insert(...)` then `{ id, table, seat }`.
+
+No blank lines inside a short function. A dozen-line handler is one block; paragraph breaks imply a structure it doesn't have.
+
+Reach for what exists before inventing. The Convex document id is already a durable player identity; a parallel client id was duplication. `sessionStorage` is per-tab **on purpose** — two tabs are two players — so don't "upgrade" it to `localStorage`.
+
+Playwright assertions take the default 5s. Don't pass `{ timeout: 10_000 }`; padding hides a slowdown instead of failing on it. The few remaining ones are leftovers, not a pattern.
+
+Prefer deleting a mechanism over adding one around it. The stale-player crash was fixed by removing the sweep, not by catching its fallout; `/0` became `?table` by dropping a route segment, not by adding a redirect.
+
+Don't commit or push unless asked.
+
+The app exists to make in-person poker better, so features that replace what the room already does — player names, dealer button rotation, chips, betting — are anti-real-life and stay out. See "Deliberately not doing" in `TODO.md`.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

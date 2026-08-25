@@ -94,31 +94,27 @@ Things that make the app wrong or unplayable as-is.
       ~600KB read per call and climbing toward Convex's 16384-document / 8MB
       per-query ceiling. Now `withIndex("byTable", q => q.eq("table", table))`
       with no `.filter()`.
-- [ ] **Keep a seat across sessions, not just reloads.** *Verified by running
-      it: a same-tab reload keeps the seat and player id; a second browser
-      context on the same table gets a new seat.* State lives in
-      `sessionStorage` under one `"player"` key, so anything that starts a
-      fresh session — reopening the app, a phone dropping the tab, a new
-      window — burns a seat and the player comes back as someone else. Opening
-      a second table in the same tab overwrites the key, so returning to the
-      first burns one too. Move to `localStorage` keyed by table + a client
-      id. *(S)*
-- [ ] **Re-join when the seat has been swept.** *Reproduced against the dev
-      deployment: join a table, wait past the stale window without pinging, let
-      any other client join **any** table, then ping — Convex throws
-      `Uncaught Error: Update on nonexistent document ID <id>`.* `players.join`
-      deletes every player unseen past the window across all tables (on
-      purpose — see "Deliberately not doing"), and `players.ping` is a bare
-      `db.patch`, so a swept client throws on its next ping. `Game.tsx:49`
-      makes it permanent: a reload restores the player id from
-      `sessionStorage` without checking the row still exists, so the tab pings
-      a dead id every 5s forever. Widening the window to 30s (`fbecae7`) cuts
-      the frequency but can't close it — a backgrounded tab's timers are
-      throttled to roughly once a minute, still past 30s. Swallowing the error
-      in `ping` isn't the fix either; that leaves the tab sitting in no seat.
-      `ping` has to report the miss, and `Game` has to drop the stored player
-      and re-join. Pairs with the seat-persistence item above — both are about
-      a seat outliving the tab that claimed it. *(S–M)*
+- [x] **Stop deleting players; let stale rows sit.** `join` used to delete every
+      row unseen past the window across *all* tables, so a stranger's join freed
+      your seat and left `ping` patching a row that no longer existed. Nothing
+      is deleted now: `players` is indexed `["table", "lastSeen"]` and `join`
+      reads only the live range, so stale rows cost nothing and simply aren't
+      counted. `ping` is a bare `db.patch` again — with nothing deleted it can't
+      miss.
+      - Identity stays the Convex document id in `sessionStorage`; a reload
+        hands that id back to `join`, which revives the row and keeps the seat.
+        Per-tab is deliberate — two tabs are two players.
+      - An id belonging to another table is ignored, so opening a second table
+        in one tab no longer costs the first its seat.
+      - A returning player only reclaims its old seat if no live row holds it,
+        otherwise it's moved to a free one. *Verified against dev: phone at
+        seat 1 goes quiet, a latecomer takes seat 1, the phone comes back at
+        seat 2 on its original row.*
+      - Still open: nothing reclaims a seat across *sessions* — a reopened app
+        is a new `sessionStorage` and a new seat, leaving the old row behind.
+        That's the tradeoff of per-tab identity, not a bug to fix.
+      - What to do with rows nobody comes back to is undecided. They're cheap
+        and never read, so there's no pressure to decide.
 
 ## P1 — teaching people how to play
 
@@ -208,11 +204,6 @@ The full inventory of things a new player cannot discover:
 - [ ] **Sync reveal state across viewers.** `revealed` is `useState` local to
       one `Table`. Two dealer screens (or a reload mid-hand) disagree about
       whether the flop is out. Move it into the `deals` row. *(S)*
-- [ ] **Dealer button rotation.** Track which seat has the button and advance it
-      each hand. Not for digital blinds — so the table screen can show whose
-      deal it is and who posts, while the chips stay real. *(S–M)*
-- [ ] **Player names.** Prompt on join, show them on the table view around the
-      board and next to revealed hands. Makes a shared screen legible. *(S)*
 - [x] **Screen wake lock on the table view.** The dealer screen going to sleep
       mid-hand is a guaranteed real-world annoyance. `navigator.wakeLock`. *(S)*
 
@@ -256,11 +247,16 @@ The full inventory of things a new player cannot discover:
   hundred hands; storage will never be the constraint. The only thing that made
   accumulation matter was the range-less `withIndex` scan above; that's fixed,
   so the rows can pile up indefinitely.
-- **Scoping stale-player cleanup to the table.** `players.join` collects every
-  player unseen for >10s across *all* tables and deletes them. Global, but
-  stale is stale — those rows are dead wherever they live, and unlike `deals`
-  the table self-prunes, so the scan is over roughly the number of people
-  playing right now rather than a history that only grows.
+- ~~**Scoping stale-player cleanup to the table.**~~ The argument was that stale
+  is stale wherever it lives. True for garbage, but it made a stranger's join
+  the thing that freed *your* seat — see the P0 above, which deletes nothing at
+  all and drops the question.
+- **Player names and dealer button rotation.** Both are anti-real-life. Everyone
+  at the table already knows who's who and whose deal it is; typing your name
+  into a phone and watching a screen keep track of the button replaces something
+  the room does better with a worse copy. Same argument as chips below, which is
+  the tell — anything that reimplements what being in the room already gives you
+  is out.
 - **Chips and betting.** Same philosophy as Bold Poker: this app exists to make
   real-life, in-person poker more fun, and the advantages of being in the room
   are things to depend on and leverage, not to reimplement. Betting happens with
