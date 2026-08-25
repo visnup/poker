@@ -1,0 +1,31 @@
+# Poker Dance
+
+> Play Texas hold 'em in real life, but without a deck. Phones are the cards, a shared screen is the table.
+
+Poker Dance is for people sitting around the same table. It replaces the deck,
+not the game: one screen shows the community cards, everyone else holds their
+hole cards on their own phone. Chips, betting and conversation stay physical.
+
+Everyone opens the same URL — the site plus any table name, like
+`https://poker.dance/kitchen`. The first device to open it becomes the table
+screen; every device after that gets a seat. Adding `?table` forces a device to
+be the table screen, and the flag drops out of the address bar so the URL stays
+the one you hand around for seats.
+
+Gestures, since nothing on screen spells them out:
+
+- Table screen: move the dealer button to deal a new hand; tap the board to
+  cycle through flop, turn, river, and hidden again.
+- A seat: pull down to peek at your hole cards, all the way down to reveal
+  them, swipe up to fold, and tap to take a fold back.
+
+## Pages
+
+- [Poker Dance](https://poker.dance/): what it is, and a button that opens a new table.
+- [Hand rankings](https://poker.dance/learn/hand-rankings): the ten hands, each dealt from the real deck rather than drawn as pictures, with how often you hold one after the flop, the turn and the river. A chooser turns "your hand" into "anyone at the table", from one player up to ten. One player is exactly enumerated; more than one is simulated, because hands at a table share a board and are not independent.
+
+## Deliberately not included
+
+- No chips, pots, or betting. Those work better as real chips on a real table.
+- No remote play. The app assumes everyone is in the same room.
+- No accounts, names, or history. A table is one night in one room.
