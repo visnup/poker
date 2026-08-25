@@ -227,13 +227,11 @@ The full inventory of things a new player cannot discover:
 - [ ] **Explain the two roles.** It's surprising that the first phone to open
       the URL becomes the table screen rather than a seat. Either label it on
       screen ("this device is the table") or make choosing explicit. *(S)*
-- [ ] **Fix or drop numbered seat URLs.** Verified by running the routing
-      logic: `[[...params]].tsx:9` maps only the literal `"0"` to a seat, so
-      `/kitchen/1` silently auto-assigns instead of claiming seat 1, and `/1`
-      is a table *named* "1". The path reads like `/:table/:seat` but the
-      segment is really a boolean "is this the table screen". Either honor the
-      number or rename the route. (`CLAUDE.md` describes it the old way too.)
-      *(S)*
+- [x] **Fix or drop numbered seat URLs.** Dropped. The route is one segment,
+      `[table].tsx`, so `/kitchen/1` is a 404 rather than a path that reads
+      like `/:table/:seat` and isn't one. The table screen is `?table`, a flag
+      that says what it means and comes off the URL on arrival, leaving the
+      link you'd hand around for seats.
 - [x] **README that covers actual use.** Table naming, which device is which,
       and the four gestures.
 
