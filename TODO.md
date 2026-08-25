@@ -91,11 +91,12 @@ Roughly easiest-and-organic first.
       account, and nothing to ask them with — the lowest-friction version is a
       "star this on GitHub" or "share poker.dance" line in the help overlay
       after a session, not a signup. *(S)*
-- [ ] **Actually read the analytics before doing any of this.** `@vercel/analytics`
-      is already wired up in `_app.tsx`. Nobody has looked. How many tables get
-      created, how many get a second player, how many get past the first deal —
-      that ratio decides whether the problem is traffic or the first thirty
-      seconds of the app. *(XS)*
+- [x] **Actually read the analytics before doing any of this.** Read
+      2026-08-25: no traffic at all. That answers the question it was meant to
+      settle — the problem is traffic, not the first thirty seconds — by
+      leaving the funnel with no denominator to measure. Nothing above is
+      gated on it now; the tables-created → second-player → first-deal ratio
+      is worth looking at again once a post has sent anyone.
 - [ ] **Ship it to the Bold Poker crowd.** The README already credits Bold
       Poker; its users are the exact audience and it's iOS-only. A web version
       that needs no install is a real pitch to anyone who has searched for it.
