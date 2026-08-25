@@ -18,6 +18,10 @@ const oneIn = (n: number) =>
     maximumFractionDigits: 1,
   });
 
+// below 1% the zeros stop meaning anything, so those rows stay a count alone
+const percent = (n: number) =>
+  n < 100 ? `${(100 / n).toFixed(n > 10 ? 1 : 0)}%` : "";
+
 function Hand({
   made,
   kickers,
@@ -98,7 +102,7 @@ function Ranking({ index, players }: { index: number; players: number }) {
           <span className="odds">
             {odds.map((n, i) => (
               <span key={i}>
-                1 in {oneIn(n)}
+                {percent(n)} <span className="count">1 in {oneIn(n)}</span>
                 {/* filled to the real share, so the rare ones read as empty */}
                 <span className="bar">
                   <span style={{ width: `${100 / n}%` }} />
@@ -168,13 +172,17 @@ function Ranking({ index, players }: { index: number; players: number }) {
         }
         .odds {
           display: flex;
-          font-size: 14px;
+          font-size: 13px;
           font-variant-numeric: tabular-nums;
           opacity: 0.55;
         }
         .odds > span {
           width: 96px;
           text-align: right;
+        }
+        .count {
+          margin-left: 5px;
+          opacity: 0.7;
         }
         .bar {
           display: flex;
