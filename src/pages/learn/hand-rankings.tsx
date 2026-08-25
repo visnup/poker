@@ -1,7 +1,7 @@
 import { range } from "d3-array";
 import Head from "next/head";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card } from "../../components/Card";
 import { dealRanking, rankings } from "../../lib/hands";
 import { oddsByPlayers } from "../../lib/odds";
@@ -17,18 +17,26 @@ const oneIn = (n: number) =>
     maximumFractionDigits: 1,
   });
 
-function Hand({ made, kickers }: { made: string[]; kickers: string[] }) {
+function Hand({
+  made,
+  kickers,
+  dealt,
+}: {
+  made: string[];
+  kickers: string[];
+  dealt: boolean;
+}) {
   const cards = [...made, ...kickers];
   const margin = (i: number) =>
     i === 0 ? 0 : i === made.length ? kicker : overlap;
   return (
     <div className="hand">
-      <div className="fan">
+      <div className={dealt ? "fan" : "fan out"}>
         {cards.map((card, i) => (
           <Card
             key={card}
             card={card}
-            revealed
+            revealed={dealt}
             rotation={0}
             upsideDown={false}
             style={{ marginLeft: margin(i) }}
@@ -44,6 +52,14 @@ function Hand({ made, kickers }: { made: string[]; kickers: string[] }) {
           display: flex;
           transform: scale(${scale});
           transform-origin: top left;
+          transition:
+            transform 420ms cubic-bezier(0.4, 0, 1, 1),
+            opacity 420ms;
+        }
+        .fan.out {
+          /* scaled, so this leaves the screen at any width */
+          transform: scale(${scale}) translateX(-200vw);
+          opacity: 0;
         }
       `}</style>
     </div>
@@ -52,17 +68,30 @@ function Hand({ made, kickers }: { made: string[]; kickers: string[] }) {
 
 function Ranking({ index, players }: { index: number; players: number }) {
   const { name, note } = rankings[index];
-  const [deals, setDeals] = useState(0);
+  const [{ deals, dealt }, setDeal] = useState({ deals: 0, dealt: true });
   const odds = oddsByPlayers[players - 1][index];
+  // the old hand flies off before the next one is dealt, the way the table does
+  useEffect(() => {
+    if (dealt) return;
+    const t = setTimeout(
+      () => setDeal((d) => ({ deals: d.deals + 1, dealt: true })),
+      500,
+    );
+    return () => clearTimeout(t);
+  }, [dealt]);
   return (
     <li>
-      <button onClick={() => setDeals(deals + 1)}>
+      <button onClick={() => setDeal((d) => ({ ...d, dealt: false }))}>
         <span className="name">
           {name}
           <span className="again">deal another example</span>
         </span>
         {/* remounts every card, so a repeated one deals in again with the rest */}
-        <Hand key={deals} {...dealRanking(index, index * 1e3 + deals)} />
+        <Hand
+          key={deals}
+          dealt={dealt}
+          {...dealRanking(index, index * 1e3 + deals)}
+        />
         <span className="right">
           <span className="odds">
             {odds.map((n, i) => (
