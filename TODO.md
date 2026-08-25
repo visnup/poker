@@ -262,6 +262,22 @@ The full inventory of things a new player cannot discover:
       chrome eating the card area. *(S)*
 - [ ] **Spectator mode.** A read-only URL that shows the board without taking a
       seat. *(S)*
+- [ ] **Dark mode inverts the card instead of dimming the room.** `card.ts:62`
+      swaps the paper for `darkPaper` and the ink for a *light* `darkInk`, so
+      the card flips while the felt only darkens partway — `darkslategray`
+      (L 0.068) ends up brighter than all six dark papers (L 0.012–0.033), and
+      the felt becomes the figure with the cards as holes cut in it. Light mode
+      is 4.25:1, white on seagreen; dark is 1.42:1 the wrong way round, and
+      `#333` paper can't beat 1.66:1 against even pure black, so no background
+      colour fixes this while the paper stays that dark. A card doesn't turn
+      charcoal when the lights go down. `lightOnly` (`card.ts:53`) already
+      stops the swap and nothing passes `true`: flipping it gives white on a
+      deepened seagreen (13:1, glary on a phone at night), or make `darkPaper`
+      the paper *dimmed* rather than inverted (`#d7dbd4`, 7.8:1). Either way
+      the two modes should agree on which is figure and which is ground; they
+      needn't match ratios, since landing dark mode on 4.25:1 takes a mid-grey
+      card that reads as cardboard. Flipping `lightOnly` leaves `darkInk` and
+      `darkPaper` dead in all six palettes. *(S)*
 - [ ] **Accessibility pass.** Cards are drag-only with suit glyphs as text;
       there's no keyboard or screen-reader path to reveal or fold, and red/black
       is the only suit encoding. *(M)*
