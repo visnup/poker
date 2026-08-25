@@ -3,7 +3,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Card } from "../../components/Card";
-import { dealRanking, rankings } from "../../lib/hands";
+import { dealRanking, noteFor, rankings } from "../../lib/hands";
 import { oddsByPlayers } from "../../lib/odds";
 import { randomWord } from "../../lib/words";
 
@@ -68,9 +68,10 @@ function Hand({
 }
 
 function Ranking({ index, players }: { index: number; players: number }) {
-  const { name, note } = rankings[index];
+  const { name } = rankings[index];
   const [{ deals, dealt }, setDeal] = useState({ deals: 0, dealt: true });
   const odds = oddsByPlayers[players - 1][index];
+  const note = noteFor(index, players);
   // the old hand flies off before the next one is dealt, the way the table does
   useEffect(() => {
     if (dealt) return;
@@ -105,7 +106,7 @@ function Ranking({ index, players }: { index: number; players: number }) {
               </span>
             ))}
           </span>
-          {players === 1 && note && <span className="note">{note}</span>}
+          {note && <span className="note">{note}</span>}
         </span>
       </button>
       <style jsx>{`

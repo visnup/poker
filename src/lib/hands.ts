@@ -46,14 +46,25 @@ const until = (ok: (h: string[]) => boolean, make: () => string[]) => {
   return cards;
 };
 
+/** First range that covers the table size wins, so put the narrow ones first. */
+type Note = { players: [number, number]; text: string };
+
+export const noteFor = (index: number, players: number) =>
+  rankings[index].notes?.find(
+    ({ players: [lo, hi] }) => players >= lo && players <= hi,
+  )?.text;
+
 export const rankings: {
   name: string;
-  note?: string;
+  notes?: Note[];
   deal: (r: Random) => Hand;
 }[] = [
   {
     name: "Royal flush",
-    note: "Once every 20 years of weekly games.",
+    notes: [
+      { players: [1, 1], text: "Once every 20 years of weekly games." },
+      { players: [2, 10], text: "Even ten players wait years between them." },
+    ],
     deal: (r) => {
       const s = pick(r, suits);
       return {
@@ -64,7 +75,11 @@ export const rankings: {
   },
   {
     name: "Straight flush",
-    note: "About one every couple of years.",
+    notes: [
+      { players: [1, 1], text: "About one every couple of years." },
+      { players: [2, 5], text: "Somebody’s, about once a year." },
+      { players: [6, 10], text: "Somebody’s, a few times a year." },
+    ],
     deal: (r) => {
       const s = pick(r, suits);
       return { made: straight(r, 8).map((x) => x + s), kickers: [] };
@@ -72,7 +87,11 @@ export const rankings: {
   },
   {
     name: "Four of a kind",
-    note: "Two or three a year.",
+    notes: [
+      { players: [1, 1], text: "Two or three a year." },
+      { players: [2, 5], text: "Somebody’s, several times a year." },
+      { players: [6, 10], text: "Somebody’s, most months." },
+    ],
     deal: (r) => {
       const x = pick(r, ranks);
       return { made: suits.map((s) => x + s), kickers: kick(r, [x], 1) };
@@ -80,7 +99,16 @@ export const rankings: {
   },
   {
     name: "Full house",
-    note: "Half of all boards pair — and on those, full houses outnumber flushes more than two to one.",
+    notes: [
+      {
+        players: [6, 10],
+        text: "At a full table someone’s boat is about as likely as someone’s flush.",
+      },
+      {
+        players: [1, 10],
+        text: "Half of all boards pair — and on those, full houses outnumber flushes more than two to one.",
+      },
+    ],
     deal: (r) => {
       const [a, b] = some(r, ranks, 2);
       return { made: [...set(r, a, 3), ...set(r, b, 2)], kickers: [] };
@@ -88,7 +116,16 @@ export const rankings: {
   },
   {
     name: "Flush",
-    note: "Most nights, once. Flop four to a suit and you get there about a third of the time.",
+    notes: [
+      {
+        players: [1, 1],
+        text: "Most nights, once. Flop four to a suit and you get there about a third of the time.",
+      },
+      {
+        players: [2, 10],
+        text: "Flop four to a suit and you get there about a third of the time.",
+      },
+    ],
     deal: (r) => {
       const s = pick(r, suits);
       const made = until(
@@ -118,7 +155,12 @@ export const rankings: {
   },
   {
     name: "Two pair",
-    note: "More common than high card by the river — and it still wins.",
+    notes: [
+      {
+        players: [1, 10],
+        text: "More common than high card by the river — and it still wins.",
+      },
+    ],
     deal: (r) => {
       const [a, b] = some(r, ranks, 2).sort(
         (x, y) => ranks.indexOf(y) - ranks.indexOf(x),
@@ -131,7 +173,16 @@ export const rankings: {
   },
   {
     name: "Pair",
-    note: "Peaks on the turn: the river keeps promoting pairs to two pair.",
+    notes: [
+      {
+        players: [1, 6],
+        text: "Peaks on the turn: the river keeps promoting pairs to two pair.",
+      },
+      {
+        players: [7, 10],
+        text: "Past six players the peak moves to the flop — someone has a pair nearly every hand.",
+      },
+    ],
     deal: (r) => {
       const x = pick(r, ranks);
       return { made: set(r, x, 2), kickers: kick(r, [x], 3) };
@@ -139,7 +190,20 @@ export const rankings: {
   },
   {
     name: "High card",
-    note: "Half of all flops. Rarer by the river — seven cards are hard to keep unpaired.",
+    notes: [
+      {
+        players: [1, 1],
+        text: "Half of all flops. Rarer by the river — seven cards are hard to keep unpaired.",
+      },
+      {
+        players: [2, 4],
+        text: "Often somebody is playing nothing at all.",
+      },
+      {
+        players: [5, 10],
+        text: "About half of hands, somebody is playing nothing at all.",
+      },
+    ],
     deal: (r) => {
       const [top, ...rest] = until(
         (c) => !inARow(c) && !oneSuit(c),
