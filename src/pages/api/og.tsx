@@ -69,7 +69,7 @@ export default async function handler(
   const back = Buffer.from(backFor(table)).toString("base64");
   const headline = table || "Play a hand";
   const title = headline.length > 12 ? 68 : headline.length > 8 ? 92 : 116;
-  const face = familyFor(table) === "title" ? "Fraunces" : "Dosis";
+  const face = !table || familyFor(table) === "title" ? "Fraunces" : "Dosis";
 
   const image = new ImageResponse(
     <div
