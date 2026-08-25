@@ -96,7 +96,10 @@ const tiled = (
     `<pattern id="${id}" patternUnits="userSpaceOnUse" width="${s}" height="${s}" x="${mod(width / 2 - s / 2, s).toFixed(2)}" y="${mod(height / 2 - s / 2, s).toFixed(2)}">${invariant}${d4(s / 2, s / 2, wedge)}</pattern>`,
   );
 
-/** Sol LeWitt's four directions: a quadrant of hatched cells, mirrored out. */
+/** Sol LeWitt's four directions: a quadrant of hatched cells, mirrored out.
+    Drawn as four clipped layers of real strokes rather than 140 pattern-filled
+    cells — a pattern fill is re-tiled every time the card's 3D transform
+    changes its projected size. */
 function lewitt(seed: number, palette: Palette = paletteFor(seed)) {
   const random = mulberry32(seed);
   const cell = 25;
@@ -104,31 +107,44 @@ function lewitt(seed: number, palette: Palette = paletteFor(seed)) {
   const weight = between(random, 0.6, 0.9);
   const d = cell / n;
   const angles = [0, 90, 45, 135];
-  const hatch = angles
-    .map(
-      (a, i) =>
-        `<pattern id="hatch${i}" patternUnits="userSpaceOnUse" width="${d}" height="${d}" patternTransform="translate(${width / 2} ${height / 2}) rotate(${a - 90})"><line class="ink" x1="0" y1="0" x2="0" y2="${d}" stroke-width="${weight.toFixed(2)}"/></pattern>`,
-    )
-    .join("");
 
   const cols = width / cell;
   const rows = height / cell;
   const q = range(0, rows / 2).map(() =>
     range(0, cols / 2).map(() => Math.floor(random() * 4)),
   );
-  const cells = range(0, rows)
-    .flatMap((r) =>
-      range(0, cols).map((c) => {
-        const a =
-          angles[q[Math.min(r, rows - 1 - r)][Math.min(c, cols - 1 - c)]];
-        // reflection sends θ to 180−θ; two reflections is a 180° turn, i.e. identity
-        const flipped = r >= rows / 2 !== c >= cols / 2;
-        const i = angles.indexOf(flipped ? (180 - a) % 180 : a);
-        return `<rect x="${c * cell}" y="${r * cell}" width="${cell}" height="${cell}" fill="url(#hatch${i})"/>`;
-      }),
+  const angleAt = (r: number, c: number) => {
+    const a = angles[q[Math.min(r, rows - 1 - r)][Math.min(c, cols - 1 - c)]];
+    // reflection sends θ to 180−θ; two reflections is a 180° turn, i.e. identity
+    const flipped = r >= rows / 2 !== c >= cols / 2;
+    return angles.indexOf(flipped ? (180 - a) % 180 : a);
+  };
+
+  const reach = Math.hypot(width, height) / 2;
+  const lines = range(-Math.ceil(reach / d), Math.ceil(reach / d) + 1)
+    .map(
+      (k) =>
+        `<line x1="${(k * d).toFixed(2)}" y1="${-reach.toFixed(2)}" x2="${(k * d).toFixed(2)}" y2="${reach.toFixed(2)}"/>`,
     )
     .join("");
-  return frame("lewitt", palette, cells, hatch);
+
+  const body = angles
+    .map((a, i) => {
+      const clip = range(0, rows)
+        .flatMap((r) =>
+          range(0, cols)
+            .filter((c) => angleAt(r, c) === i)
+            .map(
+              (c) =>
+                `<rect x="${c * cell}" y="${r * cell}" width="${cell}" height="${cell}"/>`,
+            ),
+        )
+        .join("");
+      return `<clipPath id="lewitt${i}">${clip}</clipPath><g clip-path="url(#lewitt${i})"><g class="ink" stroke-width="${weight.toFixed(2)}" transform="translate(${width / 2} ${height / 2}) rotate(${a - 90})">${lines}</g></g>`;
+    })
+    .join("");
+
+  return frame("lewitt", palette, body);
 }
 
 /** Two offset families of concentric circles; the interference is the pattern. */
