@@ -1,6 +1,7 @@
 import { ImageResponse } from "next/og";
 import { backFor, familyFor, hash, paletteFor, palettes } from "@/lib/card";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { description } from "@/components/Welcome";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
@@ -105,9 +106,21 @@ export default async function handler(
           <div
             style={{
               fontFamily: "Dosis",
-              fontSize: 36,
+              fontSize: 28,
+              lineHeight: 1.4,
+              marginTop: 10,
+              opacity: 0.75,
+            }}
+          >
+            {description}
+          </div>
+          <div
+            style={{
+              fontFamily: "Dosis",
+              fontSize: 30,
               letterSpacing: 1,
-              opacity: 0.7,
+              marginTop: 18,
+              opacity: 0.5,
             }}
           >
             {`poker.dance/${table}`.replace(/\/$/, "")}

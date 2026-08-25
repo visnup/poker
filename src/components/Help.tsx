@@ -40,7 +40,7 @@ export function Help() {
       <button className="open" onClick={() => setOpen(true)}>
         ?
       </button>
-      <Popup visible={open} onClose={() => setOpen(false)}>
+      <Popup closable visible={open} onClose={() => setOpen(false)}>
         <dl>
           <dt>Table</dt>
           <dd>

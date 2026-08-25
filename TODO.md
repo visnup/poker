@@ -39,11 +39,15 @@ Roughly easiest-and-organic first.
 - [ ] **Demo video, everywhere — not just the README.** Already tracked in P1;
       note here that the same WebM/GIF is the payload for every post, tweet,
       and app-store-style listing. Record once, reuse. *(see P1)*
-- [ ] **Make the landing page say what it is above the fold.** The welcome
-      overlay explains the app to someone who already opened it; a stranger
-      arriving from a link decides in two seconds. One line, one image, one
-      button. Doubles as the SEO body copy, which right now is a `<meta
-      description>` and nothing else. *(S)*
+- [x] **Make the landing page say what it is above the fold.** Already was,
+      once `/` stopped being a live table: the welcome card renders
+      server-side, so `<h1>♠ Poker Dance 💃</h1>` and the tagline are in the
+      HTML a crawler gets, above a board and a Start a table button — the one
+      line, one image, one button this asked for. The tagline is one exported
+      string feeding the `<meta description>`, the card, and the `og:image`,
+      so the three can't drift. Dropped the × from the welcome card: every
+      way of dismissing it deals a hand, so an affordance promising a page
+      behind it was a lie.
 - [ ] **Own "poker without cards" / "phone poker deck" / "poker night no deck".**
       Long-tail searches by exactly the person who wants this — someone whose
       deck is missing at 9pm. A short page or a README section answering that

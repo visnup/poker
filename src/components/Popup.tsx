@@ -5,11 +5,13 @@ import { CardContext } from "./Card";
 
 export function Popup({
   visible = true,
+  closable = false,
   onClose,
   children,
   ...props
 }: {
   visible?: boolean;
+  closable?: boolean;
   onClose: () => void;
 } & React.JSX.IntrinsicElements["div"]) {
   const back = slice(useContext(CardContext).svg);
@@ -51,9 +53,15 @@ export function Popup({
                 dangerouslySetInnerHTML={{ __html: back }}
               />
               <div className="sheet">
-                <button className="close" onClick={onClose} aria-label="close">
-                  ×
-                </button>
+                {closable && (
+                  <button
+                    className="close"
+                    onClick={onClose}
+                    aria-label="close"
+                  >
+                    ×
+                  </button>
+                )}
                 {children}
               </div>
             </div>
