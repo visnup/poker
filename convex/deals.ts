@@ -16,9 +16,9 @@ export const clear = mutation({
 });
 
 export const deal = mutation({
-  args: { table: v.string() },
-  handler: async ({ db }, { table }) => {
-    const shuffled = shuffle(deck.slice());
+  args: { table: v.string(), stacked: v.optional(v.array(v.string())) },
+  handler: async ({ db }, { table, stacked }) => {
+    const shuffled = stacked ?? shuffle(deck.slice());
     const board = shuffled.slice(0, 5);
     const cards = shuffled.slice(5);
     await db.insert("deals", { table, shuffled, board, cards, cleared: false });
