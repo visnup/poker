@@ -48,27 +48,38 @@ Roughly easiest-and-organic first.
       so the three can't drift. Dropped the × from the welcome card: every
       way of dismissing it deals a hand, so an affordance promising a page
       behind it was a lie.
-- [ ] **Rules pages that deal, not diagram.** The highest-conviction item here.
-      Every hand-rankings page on the internet is a static table of card images;
-      this app already has a deck, real card faces, a 3D flip, and a board that
-      reveals flop-turn-river on tap. A rankings page where each hand *deals
-      itself* is a different artifact, and it's the one piece of content that
-      can't be copied from us without rebuilding the cards.
-      - Interactive beats illustrated: tap a ranking and watch it dealt; step a
-        board through the streets with the existing `Board`; drag the dealer
-        button to see the order move.
-      - The feedback loop is the point. "Which hand wins?" with two hands and a
-        board, you pick, it flips and highlights the winning five — then deals
-        another. That's a reason to come back, which no reference page has.
-      - Needs a hand evaluator, which is **winner detection** in P2 — a pure
-        function, easy to unit test, and the same one showdown needs. Build it
-        here and P2 gets it free; that's the argument for doing this before the
-        gameplay items rather than after.
-      - Each drill can be its own URL, so `/api/og` renders the actual hand into
-        the preview — a shareable "can you beat this?" instead of a link to a
-        page. Feeds the share loop rather than sitting beside it.
-      - Still a real bet, not a weekend: it only pays if it's genuinely better
-        than the forty existing versions. The cards are why it can be. *(L)*
+- [x] **Rules pages that deal, not diagram.** `/learn/hand-rankings` — every
+      other rankings page on the internet is a table of card images; this one
+      deals from the real deck with the same `Card` the tables use, kickers set
+      past a gap, tap a row for another example. The generator is
+      `src/lib/hands.ts`, checked by `hands.spec.ts` against a classifier that
+      shares no code with it.
+      - Odds run flop / turn / river, which in hold’em is just 5, 6 and 7
+        cards seen — so the 5-card table every site copies is finally labelled
+        as what it is. A chooser swaps "your hand" for "someone at the table".
+        One player is exact; more are simulated, because hands at a table share
+        a board and aren’t independent (`test/odds.mjs`).
+- [ ] **The rest of `/learn`.** No index page — `/learn` itself stays a table
+      name. Roughly in order of how much they teach:
+      - **Pot odds.** The most useful thing a beginner can learn and the natural
+        pair with the draw numbers: it costs 20 to win 100, you need 17%, your
+        flush draw is 35%, so call. A calculator dealing real cards, with the
+        rule of 4 and 2 shown next to the true number (9 outs: 36 vs 35.0). *(M)*
+      - **Which hand wins?** The drill — two hands and a board, you pick, it
+        flips and highlights the winning five, then deals another. Needs the
+        evaluator that is **winner detection** in P2, so building it here gets
+        showdown for free. The feedback loop is the part a reference can’t
+        copy. *(M–L)*
+      - **What’s out there?** Deal a board, then read the table against
+        that texture. Half of all boards pair, and on a paired board full houses
+        outnumber flushes more than two to one — measured, not folklore. Teaches
+        reading a board rather than reading your own cards. *(M)*
+      - **Flopping three to a suit.** Different lesson from flopping four: you
+        need both remaining cards, so a suited *board* is scarier than suited
+        hole cards. Currently unmeasured. *(S)*
+      - **How a hand plays.** Blinds, the order of the streets, who acts — the
+        vocabulary the other pages assume. The scroll-driven board that walks
+        flop → turn → river belongs here, not on the rankings page. *(M)*
 - [ ] **Own "poker without cards" / "phone poker deck" / "poker night no deck".**
       Long-tail searches by exactly the person who wants this — someone whose
       deck is missing at 9pm. A short page or a README section answering that
