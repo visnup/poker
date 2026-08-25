@@ -3,6 +3,8 @@
 Play Texas hold ’em in real life, but without a deck. Phones are the cards, a
 shared screen is the table. Chips stay real.
 
+<video src="https://poker.dance/demo.webm" controls autoplay muted loop playsinline></video>
+
 <https://poker.dance>
 
 ## Play
