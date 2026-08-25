@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Popup } from "./Popup";
 
 export const description =
-  "Play Texas hold ’em in real life, but without a deck. Phones are the cards, a shared screen is the table.";
+  "Looking to play Texas hold ’em and nobody brought cards? Send everyone a link — phones are the hands, the TV is the table, chips stay real.";
 
 export function Welcome({ onDismiss }: { onDismiss: () => void }) {
   return (

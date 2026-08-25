@@ -1,7 +1,7 @@
 # Poker dance ♠️💃
 
-Play Texas hold ’em in real life, but without a deck. Phones are the cards, a
-shared screen is the table. Chips stay real.
+Looking to play Texas hold ’em and nobody brought cards? Send everyone a link —
+phones are the hands, the TV is the table, chips stay real. Nothing to install.
 
 <https://poker.dance>
 
