@@ -10,6 +10,28 @@ app — every table is a URL someone sends to the people sitting next to them �
 so the cheap wins are all about making that link, and the domain behind it,
 survive contact with an audience.
 
+That audience is casual, and the app can't have a serious one. `deals.get`
+returns the whole row — `shuffled`, `board`, and every player's `cards` — so
+every phone at the table holds every hand and the full deck order. A serious
+player's first question is what stops the guy next to them opening devtools,
+and the answer is nothing, on purpose (see "deliberately not doing"). Around a
+kitchen table that's a non-issue; on r/poker it's disqualifying before the
+gestures are even explained.
+
+The product already knows this and only the pitch doesn't. Teaching hand
+rankings is worthless to someone who knows them; no chips, no names and no
+button rotation is a party-game philosophy, not a poker-tool one; "the deck is
+missing at 9pm" is a casual person's evening. What the README leads with — a
+Bold Poker clone, for a home game — aims all of that at the crowd it can't
+serve. Nearer the mark is the thing it actually resembles: a TV, everyone's
+phone, and no install, which is Jackbox's shape, not a poker app's.
+
+Some evidence for the reframe, though not proof — the party-game category has
+a ceiling on HN that this one doesn't: Death by AI took 476 points, Gametje
+112, against a poker-in-person best of 10 ever. Both winners had another hook
+(AI judging, a whole platform) and "phones as controllers" alone tops out
+around 21, so the framing opens a door rather than walking through it.
+
 Roughly easiest-and-organic first.
 
 - [x] **Title the page "Poker dance".** Was `<title>Poker</title>`, which
@@ -34,9 +56,14 @@ Roughly easiest-and-organic first.
 - [ ] **Post it where in-person poker people are.** Was gated on the demo
       video, which is now recorded and on the README; `tmp/demo.mp4` is the
       copy for anywhere that won't take WebM. Replying to someone already
-      asking beats a launch post, and the live asks are on Reddit — r/poker,
-      r/homepoker — which is the one place that can't be checked from here
-      (it refuses the crawler and search strips it out). *(S, recurring)*
+      asking beats a launch post. Not r/poker, for the reason at the top of
+      this section — that room asks about cheating before it asks anything
+      else. The question worth answering is "what can we play with no
+      equipment", which is asked in board-game, game-night, party and
+      camping corners rather than poker ones. Which of those is worth the
+      evening is unverified, and Reddit is the one place that can't be checked
+      from here: it refuses the crawler and search strips it out.
+      *(S, recurring)*
       - **Not Show HN.** The whole category dies there, every time: Bold Poker
         in 2012 took 6 points and *zero* comments, Smart Dealer's own Show HN
         in 2024 took 3 and 3, a home-game settler 2 and 3, Zoker 1 and 1. Best
@@ -286,13 +313,19 @@ The full inventory of things a new player cannot discover:
 
 ## P2 — the game people actually want to play
 
+- [ ] **Winner detection.** Evaluate the best 5-of-7 for revealed hands and
+      highlight the winner on the table view. Pure function, easy to unit test,
+      and the same evaluator `/learn`'s "Which hand wins?" needs. *(M)*
+      - Moved above the showdown item it used to depend on, because for a
+        casual table it isn't a convenience — it's the point. People who half
+        remember whether a flush beats a straight can't resolve a showdown
+        themselves, and right now the app deals a beautiful hand and then
+        walks away at the one moment they need it. A serious table would find
+        this redundant; that table isn't the audience.
 - [ ] **Reveal hole cards at showdown.** Right now a hand ends and nobody can
       prove anything. Let a player push their cards to the table view so the big
-      screen shows them. This is the single biggest gameplay gap. *(M)*
-- [ ] **Winner detection.** Evaluate the best 5-of-7 for revealed hands and
-      highlight the winner on the table view. Pure function, easy to unit test —
-      and the same evaluator the rules pages in P-1 need, which is the one
-      argument for writing it before there's a showdown to use it on. *(M)*
+      screen shows them. Pairs with winner detection above — revealing is what
+      gives the evaluator something to evaluate. *(M)*
 - [ ] **Sync reveal state across viewers.** `revealed` is `useState` local to
       one `Table`. Two dealer screens (or a reload mid-hand) disagree about
       whether the flop is out. Move it into the `deals` row. *(S)*
@@ -351,6 +384,11 @@ The full inventory of things a new player cannot discover:
   cards, so reading them takes devtools on a phone — not a threat around a
   kitchen table. Revisit only if this is ever played remotely, where the other
   players aren't in the room and a laptop is one alt-tab away.
+  - This is also what picks the audience, not just the threat model: it's the
+    reason a serious room is out of reach and casual is the only crowd to
+    write copy for. Fixing it wouldn't win that room either — trust once
+    asked about is already gone — so the two decisions stand or fall
+    together. See the note at the top of P-1.
 - **Garbage-collecting old deals.** A deal row is ~1KB and a long night is a
   hundred hands; storage will never be the constraint. The only thing that made
   accumulation matter was the range-less `withIndex` scan above; that's fixed,
