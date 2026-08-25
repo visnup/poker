@@ -56,14 +56,23 @@ Roughly easiest-and-organic first.
 - [ ] **Post it where in-person poker people are.** Was gated on the demo
       video, which is now recorded and on the README; `tmp/demo.mp4` is the
       copy for anywhere that won't take WebM. Replying to someone already
-      asking beats a launch post. Not r/poker, for the reason at the top of
-      this section — that room asks about cheating before it asks anything
-      else. The question worth answering is "what can we play with no
-      equipment", which is asked in board-game, game-night, party and
-      camping corners rather than poker ones. Which of those is worth the
-      evening is unverified, and Reddit is the one place that can't be checked
-      from here: it refuses the crawler and search strips it out.
+      asking beats a launch post. The question worth answering is "what can we
+      play with no equipment", which gets asked in board-game, game-night,
+      party and camping corners more than poker ones. Which of those is worth
+      an evening is unverified, and Reddit is the one place that can't be
+      checked from here: it refuses the crawler and search strips it out.
       *(S, recurring)*
+      - r/poker is still worth it on reach — ~354k members, so it holds plenty
+        of casual players even though the flairs (hand analysis, strategy,
+        which online room to use) say the active core isn't them. The mixed
+        part is who reads it; who *comments* skews serious, and the casual
+        player it lands on lurks. So expect a rough thread and decent traffic
+        and don't read the first for the second.
+      - Whatever's posted there says the deck thing first, in its own words:
+        every phone holds every card, it's a kitchen-table app, don't use it
+        where the money matters. Volunteered, that's a design stance and the
+        objection has nowhere to go; dug up in the comments, it's the whole
+        thread. Costs nothing to say, since it was decided on purpose.
       - **Not Show HN.** The whole category dies there, every time: Bold Poker
         in 2012 took 6 points and *zero* comments, Smart Dealer's own Show HN
         in 2024 took 3 and 3, a home-game settler 2 and 3, Zoker 1 and 1. Best
