@@ -1,0 +1,57 @@
+{
+  "pxPerMm": 8,
+  "devices": {
+    "ipad": {
+      "file": "devices/ipad.webp",
+      "mm": 247.6,
+      "w": 1981,
+      "h": 1429,
+      "screen": [
+        90,
+        90,
+        1804,
+        1252
+      ],
+      "radius": 67
+    },
+    "air": {
+      "file": "devices/air.webp",
+      "mm": 74.7,
+      "w": 598,
+      "h": 1235,
+      "screen": [
+        26,
+        23,
+        545,
+        1189
+      ],
+      "radius": 59
+    },
+    "pro": {
+      "file": "devices/pro.webp",
+      "mm": 71.9,
+      "w": 575,
+      "h": 1185,
+      "screen": [
+        27,
+        24,
+        521,
+        1137
+      ],
+      "radius": 59
+    },
+    "galaxy": {
+      "file": "devices/galaxy.webp",
+      "mm": 71.2,
+      "w": 570,
+      "h": 1208,
+      "screen": [
+        24,
+        23,
+        516,
+        1154
+      ],
+      "radius": 22
+    }
+  }
+}
