@@ -7,6 +7,17 @@ import { deck } from "../convex/deck.ts";
 
 const OUT = process.env.OUT ?? "./tmp";
 mkdirSync(OUT, { recursive: true });
+
+const started = performance.now();
+let previous = started;
+const log = (what) => {
+  const now = performance.now();
+  const at = ((now - started) / 1000).toFixed(2);
+  console.log(
+    `${at.padStart(6)}s +${String(Math.round(now - previous)).padStart(5)}ms  ${what}`,
+  );
+  previous = now;
+};
 const ORIGIN = process.env.ORIGIN ?? "http://localhost:3000";
 const room = process.env.ROOM ?? "bison";
 // https://freestocktextures.com/texture/dark-wooden-floor,1658.html CC0 license
@@ -111,6 +122,7 @@ const wrapper = `<!doctype html>
   }
   .device {
     position: absolute;
+    transition: opacity .45s ease, transform .58s cubic-bezier(.2,.72,.28,1);
     background: linear-gradient(155deg, #303237 0%, #131418 45%, #1d1f23 100%);
     box-shadow: 0 32px 66px rgba(0,0,0,.72), 0 4px 14px rgba(0,0,0,.5),
                 inset 0 0 0 1px rgba(255,255,255,.13);
@@ -130,9 +142,21 @@ const wrapper = `<!doctype html>
 <div id="stage"></div>`;
 
 // Offset by the bezel so the screen, not the case, is centred on the seat.
-const place = ({ w, h, x, y, scale, facing, pad, radius }) =>
-  `left:${x - w / 2 - pad}px;top:${y - h / 2 - pad}px;padding:${pad}px;` +
-  `border-radius:${radius + pad}px;transform:rotate(${facing}deg) scale(${scale});`;
+// `arriving` holds it back down its own vertical axis and a little larger, so
+// it slides in from the player's side — the axis the gestures run on too.
+const place = ({ w, h, x, y, scale, facing, pad, radius }, arriving) => {
+  const out = arriving ? 500 : 0;
+  const f = (facing * Math.PI) / 180;
+  log(
+    `place ${arriving ? "arriving" : "settled"} at ${Math.round(x)},${Math.round(y)}`,
+  );
+  return (
+    `left:${x - w / 2 - pad}px;top:${y - h / 2 - pad}px;padding:${pad}px;` +
+    `border-radius:${radius + pad}px;opacity:${arriving ? 0 : 1};` +
+    `transform:translate(${-Math.sin(f) * out}px,${Math.cos(f) * out}px) ` +
+    `rotate(${facing}deg) scale(${scale * (arriving ? 1.14 : 1)});`
+  );
+};
 
 const browser = await chromium.launch();
 try {
@@ -198,6 +222,7 @@ try {
     );
 
   async function drag(from, to, { steps = 26, pause = 12, hold = 0 } = {}) {
+    log(`drag ${steps} steps, ${pause}ms apart, ${hold}ms hold`);
     down.set(0, from);
     await paint();
     await page.mouse.move(from.x, from.y);
@@ -217,6 +242,7 @@ try {
   }
 
   async function tap({ x, y, width, height }) {
+    log("tap");
     const [cx, cy] = [x + width / 2, y + height / 2];
     down.set(0, { x: cx, y: cy });
     await paint();
@@ -240,9 +266,9 @@ try {
 
   // 250px is where a pull stops being a peek: let go short of it and the cards
   // flip back, go past it and they stay face up.
-  const PEEK = [120, 295];
+  const PEEK = [120, 270];
   const peek = (seat) => gesture(seat, ...PEEK, { pause: 18, hold: 700 });
-  const reveal = (seat) => gesture(seat, 120, 540, { pause: 14 });
+  const reveal = (seat) => gesture(seat, 120, 540, { steps: 16, pause: 5 });
   const fold = (seat) => gesture(seat, 300, -100, { steps: 14, pause: 8 });
 
   // Chrome's touch input is one device: a touchEnd carries no points and lifts
@@ -261,6 +287,7 @@ try {
     });
 
   async function peekTogether(seats, { stagger = 9, steps = 20, tick = 24 }) {
+    log(`peekTogether ${seats.length} hands, ${stagger} ticks apart`);
     const pulls = seats.map((seat, i) => ({
       id: i + 1,
       from: along(seat, PEEK[0]),
@@ -288,21 +315,28 @@ try {
   }
 
   async function add(id, src, box) {
+    log(`add ${id}`);
     await page.evaluate(
-      ({ id, src, shell, screen }) => {
+      ({ id, src, arriving, settled, screen }) => {
         const device = document.createElement("div");
         device.className = "device";
-        device.setAttribute("style", shell);
+        device.setAttribute("style", arriving);
         const el = document.createElement("iframe");
         Object.assign(el, { id, src });
         el.setAttribute("style", screen);
         device.append(el);
         document.getElementById("stage").prepend(device);
+        // A frame later, so the transition has a start to run from. The phone
+        // lands while the app deals its cards in behind the glass.
+        requestAnimationFrame(() =>
+          requestAnimationFrame(() => device.setAttribute("style", settled)),
+        );
       },
       {
         id,
         src,
-        shell: place(box),
+        arriving: place(box, true),
+        settled: place(box, false),
         screen: `width:${box.w}px;height:${box.h}px;border-radius:${box.radius}px;`,
       },
     );
@@ -325,10 +359,9 @@ try {
   await wait(1800);
   for (const [i, seat] of SEATS.entries()) {
     await add(`p${i}`, `${ORIGIN}/${room}`, seat);
-    await wait(800);
+    if (i < SEATS.length - 1) await wait(800);
   }
-  await page.screenshot({ path: `${OUT}/demo-still.png` });
-  await wait(900);
+  await wait(500);
 
   // Pre-flop everyone looks and nobody shows: each pull stops short and springs
   // back. Two go at once and let go together; the third looks after them, on
@@ -367,6 +400,7 @@ try {
   await wait(2600);
 
   await page.screencast.stop();
+  await page.screenshot({ path: `${OUT}/demo-still.png` });
   console.log(`${OUT}/demo.webm  room=${room}`);
 } finally {
   await browser.close();
