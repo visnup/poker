@@ -65,9 +65,11 @@ export function Help() {
       <style jsx>{`
         .open {
           font: inherit;
+          font-size: 1.6em;
+          line-height: 1;
           background: none;
           border: none;
-          padding: 0 4px;
+          padding: 0 8px;
           opacity: 0.5;
           cursor: pointer;
           color: inherit;
