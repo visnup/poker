@@ -114,8 +114,10 @@ function Ranking({ index, players }: { index: number; players: number }) {
         </span>
       </button>
       <style jsx>{`
-        :global(body) {
-          background-color: honeydew;
+        @media (prefers-color-scheme: light) {
+          :global(body) {
+            background-color: honeydew;
+          }
         }
         li {
           border-top: solid 1px hsla(0, 0%, 50%, 0.25);
