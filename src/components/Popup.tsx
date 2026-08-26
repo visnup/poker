@@ -43,6 +43,7 @@ export function Popup({
           <animated.div
             style={{
               y: style.y,
+              position: "relative",
               flex: "none",
               width: "min(360px, 100% - 24px)",
             }}
@@ -52,19 +53,13 @@ export function Popup({
                 className="band"
                 dangerouslySetInnerHTML={{ __html: back }}
               />
-              <div className="sheet">
-                {closable && (
-                  <button
-                    className="close"
-                    onClick={onClose}
-                    aria-label="close"
-                  >
-                    ×
-                  </button>
-                )}
-                {children}
-              </div>
+              <div className="sheet">{children}</div>
             </div>
+            {closable && (
+              <button className="close" onClick={onClose} aria-label="close">
+                ×
+              </button>
+            )}
           </animated.div>
           <style jsx>{`
             .card {
@@ -101,17 +96,17 @@ export function Popup({
             }
             .close {
               position: absolute;
-              top: 8px;
-              right: 10px;
+              bottom: 100%;
+              right: 0;
               font: inherit;
-              font-size: 24px;
+              font-size: 32px;
               line-height: 1;
               background: none;
               border: none;
-              padding: 4px;
-              opacity: 0.3;
+              padding: 8px;
+              opacity: 0.6;
               cursor: pointer;
-              color: inherit;
+              color: white;
             }
             @media (prefers-color-scheme: dark) {
               .sheet {
