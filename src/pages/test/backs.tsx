@@ -27,22 +27,31 @@ export default function Test() {
         <code>hash = {seed}</code>
       </p>
       <div className="row">
-        {Object.entries(allBacks).map(([name, back]) => (
-          <figure key={name}>
-            <div
-              className="card"
-              data-testid={name}
-              dangerouslySetInnerHTML={{
-                __html: back(
-                  seed,
-                  palette || undefined,
-                  `https://poker.dance/${table}`,
-                ),
-              }}
-            />
-            <figcaption>{name}</figcaption>
-          </figure>
-        ))}
+        {Object.entries(allBacks).map(([name, back]) => {
+          const svg = back(
+            seed,
+            palette || undefined,
+            `https://poker.dance/${table}`,
+          );
+          return (
+            <figure key={name}>
+              <div
+                className="card"
+                data-testid={name}
+                dangerouslySetInnerHTML={{ __html: svg }}
+              />
+              <figcaption>
+                {name}
+                <a
+                  download={`${name}-${table}-${seed}.svg`}
+                  href={`data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`}
+                >
+                  download
+                </a>
+              </figcaption>
+            </figure>
+          );
+        })}
       </div>
       <style jsx>{`
         main {
@@ -77,6 +86,8 @@ export default function Test() {
           line-height: 0;
         }
         figcaption {
+          display: flex;
+          justify-content: space-between;
           font-size: small;
           padding-top: 8px;
           opacity: 0.6;
