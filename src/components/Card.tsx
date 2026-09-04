@@ -183,7 +183,7 @@ const Face = ({ rank = "", suit = "" }: { rank?: string; suit?: string }) => {
             background: #333;
           }
           .face.red {
-            color: firebrick;
+            color: salmon;
           }
         }
 
