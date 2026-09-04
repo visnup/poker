@@ -10,6 +10,11 @@ export default defineConfig({
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
     },
+    {
+      name: "chromium-dark",
+      grep: /screenshot/,
+      use: { ...devices["Desktop Chrome"], colorScheme: "dark" },
+    },
   ],
   webServer: {
     command: "next dev",
