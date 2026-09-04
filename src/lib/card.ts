@@ -54,12 +54,12 @@ const frame = (
 ) => {
   const [ink, paper, darkInk, darkPaper] = palettes[palette];
   return `
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}">
+  <svg xmlns="http://www.w3.org/2000/svg" class="${key}" viewBox="0 0 ${width} ${height}">
     <style>
-      svg { background-color: ${paper}; width: 100%; height: 100%; }
-      .ink { stroke: ${ink}; fill: none; stroke-opacity: 0.5; }
-      .solid { fill: ${ink}; stroke: none; }
-      ${lightOnly ? "" : `@media (prefers-color-scheme: dark) { svg { background-color: ${darkPaper}; } .ink { stroke: ${darkInk}; } }`}
+      svg.${key} { --paper: ${paper}; --ink: ${ink}; background-color: var(--paper); width: 100%; height: 100%; }
+      .ink { stroke: var(--ink); fill: none; stroke-opacity: 0.5; }
+      .solid { fill: var(--ink); stroke: none; }
+      ${lightOnly ? "" : `@media (prefers-color-scheme: dark) { svg.${key} { --paper: ${darkPaper}; --ink: ${darkInk}; } }`}
     </style>
     <defs>${defs}<clipPath id="${key}-box"><rect ${box}/></clipPath></defs>
     <g clip-path="url(#${key}-box)">${body}</g>
