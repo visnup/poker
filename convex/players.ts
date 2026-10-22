@@ -8,7 +8,7 @@ export const join = mutation({
   args: { table: v.string(), id: v.optional(v.id("players")) },
   handler: async ({ db }, { table, id }) => {
     const now = Date.now();
-    const previous = id ? await db.get(id) : null;
+    const previous = id ? await db.get("players", id) : null;
     const returning = previous?.table === table ? previous : null;
     const active = await db
       .query("players")
@@ -26,7 +26,7 @@ export const join = mutation({
     if (seat === undefined) return null;
 
     if (returning) {
-      await db.patch(returning._id, { seat, lastSeen: now });
+      await db.patch("players", returning._id, { seat, lastSeen: now });
       return { id: returning._id, table, seat };
     } else {
       const id = await db.insert("players", { table, seat, lastSeen: now });
@@ -37,5 +37,6 @@ export const join = mutation({
 
 export const ping = mutation({
   args: { id: v.id("players") },
-  handler: ({ db }, { id }) => db.patch(id, { lastSeen: Date.now() }),
+  handler: ({ db }, { id }) =>
+    db.patch("players", id, { lastSeen: Date.now() }),
 });

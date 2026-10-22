@@ -38,7 +38,7 @@ test("dealer button stays at dragged position", async ({ table }) => {
 
 test("drag dealer button 250px deals cards", async ({ table, dealCards }) => {
   await dealCards(table);
-  await expect(table.locator(".card")).toHaveCount(5, { timeout: 5_000 });
+  await expect(table.locator(".card")).toHaveCount(5);
 });
 
 test("board cycles reveal states on click", async ({ table, dealCards }) => {

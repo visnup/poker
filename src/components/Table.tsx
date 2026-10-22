@@ -15,10 +15,8 @@ export function DealerButton({
   onMove: () => void;
   children: ReactNode;
 }) {
-  // Refs hold the current position and rotation so the object-form spring
-  // always targets the correct values on re-render (react-spring v10 reads
-  // the config on every render; using the function form let it reset to the
-  // original {x:0,y:0} after each re-render causing the button to drift back).
+  // react-spring v10 re-reads this object on every render, so it has to target
+  // the refs or the button drifts back to {x:0,y:0}
   const pos = useRef({ x: 0, y: 0 });
   const rotate = useRef(0);
   const springRef = useSpringRef();

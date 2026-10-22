@@ -39,7 +39,7 @@ export const test = base.extend<{
         { steps: 20 },
       );
       await page.mouse.up();
-      await expect(page.locator(".board")).toBeVisible({ timeout: 5_000 });
+      await expect(page.locator(".board")).toBeVisible();
     });
   },
 

@@ -35,7 +35,7 @@ export function Hand({ table, seat }: { table: string; seat: number }) {
       setRotation(2);
       revealing.start(clipPath(down ? h : 0));
       folding.start({ y: 0, config: slow });
-    } else if (y < 0) {
+    } else {
       // swipe up
       revealing.start(clipPath(0));
       folding.start({ y, immediate: true });
@@ -45,7 +45,7 @@ export function Hand({ table, seat }: { table: string; seat: number }) {
         // pulled down to reveal or reset
         if (h > 250) revealing.start(clipPath(500));
         else setRotation(Math.random());
-      } else if (y < 0) {
+      } else {
         // swiped up to fold or reset
         if (vy > 1 || h > 250)
           folding.start({

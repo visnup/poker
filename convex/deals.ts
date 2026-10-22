@@ -11,7 +11,7 @@ export const clear = mutation({
       .withIndex("byTable", (q) => q.eq("table", table))
       .order("desc")
       .first();
-    if (dealt) await db.patch(dealt._id, { cleared: true });
+    if (dealt) await db.patch("deals", dealt._id, { cleared: true });
   },
 });
 

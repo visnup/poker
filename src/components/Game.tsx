@@ -38,12 +38,10 @@ export function Game({ table, seat }: { table: string; seat?: number }) {
 
   useWakeLock();
 
-  // Sync player with sessionStorage
   useEffect(() => {
     if (player) sessionStorage.setItem("player", JSON.stringify(player));
   }, [player]);
 
-  // Setup player
   useEffect(() => {
     if (!player && !joining.current) {
       joining.current = true;
@@ -54,7 +52,6 @@ export function Game({ table, seat }: { table: string; seat?: number }) {
     }
   }, [join, table, player]);
 
-  // Ping
   useEffect(() => {
     const interval = setInterval(() => {
       if (player) ping({ id: player.id });
@@ -66,7 +63,7 @@ export function Game({ table, seat }: { table: string; seat?: number }) {
 
   return (
     <main>
-      <CardContext.Provider value={back}>
+      <CardContext value={back}>
         {!player || seat === undefined ? null : seat === 0 ? (
           <Table table={table} />
         ) : (
@@ -79,7 +76,7 @@ export function Game({ table, seat }: { table: string; seat?: number }) {
               ? "Every seat is taken"
               : `${player.seat}:${player.id.slice(0, 5)}`}
         </Status>
-      </CardContext.Provider>
+      </CardContext>
       <style jsx>
         {`
           main {
